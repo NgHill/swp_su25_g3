@@ -9,7 +9,6 @@
         <title>Subject List</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <style>
-
             * {
                 margin:0;
                 padding:0;
@@ -195,6 +194,7 @@
                 display:flex;
                 align-items:center;
                 margin-bottom:8px;
+                cursor:pointer;
             }
             .filter-group input {
                 margin-right:8px;
@@ -212,6 +212,20 @@
                 padding:6px;
                 border-radius:4px;
                 text-align:center;
+            }
+            .clear-filter {
+                background:#e53e3e;
+                color:white;
+                border:none;
+                padding:8px 16px;
+                border-radius:4px;
+                cursor:pointer;
+                font-size:12px;
+                margin-top:8px;
+                width:100%;
+            }
+            .clear-filter:hover {
+                background:#c53030;
             }
             .controls-section {
                 display:flex;
@@ -373,13 +387,12 @@
                 background:linear-gradient(135deg,#667eea,#764ba2);
                 color:white;
                 border-color:#667eea;
-
             }
             .pagination .current {
                 background: linear-gradient(135deg,#667eea,#764ba2);
                 color: white;
                 border-color: #667eea;
-                font-weight: bold;    /* ← thêm dòng này */
+                font-weight: bold;
             }
             .disabled {
                 opacity:.5;
@@ -451,11 +464,14 @@
                                     <div class="filter-sidebar" id="filterSidebar">
                                         <h3>Categories</h3>
                                         <div class="filter-group">
-                                            <label><input type="radio" name="cat" value="Teamwork" onclick="submitFilter()"> Teamwork</label>
-                                            <label><input type="radio" name="cat" value="Communication" onclick="submitFilter()"> Communication</label>
-                                            <label><input type="radio" name="cat" value="Self improve" onclick="submitFilter()"> Self improve</label>
-                                            <label><input type="radio" name="cat" value="Thinking" onclick="submitFilter()"> Thinking</label>
+                                            <label><input type="radio" name="cat" value="" ${empty param.cat ? 'checked' : ''}> Tất cả</label>
+                                            <label><input type="radio" name="cat" value="Teamwork" ${param.cat == 'Teamwork' ? 'checked' : ''}> Teamwork</label>
+                                            <label><input type="radio" name="cat" value="Communication" ${param.cat == 'Communication' ? 'checked' : ''}> Communication</label>
+                                            <label><input type="radio" name="cat" value="Self improve" ${param.cat == 'Self improve' ? 'checked' : ''}> Self improve</label>
+                                            <label><input type="radio" name="cat" value="Thinking" ${param.cat == 'Thinking' ? 'checked' : ''}> Thinking</label>
                                         </div>
+                                        <button type="button" class="clear-filter" onclick="clearFilter()">Xóa bộ lọc</button>
+
                                         <h3>Featured Subject</h3>
                                         <div class="filter-group">
                                             <label><a href="#">Subject A</a></label>
@@ -472,6 +488,7 @@
                                 </div>
                                 <input type="hidden" id="searchPage" name="page" value="${param.page != null ? param.page : 1}" />
                                 <input type="hidden" name="pageSize" value="${param.pageSize != null ? param.pageSize : 9}" />
+                                <input type="hidden" name="cat" value="${param.cat}" />
                                 <c:forEach items="${paramValues.displayOptions}" var="opt">
                                     <input type="hidden" name="displayOptions" value="${opt}" />
                                 </c:forEach>
@@ -505,32 +522,61 @@
                             </div>
                             <div class="controls-right">
                                 <div class="pagination">
-                                <c:if test="${currentPage>1}"><a href="?page=${currentPage-1}&search=${param.search}&pageSize=${param.pageSize}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>"><i class="fas fa-chevron-left"></i></a></c:if>
-                                <c:if test="${currentPage<=1}"><span class="disabled"><i class="fas fa-chevron-left"></i></span></c:if>
+                                <c:if test="${currentPage>1}">
+                                    <a href="?page=${currentPage-1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                </c:if>
+                                <c:if test="${currentPage<=1}">
+                                    <span class="disabled"><i class="fas fa-chevron-left"></i></span>
+                                    </c:if>
                                     <c:forEach begin="1" end="${totalPages}" var="i">
                                         <c:choose>
-                                            <c:when test="${i==currentPage}"><span class="current">${i}</span></c:when>
-                                        <c:otherwise><a href="?page=${i}&search=${param.search}&pageSize=${param.pageSize}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">${i}</a></c:otherwise>
+                                            <c:when test="${i==currentPage}">
+                                            <span class="current">${i}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="?page=${i}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">${i}</a>
+                                        </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
-                                <c:if test="${currentPage<totalPages}"><a href="?page=${currentPage+1}&search=${param.search}&pageSize=${param.pageSize}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>"><i class="fas fa-chevron-right"></i></a></c:if>
-                                <c:if test="${currentPage>=totalPages}"><span class="disabled"><i class="fas fa-chevron-right"></i></span></c:if>
-                                </div>
+                                <c:if test="${currentPage<totalPages}">
+                                    <a href="?page=${currentPage+1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                </c:if>
+                                <c:if test="${currentPage>=totalPages}">
+                                    <span class="disabled"><i class="fas fa-chevron-right"></i></span>
+                                    </c:if>
                             </div>
                         </div>
-                        <div class="subjects-grid">
+                    </div>
+                    <div class="subjects-grid">
                         <c:forEach items="${subjects}" var="subject">
                             <div class="subject-card" onclick="goToSubject(${subject.id})">
                                 <div class="subject-thumbnail">
-                                    <c:choose><c:when test="${not empty subject.thumbnail}"><img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/></c:when><c:otherwise>📚</c:otherwise></c:choose>
-                                        </div>
-                                        <div class="subject-content">
+                                    <c:choose>
+                                        <c:when test="${not empty subject.thumbnail}">
+                                            <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/>
+                                        </c:when>
+                                        <c:otherwise>📚</c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div class="subject-content">
                                     <c:if test="${showTitle}"><h3>${subject.title}</h3></c:if>
                                     <c:if test="${showTagline}"><p>${subject.description}</p></c:if>
                                     <c:if test="${showSale or showOriginal}">
                                         <div class="price-section">
-                                            <c:if test="${showSale}"><span class="sale-price"><fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/></span></c:if>
-                                            <c:if test="${showOriginal}"><span class="original-price"><fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/></span></c:if>
+                                            <c:if test="${showSale}">
+                                                <span class="sale-price">
+                                                    <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
+                                                </span>
+                                            </c:if>
+                                            <c:if test="${showOriginal}">
+                                                <span class="original-price">
+                                                    <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
+                                                </span>
+                                            </c:if>
                                             <button class="register-btn" onclick="registerSubject(event,${subject.id})">Đăng ký</button>
                                         </div>
                                     </c:if>
@@ -538,58 +584,99 @@
                             </div>
                         </c:forEach>
                     </div>
-                    <c:if test="${empty subjects}"><div style="text-align:center;padding:50px;color:#666;"><i class="fas fa-search" style="font-size:48px;margin-bottom:20px;"></i><h3>Không tìm thấy môn học nào</h3><p>Thử thay đổi từ khóa tìm kiếm hoặc xem tất cả môn học</p></div></c:if>
-                    </div>
-                </main>
-            </div>
-            <script>
-                document.getElementById('toggleSidebar').addEventListener('click', () => document.querySelector('.sidebar').classList.toggle('hidden'));
-                const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
-                ft.addEventListener('click', () => {
-                    sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-                    ft.querySelector('i').classList.toggle('fa-chevron-up');
-                    ft.querySelector('i').classList.toggle('fa-chevron-down');
-                });
-                document.addEventListener('click', e => {
-                    if (!sb.contains(e.target) && !ft.contains(e.target)) {
-                        sb.style.display = 'none';
-                        ft.querySelector('i').classList.add('fa-chevron-down');
-                        ft.querySelector('i').classList.remove('fa-chevron-up');
+                    <c:if test="${empty subjects}">
+                        <div style="text-align:center;padding:50px;color:#666;">
+                            <i class="fas fa-search" style="font-size:48px;margin-bottom:20px;"></i>
+                            <h3>Không tìm thấy môn học nào</h3>
+                            <p>Thử thay đổi từ khóa tìm kiếm hoặc xem tất cả môn học</p>
+                        </div>
+                    </c:if>
+                </div>
+            </main>
+        </div>
+        <script>
+            document.getElementById('toggleSidebar').addEventListener('click', () =>
+                document.querySelector('.sidebar').classList.toggle('hidden')
+            );
+
+            const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
+            ft.addEventListener('click', () => {
+                sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
+                ft.querySelector('i').classList.toggle('fa-chevron-up');
+                ft.querySelector('i').classList.toggle('fa-chevron-down');
+            });
+
+            document.addEventListener('click', e => {
+                if (!sb.contains(e.target) && !ft.contains(e.target)) {
+                    sb.style.display = 'none';
+                    ft.querySelector('i').classList.add('fa-chevron-down');
+                    ft.querySelector('i').classList.remove('fa-chevron-up');
+                }
+            });
+
+            // Event listener cho radio buttons
+            document.querySelectorAll('input[name="cat"]').forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (this.checked) {
+                        submitFilter(this.value);
                     }
                 });
-                function updatePageSize() {
-                    let s = parseInt(document.getElementById('pageSize').value) || 1;
-                    s = Math.min(Math.max(s, 1), 100);
-                    document.getElementById('pageSize').value = s;
-                    let u = new URL(window.location.href);
-                    u.searchParams.set('pageSize', s);
-                    u.searchParams.set('page', '1');
-                    window.location.href = u;
+            });
+
+// Function xử lý filter
+            function submitFilter(categoryValue = '') {
+                let url = new URL(window.location.href);
+                url.searchParams.set('cat', categoryValue);
+                url.searchParams.set('page', '1'); // Reset về trang 1
+                window.location.href = url;
+            }
+
+// Function xóa filter
+            function clearFilter() {
+                let url = new URL(window.location.href);
+                url.searchParams.delete('cat');
+                url.searchParams.set('page', '1');
+                window.location.href = url;
+            }
+
+            function updatePageSize() {
+                let s = parseInt(document.getElementById('pageSize').value) || 1;
+                s = Math.min(Math.max(s, 1), 100);
+                document.getElementById('pageSize').value = s;
+                let u = new URL(window.location.href);
+                u.searchParams.set('pageSize', s);
+                u.searchParams.set('page', '1');
+                window.location.href = u;
+            }
+
+            function updateDisplayOptions() {
+                let u = new URL(window.location.href);
+                u.searchParams.delete('displayOptions');
+                document.querySelectorAll('input[name="displayOptions"]:checked').forEach(cb =>
+                    u.searchParams.append('displayOptions', cb.value)
+                );
+                window.location.href = u;
+            }
+
+            function goToSubject(id) {
+                window.location.href = '${pageContext.request.contextPath}/subject-detail?id=' + id;
+            }
+
+            function registerSubject(e, id) {
+                e.stopPropagation();
+                if (!${not empty sessionScope.user}) {
+                    if (confirm('Bạn cần đăng nhập để đăng ký. Chuyển đến trang đăng nhập?'))
+                        window.location.href = '${pageContext.request.contextPath}/login?redirect=subject-list';
+                } else {
+                    if (confirm('Bạn có chắc muốn đăng ký môn học này?'))
+                        window.location.href = '${pageContext.request.contextPath}/register-subject?subjectId=' + id;
                 }
-                function updateDisplayOptions() {
-                    let u = new URL(window.location.href);
-                    u.searchParams.delete('displayOptions');
-                    document.querySelectorAll('input[name="displayOptions"]:checked').forEach(cb => u.searchParams.append('displayOptions', cb.value));
-                    window.location.href = u;
-                }
-                function goToSubject(id) {
-                    window.location.href = '${pageContext.request.contextPath}/subject-detail?id=' + id;
-                }
-                function registerSubject(e, id) {
-                    e.stopPropagation();
-                    if (!${not empty sessionScope.user}) {
-                        if (confirm('Bạn cần đăng nhập để đăng ký. Chuyển đến trang đăng nhập?'))
-                            window.location.href = '${pageContext.request.contextPath}/login?redirect=subject-list';
-                    } else {
-                        if (confirm('Bạn có chắc muốn đăng ký môn học này?'))
-                            window.location.href = '${pageContext.request.contextPath}/register-subject?subjectId=' + id;
-                    }
-                }
-                document.addEventListener('DOMContentLoaded', () => {
-                    let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
-                    i.value = Math.min(Math.max(v, 1), 100);
-                });
-                
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
+                i.value = Math.min(Math.max(v, 1), 100);
+            });
         </script>
     </body>
 </html>

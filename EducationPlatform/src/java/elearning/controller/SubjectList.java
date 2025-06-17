@@ -26,6 +26,7 @@ public class SubjectList extends HttpServlet {
         String category = request.getParameter("cat");
 
         if (search == null) search = "";
+        if (category == null) category = "";
 
         // 2. Xử lý phân trang: page và pageSize
         int page = 1;
@@ -51,26 +52,15 @@ public class SubjectList extends HttpServlet {
         SubjectPackageBasicDAO dao = new SubjectPackageBasicDAO();
 
         try {
-            List<SubjectPackage> list;
-            int totalRecords;
-            int totalPages;
-
-            if (category != null && !category.trim().isEmpty()) {
-                // Nếu lọc theo category, thì không áp dụng search hoặc phân trang
-                list = dao.getByCategory(category);
-                totalRecords = list.size();
-                totalPages = 1; // hiển thị 1 trang cho toàn bộ kết quả
-            } else {
-                // Tìm kiếm thông thường có phân trang
-                totalRecords = dao.countByKeyword(search);
-                totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-                list = dao.findByKeyword(search, page, pageSize);
-            }
+            // Tìm kiếm và/hoặc lọc theo category với phân trang
+            int totalRecords = dao.countByKeywordAndCategory(search, category);
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+            List<SubjectPackage> list = dao.findByKeywordAndCategory(search, category, page, pageSize);
 
             // Gửi dữ liệu về JSP
             request.setAttribute("subjects", list);
             request.setAttribute("search", search);
-            request.setAttribute("category", category);
+            request.setAttribute("cat", category);
             request.setAttribute("currentPage", page);
             request.setAttribute("pageSize", pageSize);
             request.setAttribute("totalPages", totalPages);
@@ -79,8 +69,7 @@ public class SubjectList extends HttpServlet {
             throw new ServletException("Lỗi khi truy xuất SubjectPackages", e);
         }
 
-        // 6. Forward về JSP
-        request.getRequestDispatcher("subjectList.jsp")
-               .forward(request, response);
+        // Forward về JSP
+        request.getRequestDispatcher("subjectList.jsp").forward(request, response);
     }
 }

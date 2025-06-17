@@ -11,11 +11,11 @@ public class SubjectPackageBasicDAO {
 
     // SQL templates
     private static final String LIST_SQL =
-        "SELECT * FROM `SubjectPackages` WHERE `Title` LIKE ? OR `Description` LIKE ? ORDER BY `CreatedAt` DESC LIMIT ? OFFSET ?";
+        "SELECT * FROM `SubjectPackages` WHERE (`Title` LIKE ? OR `Description` LIKE ?) AND (`Category` = ? OR ? = '') ORDER BY `CreatedAt` DESC LIMIT ? OFFSET ?";
     private static final String COUNT_SQL =
-        "SELECT COUNT(*) FROM `SubjectPackages` WHERE `Title` LIKE ? OR `Description` LIKE ?";
+        "SELECT COUNT(*) FROM `SubjectPackages` WHERE (`Title` LIKE ? OR `Description` LIKE ?) AND (`Category` = ? OR ? = '')";
     private static final String LIST_ALL_SQL =
-        "SELECT * FROM `SubjectPackages` ORDER BY `CreatedAt` DESC LIMIT ?";
+        "SELECT * FROM `SubjectPackages` ORDER BY `CreatedAt` DESC LIMIT ? OFFSET ?";
     private static final String COUNT_ALL_SQL =
         "SELECT COUNT(*) FROM `SubjectPackages`";
 
@@ -40,10 +40,12 @@ public class SubjectPackageBasicDAO {
         }
     }
 
-    public List<SubjectPackage> getAll() throws SQLException {
+    public List<SubjectPackage> getAll(int page, int pageSize) throws SQLException {
         List<SubjectPackage> packages = new ArrayList<>();
+        int offset = (page - 1) * pageSize;
         try (PreparedStatement stmt = connection.prepareStatement(LIST_ALL_SQL)) {
-            stmt.setInt(1, Integer.MAX_VALUE); // fetch all
+            stmt.setInt(1, pageSize);
+            stmt.setInt(2, offset);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     packages.add(mapRow(rs));
@@ -51,6 +53,16 @@ public class SubjectPackageBasicDAO {
             }
         }
         return packages;
+    }
+
+    public int countAll() throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(COUNT_ALL_SQL);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
     }
 
     public SubjectPackage getById(Integer id) throws SQLException {
@@ -93,17 +105,23 @@ public class SubjectPackageBasicDAO {
     }
 
     /**
-     * Search by keyword in title or description with pagination.
+     * Search and/or filter by category with pagination.
+     * If category is empty string, returns all categories.
      */
-    public List<SubjectPackage> findByKeyword(String keyword, int page, int pageSize) throws SQLException {
+    public List<SubjectPackage> findByKeywordAndCategory(String keyword,
+                                                          String category,
+                                                          int page,
+                                                          int pageSize) throws SQLException {
         List<SubjectPackage> packages = new ArrayList<>();
         String pattern = "%" + keyword.trim() + "%";
         int offset = (page - 1) * pageSize;
         try (PreparedStatement stmt = connection.prepareStatement(LIST_SQL)) {
             stmt.setString(1, pattern);
             stmt.setString(2, pattern);
-            stmt.setInt(3, pageSize);
-            stmt.setInt(4, offset);
+            stmt.setString(3, category);
+            stmt.setString(4, category);
+            stmt.setInt(5, pageSize);
+            stmt.setInt(6, offset);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     packages.add(mapRow(rs));
@@ -113,47 +131,17 @@ public class SubjectPackageBasicDAO {
         return packages;
     }
 
-    /**
-     * Count total packages matching keyword.
-     */
-    public int countByKeyword(String keyword) throws SQLException {
+    public int countByKeywordAndCategory(String keyword, String category) throws SQLException {
         String pattern = "%" + keyword.trim() + "%";
         try (PreparedStatement stmt = connection.prepareStatement(COUNT_SQL)) {
             stmt.setString(1, pattern);
             stmt.setString(2, pattern);
+            stmt.setString(3, category);
+            stmt.setString(4, category);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);
                 }
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * Get latest packages with limit.
-     */
-    public List<SubjectPackage> getLimit(int limit) throws SQLException {
-        List<SubjectPackage> packages = new ArrayList<>();
-        try (PreparedStatement stmt = connection.prepareStatement(LIST_ALL_SQL)) {
-            stmt.setInt(1, limit);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    packages.add(mapRow(rs));
-                }
-            }
-        }
-        return packages;
-    }
-
-    /**
-     * Count all packages in database.
-     */
-    public int countAll() throws SQLException {
-        try (PreparedStatement stmt = connection.prepareStatement(COUNT_ALL_SQL);
-             ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
             }
         }
         return 0;
@@ -174,18 +162,4 @@ public class SubjectPackageBasicDAO {
                 .createdAt(rs.getTimestamp("CreatedAt"))
                 .build();
     }
-    
-    public List<SubjectPackage> getByCategory(String category) throws SQLException {
-    List<SubjectPackage> packages = new ArrayList<>();
-    String sql = "SELECT * FROM SubjectPackages WHERE Category = ? ORDER BY CreatedAt DESC";
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setString(1, category);
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                packages.add(mapRow(rs));
-            }
-        }
-    }
-    return packages;
-}
 }
