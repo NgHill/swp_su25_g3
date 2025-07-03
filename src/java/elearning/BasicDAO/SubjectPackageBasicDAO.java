@@ -153,6 +153,8 @@ public class SubjectPackageBasicDAO {
                 .title(rs.getString("Title"))
                 .description(rs.getString("Description"))
                 .thumbnail(rs.getString("Thumbnail"))
+                .tagLine(rs.getString("TagLine"))
+                .briefInfo(rs.getString("BriefInfo"))
                 .lowestPrice(rs.getDouble("LowestPrice"))
                 .originalPrice(rs.getDouble("OriginalPrice"))
                 .salePrice(rs.getDouble("SalePrice"))

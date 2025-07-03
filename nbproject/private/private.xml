@@ -5,9 +5,11 @@
         <group>
             <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/src/java/elearning/controller/SubjectDetail.java</file>
             <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/src/java/elearning/controller/SubjectList.java</file>
+            <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/src/java/elearning/entities/SubjectPackage.java</file>
             <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/src/java/elearning/BasicDAO/SubjectPackageBasicDAO.java</file>
             <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/web/subjectDetail.jsp</file>
             <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/web/subjectList.jsp</file>
+            <file>file:/C:/Users/DUNG/Downloads/New/swp_su25_g3/src/java/elearning/constant/ServerConnectionInfo.java</file>
         </group>
     </open-files>
 </project-private>

@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Subject Detail</title>
+        <title>Subject List</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <style>
             * {
@@ -450,91 +450,44 @@
                             <button id="toggleSidebar">☰</button>
                             <h1>Subject Detail</h1>
                         </div>
-                        <div class="header-right">
-                            <form method="GET" action="${pageContext.request.contextPath}/subject-list" id="searchForm" onsubmit="document.getElementById('searchPage').value = '1'">
-                                <div class="search-wrapper">
-                                    <div class="search-box">
-                                        <input type="search" id="searchInput" name="search" placeholder="Search subject..." value="${param.search}" />
-                                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
-                                    </div>
-
-                                    <button type="button" class="filter-toggle" id="filterToggle" title="Lọc bộ môn">
-                                        <i class="fas fa-filter"></i>
-                                    </button>
-                                    <div class="filter-sidebar" id="filterSidebar">
-                                        <h3>Categories</h3>
-                                        <div class="filter-group">
-                                            <label><input type="radio" name="cat" value="" ${empty param.cat ? 'checked' : ''}> Tất cả</label>
-                                            <label><input type="radio" name="cat" value="Teamwork" ${param.cat == 'Teamwork' ? 'checked' : ''}> Teamwork</label>
-                                            <label><input type="radio" name="cat" value="Communication" ${param.cat == 'Communication' ? 'checked' : ''}> Communication</label>
-                                            <label><input type="radio" name="cat" value="Self improve" ${param.cat == 'Self improve' ? 'checked' : ''}> Self improve</label>
-                                            <label><input type="radio" name="cat" value="Thinking" ${param.cat == 'Thinking' ? 'checked' : ''}> Thinking</label>
-                                        </div>
-                                        <button type="button" class="clear-filter" onclick="clearFilter()">Xóa bộ lọc</button>
-
-                                        <h3>Featured Subject</h3>
-                                        <div class="filter-group">
-                                            <label><a href="#">Subject A</a></label>
-                                            <label><a href="#">Subject B</a></label>
-                                            <label><a href="#">Subject C</a></label>
-                                            <label><a href="#">Subject D</a></label>
-                                        </div>
-                                        <div class="link-section">
-                                            <a href="#">Privacy Policy</a>
-                                            <a href="#">Terms of Service</a>
-                                            <a href="#">FAQ</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" id="searchPage" name="page" value="${param.page != null ? param.page : 1}" />
-                                <input type="hidden" name="pageSize" value="${param.pageSize != null ? param.pageSize : 9}" />
-                                <input type="hidden" name="cat" value="${param.cat}" />
-                                <c:forEach items="${paramValues.displayOptions}" var="opt">
-                                    <input type="hidden" name="displayOptions" value="${opt}" />
-                                </c:forEach>
-                            </form>
-                        </div>
                     </div>
 
-                   
-                        <table style="width:100%; border-collapse:collapse; margin-top:30px; background:rgba(255,255,255,0.95); border-radius:10px; padding:20px;">
-                            <tr>
-                                <td style="padding:15px; font-weight:bold; width:200px;">Tittle</td>
-                                <td style="padding:15px;">${subjectDetail.title}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:15px; font-weight:bold;">Tagline</td>
-                                <td style="padding:15px;">${subjectDetail.tagline}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:15px; font-weight:bold;">Brief info</td>
-                                <td style="padding:15px;">${subjectDetail.description}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:15px; font-weight:bold;">Description</td>
-                                <td style="padding:15px; white-space:pre-line;">${subjectDetail.fullDescription}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:15px; font-weight:bold;">Sale price </td>
-                                <td style="padding:15px;">
-                                    <fmt:formatNumber value="${subjectDetail.salePrice}" type="currency" currencyCode="VND"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding:15px; font-weight:bold;">Original price</td>
-                                <td style="padding:15px; text-decoration:line-through; color:red;">
-                                    <fmt:formatNumber value="${subjectDetail.originalPrice}" type="currency" currencyCode="VND"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td style="padding-left: 250px;padding-top: 70px;">
-                                    <button class="register-btn" onclick="registerSubject(event,${subjectDetail.id})">Register now  </button>
-                                </td>
-                            </tr>
-                        </table>
-                   
-
+                    <c:choose>
+                        <c:when test="${subject != null}">
+                            <div class="subject-card" style="cursor: default">
+                                <div class="subject-thumbnail">
+                                    <c:choose>
+                                        <c:when test="${not empty subject.thumbnail}">
+                                            <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/>
+                                        </c:when>
+                                        <c:otherwise>📚</c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div class="subject-content">
+                                    <h2>${subject.title}</h2>
+                                    <p>${subject.description}</p>
+                                    <p><strong>Tag line:</strong> ${subject.tagLine}</p>
+                                    <p><strong>Brief info:</strong> ${subject.briefInfo}</p>
+                                    <div class="price-section">
+                                        <span class="sale-price">
+                                            <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
+                                        </span>
+                                        <span class="original-price">
+                                            <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
+                                        </span>
+                                    </div>
+                                    <button class="register-btn" onclick="registerSubject(event,${subject.id})">Đăng ký</button>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div style="text-align:center;padding:50px;color:#666;">
+                                <i class="fas fa-exclamation-circle" style="font-size:48px;margin-bottom:20px;"></i>
+                                <h3>Không tìm thấy thông tin môn học</h3>
+                                <p>Vui lòng kiểm tra lại mã môn học hoặc quay lại danh sách.</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
 
                 </div>
             </main>
@@ -584,6 +537,24 @@
                 window.location.href = url;
             }
 
+            function updatePageSize() {
+                let s = parseInt(document.getElementById('pageSize').value) || 1;
+                s = Math.min(Math.max(s, 1), 100);
+                document.getElementById('pageSize').value = s;
+                let u = new URL(window.location.href);
+                u.searchParams.set('pageSize', s);
+                u.searchParams.set('page', '1');
+                window.location.href = u;
+            }
+
+            function updateDisplayOptions() {
+                let u = new URL(window.location.href);
+                u.searchParams.delete('displayOptions');
+                document.querySelectorAll('input[name="displayOptions"]:checked').forEach(cb =>
+                    u.searchParams.append('displayOptions', cb.value)
+                );
+                window.location.href = u;
+            }
 
             function goToSubject(id) {
                 window.location.href = '${pageContext.request.contextPath}/subject-detail?id=' + id;
@@ -600,7 +571,10 @@
                 }
             }
 
-
+            document.addEventListener('DOMContentLoaded', () => {
+                let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
+                i.value = Math.min(Math.max(v, 1), 100);
+            });
         </script>
     </body>
 </html>
