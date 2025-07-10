@@ -26,6 +26,10 @@
         <servlet-name>SliderListServlet</servlet-name>
         <servlet-class>elearning.controller.SliderListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewSubject</servlet-name>
+        <servlet-class>elearning.controller.AddNewSubject</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>BlogListServlet</servlet-name>
         <url-pattern>/blog</url-pattern>
@@ -45,5 +49,17 @@
     <servlet-mapping>
         <servlet-name>SliderListServlet</servlet-name>
         <url-pattern>/slider-list</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SubjectListController</servlet-name>
+        <servlet-class>elearning.controller.SubjectListController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SubjectListController</servlet-name>
+        <url-pattern>/subject-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewSubject</servlet-name>
+        <url-pattern>/add-subject</url-pattern>
     </servlet-mapping>
 </web-app>
