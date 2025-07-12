@@ -1,44 +1,77 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Question.java
 package elearning.entities;
 
-import elearning.anotation.*;
-import java.util.Date;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import elearning.entities.QuestionAnswer;
+import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- *
- * @author admin
- */
-@Table(name = "Questions")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Question {
-
-    @Id
-    @Column(name = "Id")
-    Integer id;
-    @Column(name = "SubjectId")
-    Integer subjectId;
-    @Column(name = "LessonId")
-    Integer lessonId;
-    @Column(name = "DimensionId")
-    Integer dimensionId;
-    @Column(name = "Level")
-    String level;
-    @Column(name = "Content")
-    String content;
-    @Column(name = "Media")
-    String media;
-    @Column(name = "Status")
-    String status;
-    @Column(name = "CreatedAt")
-    Date createdAt;
+    private int id;
+    private int subjectId;
+    private int lessonId;
+    private int dimensionId;
+    private String level;
+    private String content;
+    private String media;
+    private String status;
+    private LocalDateTime createdAt;
+    private List<QuestionAnswer> answers;
+    
+    // Constructors
+    public Question() {}
+    
+    public Question(int id, int subjectId, int lessonId, int dimensionId, 
+                   String level, String content, String media, String status, 
+                   LocalDateTime createdAt) {
+        this.id = id;
+        this.subjectId = subjectId;
+        this.lessonId = lessonId;
+        this.dimensionId = dimensionId;
+        this.level = level;
+        this.content = content;
+        this.media = media;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+    
+    // Getters and Setters
+    public int getId() {
+        return id; 
+    }
+    public void setId(int id) { 
+        this.id = id; 
+    }
+    
+    public int getSubjectId() {
+        return subjectId; 
+    }
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId; 
+    }
+    
+    public int getLessonId() { 
+        return lessonId;
+    }
+    public void setLessonId(int lessonId) { this.lessonId = lessonId; }
+    
+    public int getDimensionId() { return dimensionId; }
+    public void setDimensionId(int dimensionId) { this.dimensionId = dimensionId; }
+    
+    public String getLevel() { return level; }
+    public void setLevel(String level) { this.level = level; }
+    
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+    
+    public String getMedia() { return media; }
+    public void setMedia(String media) { this.media = media; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public List<QuestionAnswer> getAnswers() { return answers; }
+    public void setAnswers(List<QuestionAnswer> answers) { this.answers = answers; }
 }
