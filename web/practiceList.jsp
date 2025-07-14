@@ -40,23 +40,25 @@ html, body {
 }
 
 .avatar-wrapper {
-    width: 60px;
-    height: 60px;
-    background-color: #95a5a6;
-    border-radius: 50%;
-    margin: 0 auto 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
+            width: 60px;
+            height: 60px;
+            background-color: #95a5a6;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            overflow: hidden; /* Cắt phần thừa */
+        }
 
-.avatar-img {
-    width: 30px;
-    height: 30px;
-    color: white;
-    font-size: 24px;
-}
+        .avatar-img {
+            width: 50px;     /* Nhỏ hơn wrapper một chút */
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: transparent;
+        }
 
 .sidebar ul {
     list-style: none;
@@ -372,7 +374,18 @@ button.action:hover {
             <nav class="sidebar" id="sidebar">
                 <a href="${pageContext.request.contextPath}/profile?id=${userId}">
                     <div class="avatar-wrapper">
-                        <div class="avatar-img">👤</div> 
+                         <a href="<%= request.getContextPath() %>/profile">
+                            <div class="avatar-wrapper">
+                                <c:choose>
+                                    <c:when test="${not empty sessionScope.userAuth.avatar}">
+                                        <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="avatar-icon">👤</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                          </a>
                     </div>
                 </a>
 
@@ -432,7 +445,7 @@ button.action:hover {
                     <tbody>
                         <c:forEach items="${practiceLists}" var="pl">
                             <tr>
-                                <td>${pl.quizResultId}</td>
+                                <td>${status.index + 1}</td> 
                                 <td>${pl.quizTitle}</td>
                                 <td>${pl.submittedAt}</td>
                                 <td>${pl.score}</td>                     
