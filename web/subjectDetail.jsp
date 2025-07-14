@@ -9,6 +9,90 @@
         <title>Subject List</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <style>
+            /* Vùng chứa toàn bộ AI */
+            #ai-assistant-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 9999;
+                font-family: Arial, sans-serif;
+            }
+
+            /* Nút icon AI */
+            #ai-icon {
+                background-color: #4a90e2;
+                color: white;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                text-align: center;
+                line-height: 60px;
+                font-size: 26px;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+                transition: background-color 0.3s;
+            }
+
+            #ai-icon:hover {
+                background-color: #357abd;
+            }
+
+            /* Hộp thoại chat */
+            #ai-chatbox {
+                display: none;
+                width: 360px;
+                max-height: 300px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 14px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+                margin-bottom: 10px;
+                overflow: hidden;
+            }
+
+            /* Header của box */
+            #ai-header {
+                background-color: #4a90e2;
+                color: white;
+                padding: 12px;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            /* Nút đóng */
+            #ai-header button {
+                background: transparent;
+                border: none;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+            /* Phần thân chat */
+            #ai-body {
+                padding: 12px;
+                font-size: 14px;
+                color: #333;
+                max-height: 240px;
+                overflow-y: auto;
+            }
+            #ai-prompts {
+                list-style: none;
+                padding-left: 0;
+            }
+            #ai-prompts li {
+                background-color: #f1f1f1;
+                padding: 8px 12px;
+                margin-bottom: 6px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            #ai-prompts li:hover {
+                background-color: #e2e8f0;
+            }
             * {
                 margin:0;
                 padding:0;
@@ -476,105 +560,114 @@
                                             <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
                                         </span>
                                     </div>
-                                    <button class="register-btn" onclick="registerSubject(event,${subject.id})">Đăng ký</button>
+                                    <form id="registerForm" action="${pageContext.request.contextPath}/subject-register" method="post" style="display:none;">
+                                        <input type="hidden" name="subjectId" value="${subject.id}" />
+                                        <input type="hidden" name="price" value="${subject.salePrice}" />
+                                        <input type="hidden" name="packageMonths" value="3" />
+                                    </form>
+
+                                    <button type="button" class="register-btn" onclick="submitRegisterForm()">Đăng ký</button>
                                 </div>
                             </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div style="text-align:center;padding:50px;color:#666;">
-                                <i class="fas fa-exclamation-circle" style="font-size:48px;margin-bottom:20px;"></i>
-                                <h3>Không tìm thấy thông tin môn học</h3>
-                                <p>Vui lòng kiểm tra lại mã môn học hoặc quay lại danh sách.</p>
-                            </div>
-                        </c:otherwise>
+                        </c:when>                      
                     </c:choose>
 
                 </div>
-            </main>
+                <div id="ai-assistant-container">
+                    <!-- Hộp chat ẩn, chỉ hiện khi mở -->
+                    <div id="ai-chatbox" style="display: none;">
+                        <div id="ai-header">
+                            <span>Trợ lý AI</span>
+                            <button onclick="closeAIChat()">×</button>
+                        </div>
+                        <div id="ai-body">
+                            <p><strong>Chọn một câu hỏi:</strong></p>
+                            <ul id="ai-prompts">
+                                <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
+                                <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
+                                <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
+                            </ul>
+                            <div id="ai-response" style="margin-top: 10px; font-style: italic; color: #333;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Icon gọi trợ lý AI -->
+                    <div id="ai-icon" onclick="toggleAIChat()">💬</div>
+                </div>
         </div>
-        <script>
-            document.getElementById('toggleSidebar').addEventListener('click', () =>
-                document.querySelector('.sidebar').classList.toggle('hidden')
-            );
+    </main>
+</div>
+<script>
+    const subjectInfo = `
+Tên khoá học: ${subject.title}
+Mô tả: ${subject.description}
+Tag line: ${subject.tagLine}
+Thông tin ngắn: ${subject.briefInfo}
+Giá gốc: ${subject.originalPrice}
+Giá giảm: ${subject.salePrice}
+        `.trim();
+    function toggleAIChat() {
+        const chatbox = document.getElementById('ai-chatbox');
+        if (chatbox.style.display === 'none') {
+            chatbox.style.display = 'block';
+        } else {
+            chatbox.style.display = 'none';
+        }
+    }
 
-            const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
-            ft.addEventListener('click', () => {
-                sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-                ft.querySelector('i').classList.toggle('fa-chevron-up');
-                ft.querySelector('i').classList.toggle('fa-chevron-down');
-            });
+    function closeAIChat() {
+        document.getElementById('ai-chatbox').style.display = 'none';
+    }
 
-            document.addEventListener('click', e => {
-                if (!sb.contains(e.target) && !ft.contains(e.target)) {
-                    sb.style.display = 'none';
-                    ft.querySelector('i').classList.add('fa-chevron-down');
-                    ft.querySelector('i').classList.remove('fa-chevron-up');
-                }
-            });
 
-            // Event listener cho radio buttons
-            document.querySelectorAll('input[name="cat"]').forEach(radio => {
-                radio.addEventListener('change', function () {
-                    if (this.checked) {
-                        submitFilter(this.value);
-                    }
+    document.getElementById('toggleSidebar').addEventListener('click', () =>
+        document.querySelector('.sidebar').classList.toggle('hidden')
+    );
+
+    const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
+    ft.addEventListener('click', () => {
+        sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
+        ft.querySelector('i').classList.toggle('fa-chevron-up');
+        ft.querySelector('i').classList.toggle('fa-chevron-down');
+    });
+
+    document.addEventListener('click', e => {
+        if (!sb.contains(e.target) && !ft.contains(e.target)) {
+            sb.style.display = 'none';
+            ft.querySelector('i').classList.add('fa-chevron-down');
+            ft.querySelector('i').classList.remove('fa-chevron-up');
+        }
+    });
+
+
+
+    function submitRegisterForm() {
+        if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
+            document.getElementById('registerForm').submit(); // submit đúng POST
+        }
+    }
+
+    function sendPromptToAI(message) {
+        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + message;
+
+        fetch('${pageContext.request.contextPath}/together-ai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'message=' + encodeURIComponent(fullMessage)
+        })
+                .then(response => response.json())
+                .then(data => {
+                    const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
+                    document.getElementById('ai-response').innerText = content.trim();
+                })
+                .catch(error => {
+                    console.error('Lỗi khi gửi yêu cầu:', error);
+                    document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
                 });
-            });
+    }
 
-// Function xử lý filter
-            function submitFilter(categoryValue = '') {
-                let url = new URL(window.location.href);
-                url.searchParams.set('cat', categoryValue);
-                url.searchParams.set('page', '1'); // Reset về trang 1
-                window.location.href = url;
-            }
-
-// Function xóa filter
-            function clearFilter() {
-                let url = new URL(window.location.href);
-                url.searchParams.delete('cat');
-                url.searchParams.set('page', '1');
-                window.location.href = url;
-            }
-
-            function updatePageSize() {
-                let s = parseInt(document.getElementById('pageSize').value) || 1;
-                s = Math.min(Math.max(s, 1), 100);
-                document.getElementById('pageSize').value = s;
-                let u = new URL(window.location.href);
-                u.searchParams.set('pageSize', s);
-                u.searchParams.set('page', '1');
-                window.location.href = u;
-            }
-
-            function updateDisplayOptions() {
-                let u = new URL(window.location.href);
-                u.searchParams.delete('displayOptions');
-                document.querySelectorAll('input[name="displayOptions"]:checked').forEach(cb =>
-                    u.searchParams.append('displayOptions', cb.value)
-                );
-                window.location.href = u;
-            }
-
-            function goToSubject(id) {
-                window.location.href = '${pageContext.request.contextPath}/subject-detail?id=' + id;
-            }
-
-            function registerSubject(e, id) {
-                e.stopPropagation();
-                if (!${not empty sessionScope.user}) {
-                    if (confirm('Bạn cần đăng nhập để đăng ký. Chuyển đến trang đăng nhập?'))
-                        window.location.href = '${pageContext.request.contextPath}/login?redirect=subject-list';
-                } else {
-                    if (confirm('Bạn có chắc muốn đăng ký môn học này?'))
-                        window.location.href = '${pageContext.request.contextPath}/register-subject?subjectId=' + id;
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
-                i.value = Math.min(Math.max(v, 1), 100);
-            });
-        </script>
-    </body>
+</script>
+</body>
 </html>

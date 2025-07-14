@@ -26,6 +26,13 @@
         <servlet-name>SliderListServlet</servlet-name>
         <servlet-class>elearning.controller.SliderListServlet</servlet-class>
     </servlet>
+    
+    <!-- GeminiProxy Servlet Configuration -->
+    <servlet>
+        <servlet-name>GeminiProxyServlet</servlet-name>
+        <servlet-class>elearning.controller.GeminiProxyServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>BlogListServlet</servlet-name>
         <url-pattern>/blog</url-pattern>
@@ -45,5 +52,24 @@
     <servlet-mapping>
         <servlet-name>SliderListServlet</servlet-name>
         <url-pattern>/slider-list</url-pattern>
+    </servlet-mapping>
+    
+    
+    <session-config>
+        <session-timeout>30</session-timeout> <!-- phút -->
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file> 
+    </welcome-file-list>
+    
+    
+    <servlet>
+        <servlet-name>TogetherAIServlet</servlet-name>
+        <servlet-class>elearning.controller.TogetherAIServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TogetherAIServlet</servlet-name>
+        <url-pattern>/together-ai</url-pattern>
     </servlet-mapping>
 </web-app>

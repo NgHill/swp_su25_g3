@@ -664,14 +664,11 @@
 
             function registerSubject(e, id) {
                 e.stopPropagation();
-                if (!${not empty sessionScope.user}) {
-                    if (confirm('Bạn cần đăng nhập để đăng ký. Chuyển đến trang đăng nhập?'))
-                        window.location.href = '${pageContext.request.contextPath}/login?redirect=subject-list';
-                } else {
+                
                     if (confirm('Bạn có chắc muốn đăng ký môn học này?'))
-                        window.location.href = '${pageContext.request.contextPath}/register-subject?subjectId=' + id;
+                        window.location.href = '${pageContext.request.contextPath}/subject-register?subjectId=' + id;
                 }
-            }
+            
 
             document.addEventListener('DOMContentLoaded', () => {
                 let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
