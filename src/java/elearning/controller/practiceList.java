@@ -7,6 +7,7 @@ package elearning.controller;
 
 import elearning.BasicDAO.PracticeListDAO;
 import elearning.entities.PracticeList;
+import elearning.entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -61,7 +62,14 @@ public class practiceList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int userId = 2; // lấy từ session thực tế
+        // FIXED: Lấy userId từ session thay vì hardcode
+        User userAuth = (User) request.getSession().getAttribute("userAuth");
+        if (userAuth == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        int userId = userAuth.getId();
+        
         String scoreFilter = request.getParameter("scoreFilter");
         String search = request.getParameter("search");
 

@@ -4,33 +4,40 @@
  */
 package elearning.entities;
 
-import elearning.anotation.*;
-import java.util.Date;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import java.time.LocalDateTime;
 
-/**
- *
- * @author admin
- */
-@Table(name = "QuizResults")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuizResult {
-
-    @Id
-    @Column(name = "Id")
-    Integer id;
-    @Column(name = "UserId")
-    Integer userId;
-    @Column(name = "QuizId")
-    Integer quizId;
-    @Column(name = "Score")
-    Double score;
-    @Column(name = "SubmittedAt")
-    Date submittedAt;
+    private int id;
+    private int userId;
+    private int quizId;
+    private double score;
+    private LocalDateTime submittedAt;
+    
+    // Constructors
+    public QuizResult() {}
+    
+    public QuizResult(int id, int userId, int quizId, double score, 
+                     LocalDateTime submittedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.quizId = quizId;
+        this.score = score;
+        this.submittedAt = submittedAt;
+    }
+    
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+    
+    public int getQuizId() { return quizId; }
+    public void setQuizId(int quizId) { this.quizId = quizId; }
+    
+    public double getScore() { return score; }
+    public void setScore(double score) { this.score = score; }
+    
+    public LocalDateTime getSubmittedAt() { return submittedAt; }
+    public void setSubmittedAt(LocalDateTime submittedAt) { this.submittedAt = submittedAt; }
 }
