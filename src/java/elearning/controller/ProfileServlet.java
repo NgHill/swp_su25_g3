@@ -3,6 +3,7 @@ package elearning.controller;
 
 import elearning.BasicDAO.ProfileDAO;
 import elearning.entities.Profile;
+import elearning.entities.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,7 +32,12 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int id = 2; // ID mặc định (có thể thay bằng session sau này)
+        User userAuth = (User) request.getSession().getAttribute("userAuth");
+        if (userAuth == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        int id = userAuth.getId(); // Lấy ID từ session
 
         // Lấy thông tin profile từ DB
         List<elearning.entities.Profile> profiles = profileDAO.getProfileById(id);
@@ -56,7 +62,14 @@ public class ProfileServlet extends HttpServlet {
 
     try {
         // Lấy dữ liệu từ form
-        int id = 2; 
+        // FIXED: Lấy ID từ session thay vì hardcode
+        User userAuth = (User) request.getSession().getAttribute("userAuth");
+        if (userAuth == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+       }
+            int id = userAuth.getId(); 
+            
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String username = request.getParameter("username");

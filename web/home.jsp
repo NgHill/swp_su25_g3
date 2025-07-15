@@ -438,6 +438,7 @@
             }
         }
         
+        /* Thêm vào phần CSS trong home.jsp */
         .avatar-wrapper {
             width: 60px;
             height: 60px;
@@ -448,15 +449,22 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            overflow: hidden; /* Cắt phần thừa */
         }
 
         .avatar-img {
-            width: 30px;
-            height: 30px;
+            width: 50px;     /* Nhỏ hơn wrapper một chút */
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
+            background-color: transparent;
         }
-        
+
+        .avatar-wrapper .avatar-icon {
+            font-size: 24px;
+            color: white;
+        }
+
         /* Footer */
         .footer {
             background: rgba(255, 255, 255, 0.95);
@@ -530,7 +538,14 @@
         <div class="sidebar" id="sidebar">
             <a href="<%= request.getContextPath() %>/profile">
                 <div class="avatar-wrapper">
-                    <div class="avatar-img">👤</div>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </a>
             <nav class="sidebar-nav">
@@ -542,7 +557,11 @@
                     <span class="nav-icon">🧠</span>
                     <span>Subject</span>
                 </a>
+
                 <a href="<%= request.getContextPath() %>/my-registration" class="nav-item">
+
+                <a href="<%= request.getContextPath() %>/profile" class="nav-item">
+
                     <span class="nav-icon">📝</span>
                     <span>My Registrations</span>
                 </a>
@@ -561,8 +580,18 @@
                 </button>
                 <div class="logo">🧠 Quiz Practice for Soft Skills</div>
                 <div class="auth-buttons">
-                    <a href="<%= request.getContextPath() %>/login" class="auth-btn login-btn">Login</a>
-                    <a href="<%= request.getContextPath() %>/register" class="auth-btn signup-btn">Sign Up</a>
+                    <c:choose>
+                        <c:when test="${sessionScope.userAuth != null}">
+                            <!-- Nếu đã đăng nhập, hiển thị tên user và nút Logout -->
+                            <span class="user-welcome">Xin chào, ${sessionScope.userAuth.fullName}!</span>
+                            <a href="<%= request.getContextPath() %>/logout" class="auth-btn login-btn">Logout</a>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Nếu chưa đăng nhập, hiển thị nút Login và Sign Up -->
+                            <a href="<%= request.getContextPath() %>/login" class="auth-btn login-btn">Login</a>
+                            <a href="<%= request.getContextPath() %>/register" class="auth-btn signup-btn">Sign Up</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </header>
