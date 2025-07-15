@@ -366,7 +366,10 @@ cursor: pointer;
             font-size: 14px;
             margin-bottom: 15px;
         }
-.upload-button:hover {
+
+
+        .upload-button:hover {
+
             background: #0056b3;
         }
 
@@ -449,8 +452,10 @@ cursor: pointer;
                         <div class="image-upload-container" id="imageUploadContainer">
                             <p style="margin-bottom: 10px; color: #6c757d;">You can also upload an image of your answer:</p>
 
-                            <input type="file"
-id="imageUpload" 
+
+                            <input type="file" 
+                                   id="imageUpload" 
+
                                    accept="image/*" 
                                    style="display: none;"
                                    onchange="handleImageUpload(event)">
@@ -619,7 +624,9 @@ id="imageUpload"
             if (!isPracticeMode) {  // Kiểm tra nếu không phải chế độ luyện tập
                 const peekBtn = document.getElementById('peekAnswerBtn');  // Lấy nút "Peek Answer"
                 if (peekBtn) {
-peekBtn.style.display = 'none';  // Ẩn nút "Peek Answer" nếu không phải chế độ luyện tập
+
+                    peekBtn.style.display = 'none';  // Ẩn nút "Peek Answer" nếu không phải chế độ luyện tập
+
                 }
             }
         }
@@ -674,7 +681,9 @@ peekBtn.style.display = 'none';  // Ẩn nút "Peek Answer" nếu không phải 
         }
 
         // Lưu câu trả lời của người dùng
-function saveCurrentAnswer() {
+
+        function saveCurrentAnswer() {
+
             const selectedAnswer = document.querySelector('input[name="answer"]:checked');  // Lấy câu trả lời đã chọn (nếu là câu hỏi trắc nghiệm)
             const textAnswer = document.getElementById('textAnswer');  // Lấy câu trả lời dạng văn bản
             const extractedText = document.getElementById('extractedText');  // Lấy câu trả lời văn bản nhận dạng từ ảnh (nếu có)
@@ -719,7 +728,9 @@ function saveCurrentAnswer() {
             if (event.target.type === 'radio') {  // Nếu là câu trả lời trắc nghiệm
                 userAnswers[currentQuestionIndex] = event.target.value;  // Lưu câu trả lời trắc nghiệm
             } else if (event.target.type === 'text') {  // Nếu là câu trả lời văn bản
-userAnswers[currentQuestionIndex] = event.target.value.trim();  // Lưu câu trả lời văn bản
+
+                userAnswers[currentQuestionIndex] = event.target.value.trim();  // Lưu câu trả lời văn bản
+
             }
             saveCurrentAnswer();  // Lưu câu trả lời mỗi khi có thay đổi
         }
@@ -773,7 +784,9 @@ userAnswers[currentQuestionIndex] = event.target.value.trim();  // Lưu câu tr�
             }
 
             const modal = document.getElementById('scoreExamModal');  // Lấy modal "Score Exam"
-if (modal) {
+
+            if (modal) {
+
                 modal.style.display = 'block';  // Hiển thị modal
             }
         }
@@ -808,6 +821,7 @@ if (modal) {
 
             document.body.appendChild(form);  // Thêm form vào body
             form.submit();  // Gửi dữ liệu lên server
+
         }
 
         // Xử lý tải ảnh
@@ -836,7 +850,8 @@ if (modal) {
             document.getElementById('imagePreview').style.display = 'none';  // Ẩn preview ảnh
             document.getElementById('ocrResult').style.display = 'none';  // Ẩn kết quả OCR
             document.getElementById('extractedText').textContent = '';  // Xóa văn bản nhận dạng
-}
+        }
+
 
         // Nhận dạng văn bản từ ảnh (OCR)
         function performOCR(imageData) {
@@ -879,7 +894,10 @@ if (modal) {
             // Xử lý thay đổi câu trả lời
             const answerRadios = document.querySelectorAll('input[name="answer"]');  // Lấy tất cả câu trả lời trắc nghiệm (radio buttons)
             const textAnswer = document.getElementById('textAnswer');  // Lấy phần tử câu trả lời văn bản (input)
-answerRadios.forEach(function(radio) {  // Duyệt qua tất cả các câu trả lời trắc nghiệm (radio buttons)
+
+
+            answerRadios.forEach(function(radio) {  // Duyệt qua tất cả các câu trả lời trắc nghiệm (radio buttons)
+
                 radio.addEventListener('change', handleAnswerChange);  // Lắng nghe sự kiện thay đổi câu trả lời trắc nghiệm
             });
 
