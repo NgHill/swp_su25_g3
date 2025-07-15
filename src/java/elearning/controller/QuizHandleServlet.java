@@ -189,6 +189,7 @@ public class QuizHandleServlet extends HttpServlet {
         String questionIndexStr = request.getParameter("questionIndex");
         String selectedAnswer = request.getParameter("selectedAnswer");
         String textAnswer = request.getParameter("textAnswer");
+        String extractedText = request.getParameter("extractedText");
 
         if (questionIndexStr != null && (selectedAnswer != null || textAnswer != null)) {
             try {
@@ -207,11 +208,14 @@ public class QuizHandleServlet extends HttpServlet {
                 
                 // Xác định loại câu hỏi và lưu đáp án tương ứng
                 if ("text_input".equals(question.getQuestionType())) {
-                    // Câu hỏi text input
-                    answerToSave = textAnswer != null ? textAnswer.trim() : "";
-                } else {
-                    // Câu hỏi multiple choice
-                    answerToSave = selectedAnswer;
+                    // Kết hợp text input + OCR text
+                    String finalAnswer = "";
+                    if (textAnswer != null && !textAnswer.trim().isEmpty()) {
+                        finalAnswer = textAnswer.trim();
+                    } else if (extractedText != null && !extractedText.trim().isEmpty()) {
+                        finalAnswer = extractedText.trim();
+                    }
+                    answerToSave = finalAnswer;
                 }
 
                 @SuppressWarnings("unchecked")

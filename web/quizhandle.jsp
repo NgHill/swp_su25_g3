@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz: ${quiz.title}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -354,6 +355,62 @@
             outline: none;
             border-color: #007bff;
         }
+        
+        .upload-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .upload-button:hover {
+            background: #0056b3;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .image-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .remove-image {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .ocr-result {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .ocr-loading {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -389,6 +446,30 @@
                                    value="${userAnswers[currentQuestionIndex]}"
                                    class="text-input">
                         </div>
+
+                        <div class="image-upload-container" id="imageUploadContainer">
+                            <p style="margin-bottom: 10px; color: #6c757d;">You can also upload an image of your answer:</p>
+
+                            <input type="file" 
+                                   id="imageUpload" 
+                                   accept="image/*" 
+                                   style="display: none;"
+                                   onchange="handleImageUpload(event)">
+
+                            <button type="button" 
+                                    class="upload-button" 
+                                    onclick="document.getElementById('imageUpload').click()">
+                                📷 Choose Image
+                            </button>
+
+                            <div id="imagePreview" style="display: none;">
+                                <img id="previewImg" class="image-preview" src="" alt="Preview">
+                                <div class="image-info">
+                                    <span id="imageFileName"></span>
+                                    <button type="button" class="remove-image" onclick="removeImage()">✕ Remove</button>
+                                </div>
+                            </div>
+                           
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="answer" items="${currentQuestion.answers}" varStatus="status">
@@ -430,8 +511,7 @@
     <div id="peekAnswerModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Peek at Answer</h3>
-                <span class="close" onclick="closePeekAnswerModal()">&times;</span>
+                <h3 class="modal-title">Peek at Answer</h3>               
             </div>
             <div class="modal-body">
                 <c:choose>
@@ -513,261 +593,334 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeScoreExamModal()">← Back</button>
+                <button class="btn btn-secondary" onclick="closeScoreExamModal()"> Back</button>
                 <button class="btn btn-success" onclick="submitExam()">Score Exam</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize quiz data from JSP
-        let currentQuestionIndex = ${currentQuestionIndex};
-        let totalQuestions = ${totalQuestions};
-        let quizId = ${quiz.id};
-        let userId = ${currentUserId};
-        let timeLeft = ${timeLeft};
-        let timerInterval;
-        let isPracticeMode = ${isPracticeMode};
+        // Khởi tạo dữ liệu quiz từ JSP
+        let currentQuestionIndex = ${currentQuestionIndex};  // Chỉ số câu hỏi hiện tại
+        let totalQuestions = ${totalQuestions};  // Tổng số câu hỏi trong quiz
+        let quizId = ${quiz.id};  // ID của quiz
+        let userId = ${currentUserId};  // ID của người dùng
+        let timeLeft = ${timeLeft};  // Thời gian còn lại để làm bài
+        let timerInterval;  // Biến lưu trữ ID của timer
+        let isPracticeMode = ${isPracticeMode};  // Kiểm tra xem có phải chế độ luyện tập hay không
 
-        // Get user answers from server
-        let userAnswers = {};
+        // Lấy câu trả lời của người dùng từ server
+        let userAnswers = {};  // Khởi tạo đối tượng lưu trữ câu trả lời của người dùng
         <c:forEach var="entry" items="${userAnswers}">
-            userAnswers[${entry.key}] = '${entry.value}';
+            userAnswers[${entry.key}] = '${entry.value}';  // Lưu câu trả lời vào đối tượng userAnswers
         </c:forEach>
 
-        // Initialize quiz
+        // Khởi tạo quiz
         function initializeQuiz() {
-            startTimer();
-            if (!isPracticeMode) {
-                const peekBtn = document.getElementById('peekAnswerBtn');
+            startTimer();  // Bắt đầu đồng hồ đếm ngược
+            if (!isPracticeMode) {  // Kiểm tra nếu không phải chế độ luyện tập
+                const peekBtn = document.getElementById('peekAnswerBtn');  // Lấy nút "Peek Answer"
                 if (peekBtn) {
-                    peekBtn.style.display = 'none';
+                    peekBtn.style.display = 'none';  // Ẩn nút "Peek Answer" nếu không phải chế độ luyện tập
                 }
             }
         }
 
-        // Timer functions
+        // Hàm bắt đầu đếm giờ (Timer functions)
         function startTimer() {
-            updateTimerDisplay();
+            updateTimerDisplay();  // Cập nhật hiển thị thời gian
             timerInterval = setInterval(() => {
-            timeLeft--;
-            if (timeLeft <= 0) {
-                alert('Time is up! The exam will be submitted automatically.');
-                submitExam();
-                return;
-            }
-            updateTimerDisplay();
-        }, 1000);
+                timeLeft--;  // Giảm thời gian còn lại mỗi giây
+                if (timeLeft <= 0) {  // Kiểm tra nếu hết thời gian
+                    alert('Time is up! The exam will be submitted automatically.');  // Thông báo hết giờ
+                    submitExam();  // Tự động nộp bài
+                    return;
+                }
+                updateTimerDisplay();  // Cập nhật lại thời gian sau mỗi giây
+            }, 1000);  // Mỗi giây
         }
 
+        // Cập nhật hiển thị thời gian còn lại
         function updateTimerDisplay() {
-            const hours = Math.floor(timeLeft / 3600);
-            const minutes = Math.floor((timeLeft % 3600) / 60);
-            const seconds = timeLeft % 60;
-            
-            const timerElement = document.getElementById('timer');
+            const hours = Math.floor(timeLeft / 3600);  // Tính giờ
+            const minutes = Math.floor((timeLeft % 3600) / 60);  // Tính phút
+            const seconds = timeLeft % 60;  // Tính giây
+
+            const timerElement = document.getElementById('timer');  // Lấy phần tử đồng hồ
             if (timerElement) {
                 timerElement.textContent = 
-                    hours.toString().padStart(2, '0') + ':' +
-                    minutes.toString().padStart(2, '0') + ':' +
-                    seconds.toString().padStart(2, '0');
+                    hours.toString().padStart(2, '0') + ':' +  // Cập nhật giờ
+                    minutes.toString().padStart(2, '0') + ':' +  // Cập nhật phút
+                    seconds.toString().padStart(2, '0');  // Cập nhật giây
             }
         }
 
-        // Navigation functions
+        // Các hàm điều hướng giữa các câu hỏi
         function goToQuestion(index) {
-            saveCurrentAnswer();
-            window.location.href = '${pageContext.request.contextPath}/quizhandle?quizId=' + quizId + '&userId=' + userId + '&questionIndex=' + index;
+            saveCurrentAnswer();  // Lưu câu trả lời hiện tại
+            window.location.href = '${pageContext.request.contextPath}/quizhandle?quizId=' + quizId + '&userId=' + userId + '&questionIndex=' + index;  // Chuyển đến câu hỏi có chỉ số index
         }
 
         function nextQuestion() {
-            saveCurrentAnswer();
-            if (currentQuestionIndex < totalQuestions - 1) {
-                window.location.href = '${pageContext.request.contextPath}/quizhandle?quizId=' + quizId + '&userId=' + userId + '&questionIndex=' + (currentQuestionIndex + 1);
+            saveCurrentAnswer();  // Lưu câu trả lời hiện tại
+            if (currentQuestionIndex < totalQuestions - 1) {  // Nếu câu hỏi không phải câu cuối cùng
+                window.location.href = '${pageContext.request.contextPath}/quizhandle?quizId=' + quizId + '&userId=' + userId + '&questionIndex=' + (currentQuestionIndex + 1);  // Chuyển đến câu hỏi tiếp theo
             }
         }
 
         function prevQuestion() {
-            saveCurrentAnswer();
-            if (currentQuestionIndex > 0) {
-                window.location.href = '${pageContext.request.contextPath}/quizhandle?quizId=' + quizId + '&userId=' + userId + '&questionIndex=' + (currentQuestionIndex - 1);
+            saveCurrentAnswer();  // Lưu câu trả lời hiện tại
+            if (currentQuestionIndex > 0) {  // Nếu câu hỏi không phải câu đầu tiên
+                window.location.href = '${pageContext.request.contextPath}/quizhandle?quizId=' + quizId + '&userId=' + userId + '&questionIndex=' + (currentQuestionIndex - 1);  // Quay lại câu hỏi trước
             }
         }
 
-        // Answer handling
+        // Lưu câu trả lời của người dùng
         function saveCurrentAnswer() {
-            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-            const textAnswer = document.getElementById('textAnswer');
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');  // Lấy câu trả lời đã chọn (nếu là câu hỏi trắc nghiệm)
+            const textAnswer = document.getElementById('textAnswer');  // Lấy câu trả lời dạng văn bản
+            const extractedText = document.getElementById('extractedText');  // Lấy câu trả lời văn bản nhận dạng từ ảnh (nếu có)
 
-            let answerValue = null;
-            let requestBody = 'action=saveAnswer&questionIndex=' + currentQuestionIndex;
+            let answerValue = null;  // Khởi tạo biến lưu giá trị câu trả lời
+            let requestBody = 'action=saveAnswer&questionIndex=' + currentQuestionIndex;  // Chuẩn bị body request gửi lên server
 
-            if (selectedAnswer) {
-                // Multiple choice question
-                answerValue = selectedAnswer.value;
-                requestBody += '&selectedAnswer=' + encodeURIComponent(answerValue);
-            } else if (textAnswer) {
-                // Text input question
-                answerValue = textAnswer.value.trim();
-                requestBody += '&textAnswer=' + encodeURIComponent(answerValue);
+            if (selectedAnswer) {  // Nếu là câu hỏi trắc nghiệm
+                answerValue = selectedAnswer.value;  // Lưu giá trị câu trả lời trắc nghiệm
+                requestBody += '&selectedAnswer=' + encodeURIComponent(answerValue);  // Thêm giá trị câu trả lời vào request body
+            } else if (textAnswer) {  // Nếu là câu hỏi dạng văn bản
+                answerValue = textAnswer.value.trim();  // Lưu câu trả lời dạng văn bản
+                requestBody += '&textAnswer=' + encodeURIComponent(answerValue);  // Thêm câu trả lời vào request body
+
+                if (extractedText && extractedText.textContent.trim()) {  // Nếu có văn bản nhận dạng từ ảnh
+                    requestBody += '&extractedText=' + encodeURIComponent(extractedText.textContent.trim());  // Thêm văn bản nhận dạng vào request body
+                }
             }
 
-            if (answerValue) {
+            if (answerValue) {  // Nếu có câu trả lời (trắc nghiệm hoặc văn bản)
                 fetch('${pageContext.request.contextPath}/quizhandle', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: requestBody
+                    body: requestBody  // Gửi câu trả lời lên server
                 })
-                .then(response => response.json())
+                .then(response => response.json())  // Chờ nhận phản hồi từ server
                 .then(data => {
                     if (data.success) {
-                        console.log('Answer saved successfully');
+                        console.log('Answer saved successfully');  // In thông báo nếu lưu câu trả lời thành công
                     }
                 })
                 .catch(error => {
-                    console.error('Error saving answer:', error);
+                    console.error('Error saving answer:', error);  // In lỗi nếu có lỗi xảy ra
                 });
             }
         }
 
+        // Hàm xử lý thay đổi câu trả lời
         function handleAnswerChange(event) {
-            userAnswers[currentQuestionIndex] = event.target.value;
-            saveCurrentAnswer();
+            if (event.target.type === 'radio') {  // Nếu là câu trả lời trắc nghiệm
+                userAnswers[currentQuestionIndex] = event.target.value;  // Lưu câu trả lời trắc nghiệm
+            } else if (event.target.type === 'text') {  // Nếu là câu trả lời văn bản
+                userAnswers[currentQuestionIndex] = event.target.value.trim();  // Lưu câu trả lời văn bản
+            }
+            saveCurrentAnswer();  // Lưu câu trả lời mỗi khi có thay đổi
         }
 
-        // Modal functions
+        // Các hàm Modal (hộp thoại)
         function showPeekAnswer() {
-            if (isPracticeMode) {
-                const modal = document.getElementById('peekAnswerModal');
+            if (isPracticeMode) {  // Nếu ở chế độ luyện tập
+                const modal = document.getElementById('peekAnswerModal');  // Lấy modal "Peek Answer"
                 if (modal) {
-                    modal.style.display = 'block';
+                    modal.style.display = 'block';  // Hiển thị modal
                 }
             }
         }
 
         function closePeekAnswerModal() {
-            const modal = document.getElementById('peekAnswerModal');
+            const modal = document.getElementById('peekAnswerModal');  // Lấy modal "Peek Answer"
             if (modal) {
-                modal.style.display = 'none';
+                modal.style.display = 'none';  // Đóng modal
             }
         }
 
         function showReviewProgress() {
-            const modal = document.getElementById('reviewProgressModal');
+            const modal = document.getElementById('reviewProgressModal');  // Lấy modal "Review Progress"
             if (modal) {
-                modal.style.display = 'block';
+                modal.style.display = 'block';  // Hiển thị modal
             }
         }
 
         function closeReviewProgressModal() {
-            const modal = document.getElementById('reviewProgressModal');
+            const modal = document.getElementById('reviewProgressModal');  // Lấy modal "Review Progress"
             if (modal) {
-                modal.style.display = 'none';
+                modal.style.display = 'none';  // Đóng modal
             }
         }
 
         function showScoreExamModal() {
-            const unansweredCount = totalQuestions - Object.keys(userAnswers).length;
+            const unansweredCount = totalQuestions - Object.keys(userAnswers).length;  // Tính số câu hỏi chưa trả lời
             let message;
-            
-            if (Object.keys(userAnswers).length === 0) {
+
+            if (Object.keys(userAnswers).length === 0) {  // Nếu chưa trả lời câu nào
                 message = "You have not answered any questions. By clicking on the [Score Exam] button below, you will complete your current exam and be returned to the dashboard.";
-            } else if (unansweredCount > 0) {
-                message = "You have " + unansweredCount + " unanswered questions. By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not be able to change any answers after this point.";
-            } else {
+            } else if (unansweredCount > 0) {  // Nếu còn câu chưa trả lời
+                message = "You have unanswered questions. By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not be able to change any answers after this point.";
+            } else {  // Nếu đã trả lời tất cả câu hỏi
                 message = "All questions have been answered. By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not be able to change any answers after this point.";
             }
-            
-            const confirmationText = document.getElementById('confirmationText');
+
+            const confirmationText = document.getElementById('confirmationText');  // Lấy phần tử hiển thị thông báo
             if (confirmationText) {
-                confirmationText.textContent = message;
+                confirmationText.textContent = message;  // Hiển thị thông báo
             }
-            
-            const modal = document.getElementById('scoreExamModal');
+
+            const modal = document.getElementById('scoreExamModal');  // Lấy modal "Score Exam"
             if (modal) {
-                modal.style.display = 'block';
+                modal.style.display = 'block';  // Hiển thị modal
             }
         }
 
         function closeScoreExamModal() {
-            const modal = document.getElementById('scoreExamModal');
+            const modal = document.getElementById('scoreExamModal');  // Lấy modal "Score Exam"
             if (modal) {
-                modal.style.display = 'none';
+                modal.style.display = 'none';  // Đóng modal
             }
         }
 
         function scoreExamNow() {
-            closeReviewProgressModal();
-            showScoreExamModal();
+            closeReviewProgressModal();  // Đóng modal "Review Progress"
+            showScoreExamModal();  // Hiển thị modal "Score Exam"
         }
 
-        // Exam submission
+        // Nộp bài
         function submitExam() {
-            saveCurrentAnswer();
-            clearInterval(timerInterval);
-            
-            // Submit quiz via POST
+            saveCurrentAnswer();  // Lưu câu trả lời cuối cùng
+            clearInterval(timerInterval);  // Dừng đồng hồ đếm ngược
+
+            // Tạo form ẩn và gửi dữ liệu quiz lên server
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '${pageContext.request.contextPath}/quizhandle';
-            
+
             const actionInput = document.createElement('input');
             actionInput.type = 'hidden';
             actionInput.name = 'action';
             actionInput.value = 'submitQuiz';
             form.appendChild(actionInput);
-            
-            document.body.appendChild(form);
-            form.submit();
+
+            document.body.appendChild(form);  // Thêm form vào body
+            form.submit();  // Gửi dữ liệu lên server
         }
 
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeQuiz();
-            
-            // Answer selection
-            const answerRadios = document.querySelectorAll('input[name="answer"]');
-            const textAnswer = document.getElementById('textAnswer');
+        // Xử lý tải ảnh
+        function handleImageUpload(event) {
+            const file = event.target.files[0];  // Lấy file ảnh
+            if (!file) return;  // Nếu không có file, thoát
 
-            answerRadios.forEach(function(radio) {
-                radio.addEventListener('change', handleAnswerChange);
+            const reader = new FileReader();  // Đọc file ảnh
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');  // Lấy phần tử preview
+                const img = document.getElementById('previewImg');  // Lấy phần tử hình ảnh
+                const fileName = document.getElementById('imageFileName');  // Lấy phần tử tên file
+
+                img.src = e.target.result;  // Đặt nguồn hình ảnh từ file
+                fileName.textContent = file.name;  // Hiển thị tên file
+                preview.style.display = 'block';  // Hiển thị ảnh preview
+
+                // Thực hiện nhận dạng văn bản từ ảnh (OCR)
+                performOCR(e.target.result);
+            };
+            reader.readAsDataURL(file);  // Đọc file ảnh
+        }
+
+        function removeImage() {
+            document.getElementById('imageUpload').value = '';  // Xóa giá trị file đã chọn
+            document.getElementById('imagePreview').style.display = 'none';  // Ẩn preview ảnh
+            document.getElementById('ocrResult').style.display = 'none';  // Ẩn kết quả OCR
+            document.getElementById('extractedText').textContent = '';  // Xóa văn bản nhận dạng
+        }
+
+        // Nhận dạng văn bản từ ảnh (OCR)
+        function performOCR(imageData) {
+            const ocrResult = document.getElementById('ocrResult');  // Lấy phần tử 'ocrResult' để hiển thị kết quả OCR
+            const extractedText = document.getElementById('extractedText');  // Lấy phần tử 'extractedText' để hiển thị văn bản nhận dạng
+
+            console.log('🔄 Analyzing image...');  // In thông báo vào console khi bắt đầu quá trình nhận diện văn bản từ ảnh
+
+            Tesseract.recognize(imageData, 'eng', {  // Sử dụng Tesseract.js để nhận diện văn bản từ ảnh, ngôn ngữ là 'eng' (tiếng Anh)
+                logger: m => console.log(m)  // Ghi log tiến trình nhận diện vào console
+            }).then(({ data: { text } }) => {  // Sau khi Tesseract hoàn thành nhận diện, nhận giá trị 'text' là văn bản nhận diện được
+
+                // Điền text vào ô input
+                const textInput = document.getElementById('textAnswer');  // Lấy phần tử input với id 'textAnswer' để điền kết quả nhận diện vào
+                if (textInput) {  // Nếu phần tử input tồn tại
+                    textInput.value = text.trim();  // Điền văn bản nhận diện vào ô input, loại bỏ khoảng trắng thừa
+                }
+
+                // Lưu câu trả lời ngay lập tức
+                saveCurrentAnswer();  // Gọi hàm saveCurrentAnswer để lưu câu trả lời sau khi nhận diện xong
+
+                // Xóa hình ảnh sau khi đã chuyển thành text
+                removeImage();  // Gọi hàm removeImage để xóa ảnh đã tải lên và ẩn phần preview ảnh
+
+                // Ẩn loading
+                const ocrResult = document.getElementById('ocrResult');  // Lấy phần tử 'ocrResult' để ẩn kết quả OCR
+                if (ocrResult) {  // Nếu phần tử 'ocrResult' tồn tại
+                    ocrResult.style.display = 'none';  // Ẩn phần tử 'ocrResult' sau khi quá trình nhận diện hoàn tất
+                }
+            }).catch(err => {  // Nếu có lỗi trong quá trình nhận diện
+                ocrResult.innerHTML = '<div style="color: red;">Error analyzing image: ' + err.message + '</div>';  // Hiển thị thông báo lỗi vào phần tử 'ocrResult'
+            });
+        }
+
+
+        // Lắng nghe sự kiện DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeQuiz();  // Khởi tạo quiz khi trang đã tải xong
+
+            // Xử lý thay đổi câu trả lời
+            const answerRadios = document.querySelectorAll('input[name="answer"]');  // Lấy tất cả câu trả lời trắc nghiệm (radio buttons)
+            const textAnswer = document.getElementById('textAnswer');  // Lấy phần tử câu trả lời văn bản (input)
+
+            answerRadios.forEach(function(radio) {  // Duyệt qua tất cả các câu trả lời trắc nghiệm (radio buttons)
+                radio.addEventListener('change', handleAnswerChange);  // Lắng nghe sự kiện thay đổi câu trả lời trắc nghiệm
             });
 
-            if (textAnswer) {
-                textAnswer.addEventListener('input', handleAnswerChange);
-                textAnswer.addEventListener('blur', saveCurrentAnswer);
+            if (textAnswer) {  // Nếu có ô nhập câu trả lời văn bản
+                textAnswer.addEventListener('input', handleAnswerChange);  // Lắng nghe sự kiện thay đổi câu trả lời văn bản
+                textAnswer.addEventListener('blur', saveCurrentAnswer);  // Lưu câu trả lời khi mất focus (rời khỏi ô nhập liệu)
             }
-            
-            // Navigation buttons
-            const nextBtn = document.getElementById('nextBtn');
-            const prevBtn = document.getElementById('prevBtn');
-            const scoreBtn = document.getElementById('scoreExamBtn');
-            const peekBtn = document.getElementById('peekAnswerBtn');
-            const reviewBtn = document.getElementById('reviewProgressBtn');
-            
-            if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
-            if (prevBtn) prevBtn.addEventListener('click', prevQuestion);
-            if (scoreBtn) scoreBtn.addEventListener('click', showScoreExamModal);
-            if (peekBtn) peekBtn.addEventListener('click', showPeekAnswer);
-            if (reviewBtn) reviewBtn.addEventListener('click', showReviewProgress);
-            
-            // Close modals when clicking outside
-            window.addEventListener('click', function(event) {
-                const modals = document.querySelectorAll('.modal');
-                modals.forEach(function(modal) {
-                    if (event.target === modal) {
-                        modal.style.display = 'none';
+
+            // Các nút điều hướng
+            const nextBtn = document.getElementById('nextBtn');  // Lấy nút "Next"
+            const prevBtn = document.getElementById('prevBtn');  // Lấy nút "Previous"
+            const scoreBtn = document.getElementById('scoreExamBtn');  // Lấy nút "Score Exam"
+            const peekBtn = document.getElementById('peekAnswerBtn');  // Lấy nút "Peek Answer"
+            const reviewBtn = document.getElementById('reviewProgressBtn');  // Lấy nút "Review Progress"
+
+            if (nextBtn) nextBtn.addEventListener('click', nextQuestion);  // Lắng nghe sự kiện nút "Next" để chuyển sang câu hỏi tiếp theo
+            if (prevBtn) prevBtn.addEventListener('click', prevQuestion);  // Lắng nghe sự kiện nút "Previous" để quay lại câu hỏi trước
+            if (scoreBtn) scoreBtn.addEventListener('click', showScoreExamModal);  // Lắng nghe sự kiện nút "Score Exam" để hiển thị modal chấm điểm
+            if (peekBtn) peekBtn.addEventListener('click', showPeekAnswer);  // Lắng nghe sự kiện nút "Peek Answer" để hiển thị đáp án
+            if (reviewBtn) reviewBtn.addEventListener('click', showReviewProgress);  // Lắng nghe sự kiện nút "Review Progress" để hiển thị tiến độ làm bài
+
+            // Đóng modal khi nhấp ra ngoài
+            window.addEventListener('click', function(event) {  // Lắng nghe sự kiện nhấp chuột ngoài modal
+                const modals = document.querySelectorAll('.modal');  // Lấy tất cả các modal trên trang
+                modals.forEach(function(modal) {  // Duyệt qua tất cả các modal
+                    if (event.target === modal) {  // Kiểm tra xem người dùng có nhấp vào chính modal không
+                        modal.style.display = 'none';  // Đóng modal nếu nhấp ra ngoài
                     }
                 });
             });
 
-            // Save answer before page unload
-            window.addEventListener('beforeunload', function() {
-                saveCurrentAnswer();
+            // Lưu câu trả lời trước khi thoát trang
+            window.addEventListener('beforeunload', function() {  // Lắng nghe sự kiện khi người dùng chuẩn bị rời khỏi trang
+                saveCurrentAnswer();  // Lưu câu trả lời trước khi thoát
             });
         });
+
     </script>
+
 </body>
 </html>
