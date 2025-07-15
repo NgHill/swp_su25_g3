@@ -212,7 +212,9 @@ int userId = 1; // Mặc định userId = 1
                     if (textAnswer != null && !textAnswer.trim().isEmpty()) {
                         finalAnswer = textAnswer.trim();
                     } else if (extractedText != null && !extractedText.trim().isEmpty()) {
-finalAnswer = extractedText.trim();
+
+                        finalAnswer = extractedText.trim();
+
                     }
                     answerToSave = finalAnswer;
                 }
