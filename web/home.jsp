@@ -549,19 +549,23 @@
                 </div>
             </a>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item">
+                <a href="<%= request.getContextPath() %>/home" class="nav-item">
                     <span class="nav-icon">🏠</span>
                     <span>Home</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="<%= request.getContextPath() %>/subject-list" class="nav-item">
                     <span class="nav-icon">🧠</span>
                     <span>Subject</span>
                 </a>
+
+                <a href="<%= request.getContextPath() %>/my-registration" class="nav-item">
+
                 <a href="<%= request.getContextPath() %>/profile" class="nav-item">
+
                     <span class="nav-icon">📝</span>
                     <span>My Registrations</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="<%= request.getContextPath() %>/setting" class="nav-item">
                     <span class="nav-icon">⚙️</span>
                     <span>Settings</span>
                 </a>
