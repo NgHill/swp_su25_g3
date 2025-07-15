@@ -115,7 +115,7 @@
 
         .quiz-footer {
             background: #f8f9fa;
-            padding: 15px 20px;
+padding: 15px 20px;
             border-top: 1px solid #e9ecef;
             display: flex;
             justify-content: space-between;
@@ -247,7 +247,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
+cursor: pointer;
             border-radius: 4px;
             font-size: 12px;
             transition: all 0.2s;
@@ -367,7 +367,9 @@
             margin-bottom: 15px;
         }
 
+
         .upload-button:hover {
+
             background: #0056b3;
         }
 
@@ -450,8 +452,10 @@
                         <div class="image-upload-container" id="imageUploadContainer">
                             <p style="margin-bottom: 10px; color: #6c757d;">You can also upload an image of your answer:</p>
 
+
                             <input type="file" 
                                    id="imageUpload" 
+
                                    accept="image/*" 
                                    style="display: none;"
                                    onchange="handleImageUpload(event)">
@@ -506,8 +510,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Peek at Answer Modal -->
+<!-- Peek at Answer Modal -->
     <div id="peekAnswerModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -565,8 +568,8 @@
                 
                 <div class="question-grid" id="questionGrid">
                     <c:forEach var="i" begin="0" end="${totalQuestions - 1}">
-                        <div class="question-number 
-                                    <c:if test="${i == currentQuestionIndex}">current</c:if>
+                        <div class="question-number
+<c:if test="${i == currentQuestionIndex}">current</c:if>
                                     <c:if test="${not empty userAnswers[i]}">answered</c:if>
                                     <c:if test="${empty userAnswers[i]}">unanswered</c:if>" 
                              onclick="goToQuestion(${i})">
@@ -621,7 +624,9 @@
             if (!isPracticeMode) {  // Kiểm tra nếu không phải chế độ luyện tập
                 const peekBtn = document.getElementById('peekAnswerBtn');  // Lấy nút "Peek Answer"
                 if (peekBtn) {
+
                     peekBtn.style.display = 'none';  // Ẩn nút "Peek Answer" nếu không phải chế độ luyện tập
+
                 }
             }
         }
@@ -676,7 +681,9 @@
         }
 
         // Lưu câu trả lời của người dùng
+
         function saveCurrentAnswer() {
+
             const selectedAnswer = document.querySelector('input[name="answer"]:checked');  // Lấy câu trả lời đã chọn (nếu là câu hỏi trắc nghiệm)
             const textAnswer = document.getElementById('textAnswer');  // Lấy câu trả lời dạng văn bản
             const extractedText = document.getElementById('extractedText');  // Lấy câu trả lời văn bản nhận dạng từ ảnh (nếu có)
@@ -721,7 +728,9 @@
             if (event.target.type === 'radio') {  // Nếu là câu trả lời trắc nghiệm
                 userAnswers[currentQuestionIndex] = event.target.value;  // Lưu câu trả lời trắc nghiệm
             } else if (event.target.type === 'text') {  // Nếu là câu trả lời văn bản
+
                 userAnswers[currentQuestionIndex] = event.target.value.trim();  // Lưu câu trả lời văn bản
+
             }
             saveCurrentAnswer();  // Lưu câu trả lời mỗi khi có thay đổi
         }
@@ -775,7 +784,9 @@
             }
 
             const modal = document.getElementById('scoreExamModal');  // Lấy modal "Score Exam"
+
             if (modal) {
+
                 modal.style.display = 'block';  // Hiển thị modal
             }
         }
@@ -810,6 +821,7 @@
 
             document.body.appendChild(form);  // Thêm form vào body
             form.submit();  // Gửi dữ liệu lên server
+
         }
 
         // Xử lý tải ảnh
@@ -839,6 +851,7 @@
             document.getElementById('ocrResult').style.display = 'none';  // Ẩn kết quả OCR
             document.getElementById('extractedText').textContent = '';  // Xóa văn bản nhận dạng
         }
+
 
         // Nhận dạng văn bản từ ảnh (OCR)
         function performOCR(imageData) {
@@ -882,7 +895,9 @@
             const answerRadios = document.querySelectorAll('input[name="answer"]');  // Lấy tất cả câu trả lời trắc nghiệm (radio buttons)
             const textAnswer = document.getElementById('textAnswer');  // Lấy phần tử câu trả lời văn bản (input)
 
+
             answerRadios.forEach(function(radio) {  // Duyệt qua tất cả các câu trả lời trắc nghiệm (radio buttons)
+
                 radio.addEventListener('change', handleAnswerChange);  // Lắng nghe sự kiện thay đổi câu trả lời trắc nghiệm
             });
 

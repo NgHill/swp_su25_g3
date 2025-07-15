@@ -75,7 +75,7 @@ public class QuizHandleServlet extends HttpServlet {
     throws ServletException, IOException {
         // Lấy tham số
         int quizId = 2; // Mặc định quizId = 1
-        int userId = 1; // Mặc định userId = 1
+int userId = 1; // Mặc định userId = 1
         
         String quizIdParam = request.getParameter("quizId");
         String userIdParam = request.getParameter("userId");
@@ -148,8 +148,7 @@ public class QuizHandleServlet extends HttpServlet {
             startTime = System.currentTimeMillis();
             session.setAttribute("quizStartTime", startTime);
         }
-
-        // Tính thời gian còn lại
+// Tính thời gian còn lại
         long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
         int timeLeft = (int) (quiz.getDuration() * 60 - elapsedSeconds);
         if (timeLeft < 0) timeLeft = 0;
@@ -213,7 +212,9 @@ public class QuizHandleServlet extends HttpServlet {
                     if (textAnswer != null && !textAnswer.trim().isEmpty()) {
                         finalAnswer = textAnswer.trim();
                     } else if (extractedText != null && !extractedText.trim().isEmpty()) {
+
                         finalAnswer = extractedText.trim();
+
                     }
                     answerToSave = finalAnswer;
                 }
@@ -285,7 +286,7 @@ public class QuizHandleServlet extends HttpServlet {
         String currentIndexParam = request.getParameter("currentIndex");
         
         int currentIndex = 0;
-        if (currentIndexParam != null && !currentIndexParam.trim().isEmpty()) {
+if (currentIndexParam != null && !currentIndexParam.trim().isEmpty()) {
             try {
                 currentIndex = Integer.parseInt(currentIndexParam);
             } catch (NumberFormatException e) {
@@ -360,7 +361,7 @@ public class QuizHandleServlet extends HttpServlet {
                     if (correctAnswer != null) {
                         try {
                             int userAnswerId = Integer.parseInt(userAnswer);
-                            if (userAnswerId == correctAnswer.getId()) {
+if (userAnswerId == correctAnswer.getId()) {
                                 correctAnswers++;
                             }
                         } catch (NumberFormatException e) {
