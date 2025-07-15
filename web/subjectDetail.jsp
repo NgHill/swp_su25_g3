@@ -624,23 +624,6 @@ Giá giảm: ${subject.salePrice}
         document.querySelector('.sidebar').classList.toggle('hidden')
     );
 
-    const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
-    ft.addEventListener('click', () => {
-        sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-        ft.querySelector('i').classList.toggle('fa-chevron-up');
-        ft.querySelector('i').classList.toggle('fa-chevron-down');
-    });
-
-    document.addEventListener('click', e => {
-        if (!sb.contains(e.target) && !ft.contains(e.target)) {
-            sb.style.display = 'none';
-            ft.querySelector('i').classList.add('fa-chevron-down');
-            ft.querySelector('i').classList.remove('fa-chevron-up');
-        }
-    });
-
-
-
     function submitRegisterForm() {
         if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
             document.getElementById('registerForm').submit(); // submit đúng POST
@@ -657,7 +640,7 @@ Giá giảm: ${subject.salePrice}
             },
             body: 'message=' + encodeURIComponent(fullMessage)
         })
-                .then(response => response.json())
+                .then(response => response.json())  
                 .then(data => {
                     const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
                     document.getElementById('ai-response').innerText = content.trim();

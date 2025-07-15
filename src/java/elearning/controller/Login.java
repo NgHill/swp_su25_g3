@@ -51,10 +51,10 @@ public class Login extends HttpServlet {
             request.getSession().setAttribute("success_message", null);
         }
 
-        // Nếu đã đăng nhập rồi thì chuyển hướng sang trang blog (hoặc có thể là dashboard)
+        // Nếu đã đăng nhập rồi thì chuyển hướng sang trang home
         User userAuth = (User) request.getSession().getAttribute("userAuth");
         if (userAuth != null) {
-            response.sendRedirect("blog");
+            response.sendRedirect("home");
             return;
         }
 
@@ -78,15 +78,12 @@ public class Login extends HttpServlet {
             if (userAuth != null) {
                 // Nếu tài khoản tồn tại và đã kích hoạt
                 if (userAuth.getStatus().equals("active")) {
-                    // Lưu user vào session
+                    // Lưu user vào session*********
                     request.getSession().setAttribute("userAuth", userAuth);
                     // Chuyển hướng về trang home
                     response.sendRedirect("home");
                     return;
                 }
-
-                // Nếu tài khoản chưa active
-                request.setAttribute("error", "Tài khoản chưa được kích hoạt");
 
             } else {
                 // Không tìm thấy user → sai tài khoản/mật khẩu
