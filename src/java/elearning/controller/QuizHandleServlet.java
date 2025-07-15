@@ -75,7 +75,7 @@ public class QuizHandleServlet extends HttpServlet {
     throws ServletException, IOException {
         // Lấy tham số
         int quizId = 2; // Mặc định quizId = 1
-        int userId = 1; // Mặc định userId = 1
+int userId = 1; // Mặc định userId = 1
         
         String quizIdParam = request.getParameter("quizId");
         String userIdParam = request.getParameter("userId");
@@ -148,8 +148,7 @@ public class QuizHandleServlet extends HttpServlet {
             startTime = System.currentTimeMillis();
             session.setAttribute("quizStartTime", startTime);
         }
-
-        // Tính thời gian còn lại
+// Tính thời gian còn lại
         long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
         int timeLeft = (int) (quiz.getDuration() * 60 - elapsedSeconds);
         if (timeLeft < 0) timeLeft = 0;
@@ -189,6 +188,7 @@ public class QuizHandleServlet extends HttpServlet {
         String questionIndexStr = request.getParameter("questionIndex");
         String selectedAnswer = request.getParameter("selectedAnswer");
         String textAnswer = request.getParameter("textAnswer");
+        String extractedText = request.getParameter("extractedText");
 
         if (questionIndexStr != null && (selectedAnswer != null || textAnswer != null)) {
             try {
@@ -207,11 +207,14 @@ public class QuizHandleServlet extends HttpServlet {
                 
                 // Xác định loại câu hỏi và lưu đáp án tương ứng
                 if ("text_input".equals(question.getQuestionType())) {
-                    // Câu hỏi text input
-                    answerToSave = textAnswer != null ? textAnswer.trim() : "";
-                } else {
-                    // Câu hỏi multiple choice
-                    answerToSave = selectedAnswer;
+                    // Kết hợp text input + OCR text
+                    String finalAnswer = "";
+                    if (textAnswer != null && !textAnswer.trim().isEmpty()) {
+                        finalAnswer = textAnswer.trim();
+                    } else if (extractedText != null && !extractedText.trim().isEmpty()) {
+finalAnswer = extractedText.trim();
+                    }
+                    answerToSave = finalAnswer;
                 }
 
                 @SuppressWarnings("unchecked")
@@ -281,7 +284,7 @@ public class QuizHandleServlet extends HttpServlet {
         String currentIndexParam = request.getParameter("currentIndex");
         
         int currentIndex = 0;
-        if (currentIndexParam != null && !currentIndexParam.trim().isEmpty()) {
+if (currentIndexParam != null && !currentIndexParam.trim().isEmpty()) {
             try {
                 currentIndex = Integer.parseInt(currentIndexParam);
             } catch (NumberFormatException e) {
@@ -356,7 +359,7 @@ public class QuizHandleServlet extends HttpServlet {
                     if (correctAnswer != null) {
                         try {
                             int userAnswerId = Integer.parseInt(userAnswer);
-                            if (userAnswerId == correctAnswer.getId()) {
+if (userAnswerId == correctAnswer.getId()) {
                                 correctAnswers++;
                             }
                         } catch (NumberFormatException e) {
