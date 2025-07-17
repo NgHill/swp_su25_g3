@@ -19,17 +19,16 @@ public class SubjectListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
         String category = request.getParameter("category");
         String status = request.getParameter("status");
         String search = request.getParameter("search");
         String linesStr = request.getParameter("lines");
 
-        int linesPerPage = 5;
+        int linesPerPage = 5;// Giá trị mặc định
         if (linesStr != null && !linesStr.isEmpty()) {
             try {
-                linesPerPage = Integer.parseInt(linesStr);
+                linesPerPage = Integer.parseInt(linesStr); // Lấy giá trị "lines" từ URL
             } catch (NumberFormatException ignored) {
             }
         }
@@ -43,9 +42,10 @@ public class SubjectListController extends HttpServlet {
             }
         }
 
-        int offset = (page - 1) * linesPerPage;
+        int offset = (page - 1) * linesPerPage;// Tính offset để phân trang
 
-        // ✅ Bắt SQLException ở đây
+        // Lấy danh sách chủ đề dựa trên các tham số lọc và phân trang
+        //  Bắt SQLException ở đây
         List<SubjectList> subjectList = dao.getFilteredSubjects(category, status, search, offset, linesPerPage);
         List<String> categoryList = dao.getAllCategory();
         request.setAttribute("subjectList", subjectList);

@@ -79,7 +79,7 @@ public class SubjectListDAO {
             sql += " AND name LIKE ?";
         }
 
-        sql += " LIMIT ? OFFSET ?";
+        sql += " LIMIT ? OFFSET ?";// Giới hạn số dòng 
 
         try {
             PreparedStatement ps =  ServerConnectionInfo.getConnection().prepareStatement(sql);
@@ -93,7 +93,7 @@ public class SubjectListDAO {
             if (search != null && !search.isEmpty()) {
                 ps.setString(idx++, "%" + search + "%");
             }
-            ps.setInt(idx++, limit);
+            ps.setInt(idx++, limit);// Gán giá trị vào LIMIT
             ps.setInt(idx, offset);
 
             ResultSet rs = ps.executeQuery();
