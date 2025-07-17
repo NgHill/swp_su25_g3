@@ -1,50 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package elearning.controller;
 
 import elearning.DAO.UserDAO;
 import elearning.entities.User;
 import jakarta.servlet.ServletConfig;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
-/**
- *
- * @author admin
- */
 @WebServlet(name = "Login", urlPatterns = {"/login"})
 public class Login extends HttpServlet {
 
+    // Khởi tạo DAO dùng để truy vấn thông tin người dùng
     private final UserDAO userDAO = new UserDAO();
 
+    // Gán servlet login vào context (ít dùng, có thể bỏ nếu không cần thiết)
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         config.getServletContext().setAttribute("/login", this);
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    // Phương thức mặc định để test HTML (không sử dụng trong thực tế)
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -57,56 +40,69 @@ public class Login extends HttpServlet {
         }
     }
 
+    // ========================== Xử lý khi người dùng truy cập trang login [GET] ==========================
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Nếu session có thông báo thành công (từ trang khác chuyển về), thì đưa vào request
         if (request.getSession().getAttribute("success_message") != null) {
             request.setAttribute("success_message", request.getSession().getAttribute("success_message"));
             request.getSession().setAttribute("success_message", null);
         }
+
+        // Nếu đã đăng nhập rồi thì chuyển hướng sang trang home
         User userAuth = (User) request.getSession().getAttribute("userAuth");
         if (userAuth != null) {
-            response.sendRedirect("blog");
+            response.sendRedirect("home");
             return;
         }
+
+        // Nếu chưa đăng nhập, thì hiển thị form đăng nhập
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
+    // ========================== Xử lý đăng nhập người dùng [POST] ==========================
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         try {
+            // Lấy username và password từ form
             String username = request.getParameter("username");
             String password = request.getParameter("password");
 
+            // Kiểm tra trong DB xem có user hợp lệ không
             User userAuth = userDAO.login(username, password);
 
             if (userAuth != null) {
+                // Nếu tài khoản tồn tại và đã kích hoạt
                 if (userAuth.getStatus().equals("active")) {
+                    // Lưu user vào session*********
                     request.getSession().setAttribute("userAuth", userAuth);
-                    response.sendRedirect("blog");
+                    // Chuyển hướng về trang home
+                    response.sendRedirect("home");
                     return;
-
                 }
-                request.setAttribute("error", "Tài khoản chưa được kích hoạt");
+
             } else {
+                // Không tìm thấy user → sai tài khoản/mật khẩu
                 request.setAttribute("error", "Thông tin đăng nhập sai");
             }
+
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(); // In lỗi ra console (gợi ý: log ra file thì tốt hơn)
             request.setAttribute("error", "Hệ thống đang bảo trì");
         }
+
+        // Gọi lại doGet để hiển thị trang login cùng với thông báo lỗi
         doGet(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    // Mô tả ngắn về servlet (thường không dùng)
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

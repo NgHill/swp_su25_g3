@@ -32,6 +32,7 @@ public class Registration {
     Integer subjectId;
     @Column(name = "Status")
     String status;
+
     @Column(name = "TotalCost")
     Double totalCost;
     @Column(name = "ValidFrom")
@@ -40,10 +41,24 @@ public class Registration {
     Date validTo;
     @Column(name = "CreatedAt")
     Date createdAt;
+
+    @Column(name = "PackageMonths")
+    int packageMonths;
     
+    @Column(name = "RegisteredFullName")
+    String registeredFullName;
+
+    @Column(name = "RegisteredEmail")
+    String registeredEmail;
+
+    @Column(name = "RegisteredMobile")
+    String registeredMobile;
+
+    @Column(name = "RegisteredGender")
+    Boolean registeredGender;
     SubjectPackage subjectPackage;
-    
-    public void setSubjectPackageFunc(){
+
+    public void setSubjectPackageFunc() {
         try {
             this.subjectPackage = new SubjectPackageDAO().getById(this.subjectId);
         } catch (Exception e) {

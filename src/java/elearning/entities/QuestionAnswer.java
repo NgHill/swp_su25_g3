@@ -1,35 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// QuestionAnswer.java
 package elearning.entities;
 
-import elearning.anotation.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
-/**
- *
- * @author admin
- */
-@Table(name = "QuestionAnswers")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuestionAnswer {
-
-    @Id
-    @Column(name = "Id")
-    Integer id;
-    @Column(name = "QuestionId")
-    Integer questionId;
-    @Column(name = "Content")
-    String content;
-    @Column(name = "IsCorrect")
-    Boolean isCorrect;
-    @Column(name = "Explanation")
-    String explanation;
+    private int id;
+    private int questionId;
+    private String content;
+    private boolean isCorrect;
+    private String explanation;
+    
+    // Constructors
+    public QuestionAnswer() {}
+    
+    public QuestionAnswer(int id, int questionId, String content, 
+                         boolean isCorrect, String explanation) {
+        this.id = id;
+        this.questionId = questionId;
+        this.content = content;
+        this.isCorrect = isCorrect;
+        this.explanation = explanation;
+    }
+    
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public int getQuestionId() { return questionId; }
+    public void setQuestionId(int questionId) { this.questionId = questionId; }
+    
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+    
+    public boolean isCorrect() { return isCorrect; }
+    public void setCorrect(boolean correct) { isCorrect = correct; }
+    
+    public String getExplanation() { return explanation; }
+    public void setExplanation(String explanation) { this.explanation = explanation; }
 }

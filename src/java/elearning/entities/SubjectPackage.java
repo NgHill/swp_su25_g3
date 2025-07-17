@@ -29,6 +29,13 @@ public class SubjectPackage {
     String title;
     @Column(name = "Description")
     String description;
+      //new add
+    @Column(name = "BriefInfo")
+    String briefInfo;
+    @Column(name = "Tagline")
+    String tagLine;
+      //
+  
     @Column(name = "Thumbnail")
     String thumbnail;
     @Column(name = "LowestPrice")
