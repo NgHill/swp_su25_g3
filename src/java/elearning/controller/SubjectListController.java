@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "SubjectListController", urlPatterns = {"/subject-list"})
+@WebServlet(name = "SubjectListController", urlPatterns = {"/subject-list2"})
 public class SubjectListController extends HttpServlet {
 
     private final SubjectListDAO dao = new SubjectListDAO();

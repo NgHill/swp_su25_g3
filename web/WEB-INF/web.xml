@@ -63,7 +63,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListController</servlet-name>
-        <url-pattern>/subject-list</url-pattern>
+        <url-pattern>/subject-list2</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddNewSubject</servlet-name>
