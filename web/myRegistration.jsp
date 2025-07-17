@@ -341,7 +341,7 @@
                 <h1>My Registrations List</h1>
                 <div class="controls">
                     <a href="${pageContext.request.contextPath}/practicelist">My Practice</a>
-                    <a href="${pageContext.request.contextPath}/exam">Exam</a>
+                    <a href="${pageContext.request.contextPath}/stimulation-exam">Stimulation Exam</a>
                 </div>
             </header>
 
