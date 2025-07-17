@@ -35,7 +35,6 @@ public class SubjectPackage {
     @Column(name = "Tagline")
     String tagLine;
       //
-  
     @Column(name = "Thumbnail")
     String thumbnail;
     @Column(name = "LowestPrice")
