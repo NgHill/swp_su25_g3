@@ -282,7 +282,7 @@
             }
             .subjects-grid {
                 display:grid;
-                grid-template-columns:repeat(3,1fr);
+                grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
                 gap:25px;
                 margin-bottom:40px;
             }
@@ -448,55 +448,25 @@
                     <div class="header">
                         <div class="header-left">
                             <button id="toggleSidebar">☰</button>
-                            <h1>Stimulation Exam</h1>
-                        </div>
+                            <h1>Stimulation Exam</h1>                            
+                        </div>     
                         <div class="header-right">
-                            <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm" onsubmit="document.getElementById('searchPage').value = '1'">
+                            <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm" ">
                                 <div class="search-wrapper">
                                     <div class="search-box">
                                         <input type="search" id="searchInput" name="search" placeholder="Search exam..." value="${param.search}" />
                                         <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div>                 
-
                             </form>
                         </div>
                     </div>
                     <div class="controls-section">
-                        <div class="controls-left">
-                        </div>
-                        <div class="controls-right">
-                            <div class="pagination">
-                                <c:if test="${currentPage>1}">
-                                    <a href="?page=${currentPage-1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </a>
-                                </c:if>
-                                <c:if test="${currentPage<=1}">
-                                    <span class="disabled"><i class="fas fa-chevron-left"></i></span>
-                                    </c:if>
-                                    <c:forEach begin="1" end="${totalPages}" var="i">
-                                        <c:choose>
-                                            <c:when test="${i==currentPage}">
-                                            <span class="current">${i}</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="?page=${i}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">${i}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                                <c:if test="${currentPage<totalPages}">
-                                    <a href="?page=${currentPage+1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </a>
-                                </c:if>
-                                
-                            </div>
-                        </div>
                     </div>
                     <div class="subjects-grid">
                         <c:forEach items="${stimulationList}" var="exam">
                             <div class="subject-card" onclick="goToStimulation(${exam.id})">
+
                                 <div class="subject-thumbnail">
                                     📘
                                 </div>
@@ -536,22 +506,11 @@
                 }
             });
 
-            function goToSubject(id) {
-                window.location.href = '${pageContext.request.contextPath}/subject-detail?id=' + id;
-            }
-
-            function registerSubject(e, id) {
-                e.stopPropagation();
-
-                if (confirm('Bạn có chắc muốn đăng ký môn học này?'))
-                    window.location.href = '${pageContext.request.contextPath}/subject-register?subjectId=' + id;
-            }
-
-
             document.addEventListener('DOMContentLoaded', () => {
                 let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
                 i.value = Math.min(Math.max(v, 1), 100);
             });
+     
         </script>
     </body>
 </html>
