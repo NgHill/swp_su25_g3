@@ -3,7 +3,33 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/controller/StimulationExamServlet.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/controller/SliderListServlet.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/BasicDAO/SubjectListDAO.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/adduser.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/BasicDAO/PracticeListDAO.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/post_detail.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/constant/ServerConnectionInfo.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/BasicDAO/StimulationDAO.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/myRegistration.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/web/blog-detail.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/web/StimulationExam.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/controller/SubjectRegister.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/entities/PracticeList.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/subjectDetail.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/entities/SubjectList.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/entities/SubjectPackage.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/addnew_subject.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/web/practiceList.jsp</file>
             <file>file:/D:/Download/swp_su25_g3/src/java/elearning/controller/Login.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/subjectList.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/controller/SubjectList.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/BasicDAO/SubjectPackageBasicDAO.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/entities/StimulationExam.java</file>
+            <file>file:/D:/Download/swp_su25_g3/web/subjectRegister.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/web/subject_list.jsp</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/entities/PracticeDetail.java</file>
+            <file>file:/D:/Download/swp_su25_g3/src/java/elearning/controller/SubjectDetail.java</file>
         </group>
     </open-files>
 </project-private>
