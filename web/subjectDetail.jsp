@@ -528,7 +528,7 @@
                     font-size: 12px;
                 }
             }
-            
+
         </style>
     </head>
     <body>
@@ -600,6 +600,11 @@
                                 <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
                                 <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
                                 <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
+                                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                                    <input type="text" id="customQuestion" placeholder="Nhập câu hỏi của bạn..." style="flex:1;">
+                                    <button onclick="submitCustomQuestion()">Gửi</button>
+                                </div>
+
                             </ul>
                             <div id="ai-response" style="margin-top: 10px; font-style: italic; color: #333;"></div>
                         </div>
@@ -649,7 +654,8 @@ Giá giảm: ${subject.salePrice}
     }
 
     function sendPromptToAI(message) {
-        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + message;
+        const customQuestion = document.getElementById('customQuestion').value;
+        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
 
         fetch('${pageContext.request.contextPath}/together-ai', {
             method: 'POST',
@@ -668,6 +674,26 @@ Giá giảm: ${subject.salePrice}
                     document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
                 });
     }
+
+    function submitCustomQuestion() {
+        const input = document.getElementById('customQuestion');
+        const question = input.value.trim();
+        if (question !== '') {
+            sendPromptToAI(question);
+            input.value = '';
+        }
+    }
+    // Gửi câu hỏi khi nhấn Enter trong ô nhập
+    document.getElementById('customQuestion').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Ngăn form submit nếu có
+            const question = this.value.trim();
+            if (question !== '') {
+                sendPromptToAI(question);
+                this.value = ''; // Xóa ô sau khi gửi
+            }
+        }
+    });
 
 </script>
 </body>
