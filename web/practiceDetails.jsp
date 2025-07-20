@@ -48,26 +48,6 @@ body {
     transform: translateX(-100%);
 }
 
-.avatar-wrapper {
-    width: 60px;
-    height: 60px;
-    background-color: #95a5a6;
-    border-radius: 50%;
-    margin: 0 auto 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.avatar-img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-
 .sidebar ul {
     list-style: none;
     padding: 0;
@@ -302,11 +282,6 @@ header {
 <body>
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
-                <a href="<%= request.getContextPath() %>/profile">
-                    <div class="avatar-wrapper">
-                        <div class="avatar-img">👤</div> 
-                    </div>
-                </a>
                 <ul>
                     <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
                     <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>

@@ -6,102 +6,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Subject List</title>
+        <title>Stimulation Exam</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <style>
-            /* Vùng chứa toàn bộ AI */
-            #ai-assistant-container {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 9999;
-                font-family: Arial, sans-serif;
-            }
-
-            /* Nút AI hình chữ nhật */
-            #ai-icon {
-                background: linear-gradient(135deg, #4a90e2, #357abd);
-                color: white;
-                border: none;
-                border-radius: 25px;
-                padding: 12px 20px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                cursor: pointer;
-                box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
-                transition: all 0.3s ease;
-                font-size: 14px;
-                font-weight: 600;
-                white-space: nowrap;
-            }
-
-            #ai-icon:hover {
-                background: linear-gradient(135deg, #357abd, #2c5aa0);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
-            }
-
-            #ai-icon i {
-                font-size: 16px;
-            }
-
-            /* Hộp thoại chat */
-            #ai-chatbox {
-                display: none;
-                width: 360px;
-                max-height: 300px;
-                background-color: white;
-                border: 1px solid #ccc;
-                border-radius: 14px;
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-                margin-bottom: 10px;
-                overflow: hidden;
-            }
-
-            /* Header của box */
-            #ai-header {
-                background-color: #4a90e2;
-                color: white;
-                padding: 12px;
-                font-weight: bold;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            /* Nút đóng */
-            #ai-header button {
-                background: transparent;
-                border: none;
-                color: white;
-                font-size: 20px;
-                cursor: pointer;
-            }
-
-            /* Phần thân chat */
-            #ai-body {
-                padding: 12px;
-                font-size: 14px;
-                color: #333;
-                max-height: 240px;
-                overflow-y: auto;
-            }
-            #ai-prompts {
-                list-style: none;
-                padding-left: 0;
-            }
-            #ai-prompts li {
-                background-color: #f1f1f1;
-                padding: 8px 12px;
-                margin-bottom: 6px;
-                border-radius: 6px;
-                cursor: pointer;
-                transition: background-color 0.2s;
-            }
-            #ai-prompts li:hover {
-                background-color: #e2e8f0;
-            }
             * {
                 margin:0;
                 padding:0;
@@ -375,7 +282,7 @@
             }
             .subjects-grid {
                 display:grid;
-                grid-template-columns:repeat(3,1fr);
+                grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
                 gap:25px;
                 margin-bottom:40px;
             }
@@ -523,12 +430,7 @@
                     flex-direction:column;
                     align-items:stretch;
                 }
-                #ai-icon {
-                    padding: 10px 16px;
-                    font-size: 12px;
-                }
             }
-
         </style>
     </head>
     <body>
@@ -546,155 +448,69 @@
                     <div class="header">
                         <div class="header-left">
                             <button id="toggleSidebar">☰</button>
-                            <h1>Subject Detail</h1>
+                            <h1>Stimulation Exam</h1>                            
+                        </div>     
+                        <div class="header-right">
+                            <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm" ">
+                                <div class="search-wrapper">
+                                    <div class="search-box">
+                                        <input type="search" id="searchInput" name="search" placeholder="Search exam..." value="${param.search}" />
+                                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>                 
+                            </form>
                         </div>
                     </div>
+                    <div class="controls-section">
+                    </div>
+                    <div class="subjects-grid">
+                        <c:forEach items="${stimulationList}" var="exam">
+                            <div class="subject-card" onclick="goToStimulation(${exam.id})">
 
-                    <c:choose>
-                        <c:when test="${subject != null}">
-                            <div class="subject-card" style="cursor: default">
                                 <div class="subject-thumbnail">
-                                    <c:choose>
-                                        <c:when test="${not empty subject.thumbnail}">
-                                            <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/>
-                                        </c:when>
-                                        <c:otherwise>📚</c:otherwise>
-                                    </c:choose>
+                                    📘
                                 </div>
                                 <div class="subject-content">
-                                    <h2>${subject.title}</h2>
-                                    <p>${subject.description}</p>
-                                    <p><strong>Tag line:</strong> ${subject.tagLine}</p>
-                                    <p><strong>Brief info:</strong> ${subject.briefInfo}</p>
-                                    <div class="price-section">
-                                        <span class="sale-price">
-                                            <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
-                                        </span>
-                                        <span class="original-price">
-                                            <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
-                                        </span>
-                                    </div>
-                                    <form id="registerForm" action="${pageContext.request.contextPath}/subject-register" method="post" style="display:none;">
-                                        <input type="hidden" name="subjectId" value="${subject.id}" />
-                                        <input type="hidden" name="price" value="${subject.salePrice}" />
-                                        <input type="hidden" name="packageMonths" value="3" />
-                                    </form>
-
-                                    <button type="button" class="register-btn" onclick="submitRegisterForm()">Đăng ký</button>
+                                    <h3>${exam.stimulationExam}</h3>
+                                    <p>Level: ${exam.level}</p>
+                                    <p>Number of question: ${exam.numberOfQuestions}</p>
+                                    <p>Time: ${exam.duration} minutes</p>
+                                    <p>Pass rate: ${exam.passRate}%</p>
+                                    <button class="register-btn" onclick="registerStimulation(event, ${exam.id})">Start</button>
                                 </div>
                             </div>
-                        </c:when>                      
-                    </c:choose>
+                        </c:forEach>
 
-                </div>
-                <div id="ai-assistant-container">
-                    <!-- Hộp chat ẩn, chỉ hiện khi mở -->
-                    <div id="ai-chatbox" style="display: none;">
-                        <div id="ai-header">
-                            <span>Trợ lý AI</span>
-                            <button onclick="closeAIChat()">×</button>
-                        </div>
-                        <div id="ai-body">
-                            <p><strong>Chọn một câu hỏi:</strong></p>
-                            <ul id="ai-prompts">
-                                <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
-                                <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
-                                <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
-                                <div style="display: flex; gap: 8px; margin-top: 10px;">
-                                    <input type="text" id="customQuestion" placeholder="Nhập câu hỏi của bạn..." style="flex:1;">
-                                    <button onclick="submitCustomQuestion()">Gửi</button>
-                                </div>
-
-                            </ul>
-                            <div id="ai-response" style="margin-top: 10px; font-style: italic; color: #333;"></div>
-                        </div>
                     </div>
 
-                    <!-- Nút AI Help hình chữ nhật -->
-                    <button id="ai-icon" onclick="toggleAIChat()">
-                        <i class="fas fa-headset"></i>
-                        <span>AI Help</span>
-                    </button>
-
                 </div>
+            </main>
         </div>
-    </main>
-</div>
-<script>
-    const subjectInfo = `
-Tên khoá học: ${subject.title}
-Mô tả: ${subject.description}
-Tag line: ${subject.tagLine}
-Thông tin ngắn: ${subject.briefInfo}
-Giá gốc: ${subject.originalPrice}
-Giá giảm: ${subject.salePrice}
-        `.trim();
-    function toggleAIChat() {
-        const chatbox = document.getElementById('ai-chatbox');
-        if (chatbox.style.display === 'none') {
-            chatbox.style.display = 'block';
-        } else {
-            chatbox.style.display = 'none';
-        }
-    }
+        <script>
+            document.getElementById('toggleSidebar').addEventListener('click', () =>
+                document.querySelector('.sidebar').classList.toggle('hidden')
+            );
 
-    function closeAIChat() {
-        document.getElementById('ai-chatbox').style.display = 'none';
-    }
+            const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
+            ft.addEventListener('click', () => {
+                sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
+                ft.querySelector('i').classList.toggle('fa-chevron-up');
+                ft.querySelector('i').classList.toggle('fa-chevron-down');
+            });
 
+            document.addEventListener('click', e => {
+                if (!sb.contains(e.target) && !ft.contains(e.target)) {
+                    sb.style.display = 'none';
+                    ft.querySelector('i').classList.add('fa-chevron-down');
+                    ft.querySelector('i').classList.remove('fa-chevron-up');
+                }
+            });
 
-    document.getElementById('toggleSidebar').addEventListener('click', () =>
-        document.querySelector('.sidebar').classList.toggle('hidden')
-    );
-
-    function submitRegisterForm() {
-        if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
-            document.getElementById('registerForm').submit(); // submit đúng POST
-        }
-    }
-
-    function sendPromptToAI(message) {
-        const customQuestion = document.getElementById('customQuestion').value;
-        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
-
-        fetch('${pageContext.request.contextPath}/together-ai', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'message=' + encodeURIComponent(fullMessage)
-        })
-                .then(response => response.json())
-                .then(data => {
-                    const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
-                    document.getElementById('ai-response').innerText = content.trim();
-                })
-                .catch(error => {
-                    console.error('Lỗi khi gửi yêu cầu:', error);
-                    document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
-                });
-    }
-
-    function submitCustomQuestion() {
-        const input = document.getElementById('customQuestion');
-        const question = input.value.trim();
-        if (question !== '') {
-            sendPromptToAI(question);
-            input.value = '';
-        }
-    }
-    // Gửi câu hỏi khi nhấn Enter trong ô nhập
-    document.getElementById('customQuestion').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Ngăn form submit nếu có
-            const question = this.value.trim();
-            if (question !== '') {
-                sendPromptToAI(question);
-                this.value = ''; // Xóa ô sau khi gửi
-            }
-        }
-    });
-
-</script>
-</body>
+            document.addEventListener('DOMContentLoaded', () => {
+                let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
+                i.value = Math.min(Math.max(v, 1), 100);
+            });
+     
+        </script>
+    </body>
 </html>

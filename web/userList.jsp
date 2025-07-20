@@ -38,26 +38,7 @@
         .sidebar.hidden {
             transform: translateX(-100%);
         }
-
-        .avatar-wrapper {
-            width: 60px;
-            height: 60px;
-            background-color: #95a5a6;
-            border-radius: 50%;
-            margin: 0 auto 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .avatar-img {
-            width: 30px;
-            height: 30px;
-            color: white;
-            font-size: 24px;
-        }
-
+       
         .sidebar ul {
             list-style: none;
             padding: 0;
