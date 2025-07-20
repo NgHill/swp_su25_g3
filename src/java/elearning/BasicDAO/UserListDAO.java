@@ -134,5 +134,75 @@ public class UserListDAO {
 
         return list;
     }
+    
+    public boolean addUser(UserList user) {
+        String sql = "INSERT INTO Users (FullName, Gender, Email, Mobile, Role, Status) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ServerConnectionInfo.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getFullName());
+            stmt.setInt(2, user.getGender());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getMobile());
+            stmt.setString(5, user.getRole());
+            stmt.setString(6, user.getStatus());
+
+            int result = stmt.executeUpdate();
+            return result > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // 1. Phương thức lấy thông tin user theo ID
+    public UserList getUserById(int id) {
+        String sql = "SELECT * FROM Users WHERE Id = ?";
+
+        try (Connection conn = ServerConnectionInfo.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new UserList(
+                        rs.getInt("Id"),
+                        rs.getString("FullName"),
+                        rs.getInt("Gender"), 
+                        rs.getString("Email"),
+                        rs.getString("Mobile"),
+                        rs.getString("Role"),
+                        rs.getString("Status")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 2. Phương thức update Role và Status của user
+    public boolean updateUserRoleStatus(int id, String role, String status) {
+        String sql = "UPDATE Users SET Role = ?, Status = ? WHERE Id = ?";
+
+        try (Connection conn = ServerConnectionInfo.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, role);
+            stmt.setString(2, status);
+            stmt.setInt(3, id);
+
+            int result = stmt.executeUpdate();
+            return result > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
 

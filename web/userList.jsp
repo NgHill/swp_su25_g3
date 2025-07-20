@@ -399,199 +399,286 @@
             text-decoration: none;
         }
 
+        /* Modal/Popup styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
 
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
-</head>
-    <body>
+    </head>
+        <body>
 
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <a href="${pageContext.request.contextPath}/profile?id=${userId}">
-            <div class="avatar-wrapper">
-                <div class="avatar-img">👤</div> 
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/myRegistration">My Registrations</a></li>
+                <li><a href="${pageContext.request.contextPath}/settings">Setting</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- Header -->
+            <header>
+                <a href="#" id="toggleSidebar">☰ Toggle Sidebar</a>
+                <h1>User List</h1>
+                <div class="search-container">
+                    <form method="get" action="${pageContext.request.contextPath}/userlist" class="search-box">
+                        <input type="search" name="search" placeholder="Search name, email or mobile..." value="${search}">
+
+                        <input type="hidden" name="genderFilter" value="${genderFilter}" />
+                        <input type="hidden" name="roleFilter" value="${roleFilter}" />
+                        <input type="hidden" name="statusFilter" value="${statusFilter}" />
+
+                        <button class="search-button" type="submit">🔍</button>
+                    </form>
+                </div>
+            </header>
+
+            <!-- Filter by Gender -->
+            <div class="filter-dropdown">
+                <button type="button" class="filter-btn" onclick="toggleFilter('filterGender')">Filter by Gender ▼</button>
+                <div class="filter-content" id="filterGender" style="display:none;">
+                    <form method="get" action="${pageContext.request.contextPath}/userlist">
+                        <label>
+                            <div>Gender:</div>
+                            <select name="genderFilter">
+                                <option value="A" <c:if test="${genderFilter == 'A' || genderFilter == null}">selected</c:if>>All</option>
+                                <option value="0" <c:if test="${genderFilter == '0'}">selected</c:if>>Female</option>
+                                <option value="1" <c:if test="${genderFilter == '1'}">selected</c:if>>Male</option>
+                            </select>
+                        </label>
+                            <input type="hidden" name="sortBy" value="${sortBy}" />
+                            <input type="hidden" name="sortOrder" value="${sortOrder}" />
+
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
             </div>
-        </a>
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-            <li><a href="${pageContext.request.contextPath}/subject">Subject</a></li>
-            <li><a href="${pageContext.request.contextPath}/myRegistration">My Registrations</a></li>
-            <li><a href="${pageContext.request.contextPath}/settings">Setting</a></li>
-        </ul>
-    </nav>
 
-    <main>
-        <!-- Header -->
-        <header>
-            <a href="#" id="toggleSidebar">☰ Toggle Sidebar</a>
-            <h1>User List</h1>
-            <div class="search-container">
-                <form method="get" action="${pageContext.request.contextPath}/userlist" class="search-box">
-                    <input type="search" name="search" placeholder="Search name, email or mobile..." value="${search}">
-                    
-                    <input type="hidden" name="genderFilter" value="${genderFilter}" />
-                    <input type="hidden" name="roleFilter" value="${roleFilter}" />
-                    <input type="hidden" name="statusFilter" value="${statusFilter}" />
+            <!-- Filter by Role -->
+            <div class="filter-dropdown">
+                <button type="button" class="filter-btn" onclick="toggleFilter('filterRole')">Filter by Role ▼</button>
+                <div class="filter-content" id="filterRole" style="display:none;">
+                    <form method="get" action="${pageContext.request.contextPath}/userlist">
+                        <label>
+                            <div>Role:</div>
+                            <select name="roleFilter">
+                                <option value="A" <c:if test="${roleFilter == 'A' || roleFilter == null}">selected</c:if>>All</option>
+                                <option value="admin" <c:if test="${roleFilter == 'Admin'}">selected</c:if>>Admin</option>
+                                <option value="customer" <c:if test="${roleFilter == 'Customer'}">selected</c:if>>Customer</option>
+                                <option value="teacher" <c:if test="${roleFilter == 'teacher'}">selected</c:if>>Teacher</option>
+                            </select>
+                        </label>
+                            <input type="hidden" name="sortBy" value="${sortBy}" />
+                            <input type="hidden" name="sortOrder" value="${sortOrder}" />
 
-                    <button class="search-button" type="submit">🔍</button>
-                </form>
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
             </div>
-        </header>
 
-        <!-- Filter by Gender -->
-        <div class="filter-dropdown">
-            <button type="button" class="filter-btn" onclick="toggleFilter('filterGender')">Filter by Gender ▼</button>
-            <div class="filter-content" id="filterGender" style="display:none;">
-                <form method="get" action="${pageContext.request.contextPath}/userlist">
-                    <label>
-                        <div>Gender:</div>
-                        <select name="genderFilter">
-                            <option value="A" <c:if test="${genderFilter == 'A' || genderFilter == null}">selected</c:if>>All</option>
-                            <option value="0" <c:if test="${genderFilter == '0'}">selected</c:if>>Female</option>
-                            <option value="1" <c:if test="${genderFilter == '1'}">selected</c:if>>Male</option>
-                        </select>
-                    </label>
-                        <input type="hidden" name="sortBy" value="${sortBy}" />
-                        <input type="hidden" name="sortOrder" value="${sortOrder}" />
-                        
-                    <button type="submit">Apply</button>
-                </form>
+            <!-- Filter by Status -->
+            <div class="filter-dropdown">
+                <button type="button" class="filter-btn" onclick="toggleFilter('filterStatus')">Filter by Status ▼</button>
+                <div class="filter-content" id="filterStatus" style="display:none;">
+                    <form method="get" action="${pageContext.request.contextPath}/userlist">
+                        <label>
+                            <div>Status:</div>
+                            <select name="statusFilter">
+                                <option value="A" <c:if test="${statusFilter == 'A' || statusFilter == null}">selected</c:if>>All</option>
+                                <option value="active" <c:if test="${statusFilter == 'active'}">selected</c:if>>Active</option>
+                                <option value="inactive" <c:if test="${statusFilter == 'inactive'}">selected</c:if>>Inactive</option>   
+                            </select>
+                        </label>
+                            <input type="hidden" name="sortBy" value="${sortBy}" />
+                            <input type="hidden" name="sortOrder" value="${sortOrder}" />
+
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
             </div>
-        </div>
+            <button class="add-btn" onclick="openAddUserModal()">➕ Add New User</button>
 
-        <!-- Filter by Role -->
-        <div class="filter-dropdown">
-            <button type="button" class="filter-btn" onclick="toggleFilter('filterRole')">Filter by Role ▼</button>
-            <div class="filter-content" id="filterRole" style="display:none;">
-                <form method="get" action="${pageContext.request.contextPath}/userlist">
-                    <label>
-                        <div>Role:</div>
-                        <select name="roleFilter">
-                            <option value="A" <c:if test="${roleFilter == 'A' || roleFilter == null}">selected</c:if>>All</option>
-                            <option value="Admin" <c:if test="${roleFilter == 'Admin'}">selected</c:if>>Admin</option>
-                            <option value="Customer" <c:if test="${roleFilter == 'Customer'}">selected</c:if>>Customer</option> 
-                        </select>
-                    </label>
-                        <input type="hidden" name="sortBy" value="${sortBy}" />
-                        <input type="hidden" name="sortOrder" value="${sortOrder}" />
-                        
-                    <button type="submit">Apply</button>
-                </form>
+            <div class="line-limit-control">
+                <label>
+                    Line number displayed:
+                    <form method="get" action="${pageContext.request.contextPath}/userlist">
+                        <input type="number" name="rowsPerPage" value="${rowsPerPage}" />
+                    </form>
+                </label>
+            </div>               
+
+            <!-- CHECKBOX ẨN/HIỆN CỘT -->
+            <div style="margin: 20px 0;">            
+                <label><input type="checkbox" data-col="fullname" checked> Full Name</label>
+                <label><input type="checkbox" data-col="gender" checked> Gender</label>
+                <label><input type="checkbox" data-col="email" checked> Email</label>
+                <label><input type="checkbox" data-col="phone" checked> Phone</label>
+                <label><input type="checkbox" data-col="role" checked> Role</label>
+                <label><input type="checkbox" data-col="status" checked> Status</label>    
             </div>
-        </div>
 
-        <!-- Filter by Status -->
-        <div class="filter-dropdown">
-            <button type="button" class="filter-btn" onclick="toggleFilter('filterStatus')">Filter by Status ▼</button>
-            <div class="filter-content" id="filterStatus" style="display:none;">
-                <form method="get" action="${pageContext.request.contextPath}/userlist">
-                    <label>
-                        <div>Status:</div>
-                        <select name="statusFilter">
-                            <option value="A" <c:if test="${statusFilter == 'A' || statusFilter == null}">selected</c:if>>All</option>
-                            <option value="Active" <c:if test="${statusFilter == 'Active'}">selected</c:if>>Active</option>
-                            <option value="Inactive" <c:if test="${statusFilter == 'Inactive'}">selected</c:if>>Inactive</option>   
-                        </select>
-                    </label>
-                        <input type="hidden" name="sortBy" value="${sortBy}" />
-                        <input type="hidden" name="sortOrder" value="${sortOrder}" />
-                        
-                    <button type="submit">Apply</button>
-                </form>
-            </div>
-        </div>
-        <a href="${pageContext.request.contextPath}/adduser" class="add-btn">➕ Add New User</a>
-        
-        <div class="line-limit-control">
-            <label>
-                Line number displayed:
-                <form method="get" action="${pageContext.request.contextPath}/userlist">
-                    <input type="number" name="rowsPerPage" value="${rowsPerPage}" />
-                </form>
-            </label>
-        </div>               
-                            
-        <!-- CHECKBOX ẨN/HIỆN CỘT -->
-        <div style="margin: 20px 0;">            
-            <label><input type="checkbox" data-col="fullname" checked> Full Name</label>
-            <label><input type="checkbox" data-col="gender" checked> Gender</label>
-            <label><input type="checkbox" data-col="email" checked> Email</label>
-            <label><input type="checkbox" data-col="phone" checked> Phone</label>
-            <label><input type="checkbox" data-col="role" checked> Role</label>
-            <label><input type="checkbox" data-col="status" checked> Status</label>    
-        </div>
 
-        
-        <!-- User Table -->
-        <div class="table-container">          
-                <table>
-                    <thead>
-    <tr>
-        <th class="col-id">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=Id&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                ID
-                <c:if test="${sortBy == 'Id'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-fullname">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=FullName&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                Full Name
-                <c:if test="${sortBy == 'FullName'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-gender">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=Gender&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                Gender
-                <c:if test="${sortBy == 'Gender'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-email">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=Email&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                Email
-                <c:if test="${sortBy == 'Email'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-phone">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=Mobile&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                Phone
-                <c:if test="${sortBy == 'Mobile'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-role">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=Role&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                Role
-                <c:if test="${sortBy == 'Role'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-status">
-            <a href="${pageContext.request.contextPath}/userlist?sortBy=Status&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
-               class="sortable-header">
-                Status
-                <c:if test="${sortBy == 'Status'}">
-                    <span class="sort-arrow ${sortOrder}"></span>
-                </c:if>
-            </a>
-        </th>
-        <th class="col-action">Action</th>
-    </tr>
-</thead>
+            <!-- User Table -->
+            <div class="table-container">          
+                    <table>
+                        <thead>
+            <tr>
+                <th class="col-id">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=Id&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        ID
+                        <c:if test="${sortBy == 'Id'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-fullname">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=FullName&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        Full Name
+                        <c:if test="${sortBy == 'FullName'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-gender">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=Gender&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        Gender
+                        <c:if test="${sortBy == 'Gender'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-email">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=Email&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        Email
+                        <c:if test="${sortBy == 'Email'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-phone">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=Mobile&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        Phone
+                        <c:if test="${sortBy == 'Mobile'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-role">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=Role&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        Role
+                        <c:if test="${sortBy == 'Role'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-status">
+                    <a href="${pageContext.request.contextPath}/userlist?sortBy=Status&search=${search}&genderFilter=${genderFilter}&roleFilter=${roleFilter}&statusFilter=${statusFilter}" 
+                       class="sortable-header">
+                        Status
+                        <c:if test="${sortBy == 'Status'}">
+                            <span class="sort-arrow ${sortOrder}"></span>
+                        </c:if>
+                    </a>
+                </th>
+                <th class="col-action">Action</th>
+            </tr>
+        </thead>
                     <tbody>
                         <c:forEach items="${userLists}" var="u">
                             <tr>
@@ -609,16 +696,118 @@
                                 <td class="col-role">${u.role}</td>
                                 <td class="col-status">${u.status}</td>
                                 <td class="col-action">
-                                    <a href="${pageContext.request.contextPath}/userdetails?id=${u.id}" class="view-btn">View</a>
-                                    <a href="${pageContext.request.contextPath}/profile" class="edit-btn">Edit</a>
+                                     <a href="${pageContext.request.contextPath}/userdetails?id=${u.id}" class="view-btn">View</a>
+                                     <button onclick="openEditUserModal(${u.id}, '${u.fullName}', '${u.role}', '${u.status}')" class="edit-btn">Edit</button>
                                 </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
         </div>
-    </main>
+                   
+                    <!-- Add User Modal -->
+                    <div id="addUserModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Add New User</h2>
+                                <span class="close" onclick="closeAddUserModal()">&times;</span>
+                            </div>
+                            <form id="addUserForm" method="post" action="${pageContext.request.contextPath}/userlist">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name:</label>
+                                    <input type="text" id="fullName" name="fullName" value="${inputFullName}">
+                                    <c:if test="${not empty fullNameError}">
+                                        <div class="error-message">${fullNameError}</div>
+                                    </c:if>
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="gender">Gender:</label>
+                                    <select id="gender" name="gender" required>
+                                        <option value="0" ${inputGender == '0' ? 'selected' : ''}>Female</option>
+                                        <option value="1" ${inputGender == '1' ? 'selected' : ''}>Male</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" value="${inputEmail}">
+                                    <c:if test="${not empty emailError}">
+                                        <div class="error-message">${emailError}</div>
+                                    </c:if>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mobile">Mobile:</label>
+                                    <input type="tel" id="mobile" name="mobile" value="${inputMobile}" >
+                                    <c:if test="${not empty mobileError}">
+                                        <div class="error-message">${mobileError}</div>
+                                    </c:if>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="role">Role:</label>
+                                    <select id="role" name="role" required>
+                                        <option value="admin" ${inputRole == 'admin' ? 'selected' : ''}>Admin</option>
+                                        <option value="customer" ${inputRole == 'customer' ? 'selected' : ''}>Customer</option>
+                                        <option value="teacher" ${inputRole == 'teacher' ? 'selected' : ''}>Teacher</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status">Status:</label>
+                                    <select id="status" name="status" required>
+                                        <option value="active" ${inputStatus == 'active' ? 'selected' : ''}>Active</option>
+                                        <option value="inactive" ${inputStatus == 'inactive' ? 'selected' : ''}>Inactive</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn-save">Save User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </main>
+
+                     <div id="editUserModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Edit User</h2>
+                            </div>
+                            <form id="editUserForm" method="post" action="${pageContext.request.contextPath}/userlist">
+                                <input type="hidden" name="action" value="edit">
+                                <input type="hidden" id="editUserId" name="userId" value="">
+
+                                <div class="form-group">
+                                    <label for="editFullName">Full Name:</label>
+                                    <input type="text" id="editFullName" name="fullName" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editRole">Role:</label>
+                                    <select id="editRole" name="role" required>
+                                        <option value="admin">admin</option>
+                                        <option value="customer">customer</option>
+                                        <option value="teacher">teacher</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editStatus">Status:</label>
+                                    <select id="editStatus" name="status" required>
+                                        <option value="active">active</option>
+                                        <option value="inactive">inactive</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="button" class="btn-cancel" onclick="closeEditUserModal()">Cancel</button>
+                                    <button type="submit" class="btn-save">Update User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>         
                 <script>
                     function toggleFilter(id) {                                     // Hàm mở/đóng dropdown lọc theo ID được truyền vào
                         const content = document.getElementById(id);                // Tìm phần tử cần toggle bằng id
@@ -650,7 +839,36 @@
                         });
                     });
 
+                    // Thêm vào cuối script hiện tại
+                    function openAddUserModal() {
+                        document.getElementById('addUserModal').style.display = 'block';
+                    }
+
+                    function closeAddUserModal() {
+                        document.getElementById('addUserModal').style.display = 'none';
+                        document.getElementById('addUserForm').reset(); // Reset form
+                    }
+
+                    // Kiểm tra nếu có lỗi thì mở modal
+                    <c:if test="${showAddModal}">
+                        document.getElementById('addUserModal').style.display = 'block';
+                    </c:if>
                     
+                    // Mở Edit User Modal
+                    function openEditUserModal(userId, fullName, role, status) {
+                        document.getElementById('editUserId').value = userId;
+                        document.getElementById('editFullName').value = fullName;
+                        document.getElementById('editRole').value = role;
+                        document.getElementById('editStatus').value = status;
+                        document.getElementById('editUserModal').style.display = 'block';
+                    }
+
+                    // Đóng Edit User Modal
+                    function closeEditUserModal() {
+                        document.getElementById('editUserModal').style.display = 'none';
+                        document.getElementById('editUserForm').reset();
+                    }
+
                 </script>   
-    </body>
+        </body>
 </html>
