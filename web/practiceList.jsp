@@ -320,7 +320,44 @@
         background-color: #1f6391;  /* Màu khi di chuột vào */
     }
 
+    /* Phân trang */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        gap: 10px;
+    }
 
+    .pagination a,
+    .pagination span {
+        padding: 8px 12px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        color: #007bff;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #e9ecef;
+    }
+
+    .pagination .current {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled {
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .pagination .disabled:hover {
+        background-color: transparent;
+    }
+    
         </style>
     </head>
     <body>
@@ -380,9 +417,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${practiceLists}" var="pl">
+                        <c:forEach items="${practiceLists}" var="pl" varStatus="status">
                             <tr>
-                                <td>${status.index + 1}</td> 
+                                <td>${offset + status.index + 1}</td> 
                                 <td>${pl.quizTitle}</td>
                                 <td>${pl.submittedAt}</td>
                                 <td>${pl.score}</td>                     
@@ -398,6 +435,42 @@
                     </tbody>
                 </table>
             </div>
+                                
+            <c:if test="${totalPages > 1}">
+            <div class="pagination">
+                <!-- Nút Previous -->
+                <c:choose>
+                    <c:when test="${currentPage > 1}">
+                        <a href="?page=${currentPage - 1}&scoreFilter=${scoreFilter}&search=${param.search}">« Previous</a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="disabled">« Previous</span>
+                    </c:otherwise>
+                </c:choose>
+
+                <!-- Các số trang -->
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <c:choose>
+                        <c:when test="${i == currentPage}">
+                            <span class="current">${i}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="?page=${i}&scoreFilter=${scoreFilter}&search=${param.search}">${i}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <!-- Nút Next -->
+                <c:choose>
+                    <c:when test="${currentPage < totalPages}">
+                        <a href="?page=${currentPage + 1}&scoreFilter=${scoreFilter}&search=${param.search}">Next »</a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="disabled">Next »</span>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
         </main>
         
        
