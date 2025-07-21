@@ -232,4 +232,49 @@ public class SubjectListDAO {
             return null;
         }
     }
+    public SubjectList getSubjectById(int id) {
+        String sql = "SELECT * FROM subject_list WHERE id = ?";
+        try (PreparedStatement ps = ServerConnectionInfo.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return SubjectList.builder()
+                        .id(rs.getInt("id"))
+                        .name(rs.getString("name"))
+                        .category(rs.getString("category"))
+                        .lessons(rs.getInt("number_of_lesson"))
+                        .owner(rs.getString("owner"))
+                        .status(rs.getString("status"))
+                        .featured(rs.getBoolean("featured"))
+                        .thumbnailUrl(rs.getString("thumbnail_url"))
+                        .description(rs.getString("description"))
+                        .createdAt(rs.getTimestamp("created_at"))
+                        .updatedAt(rs.getTimestamp("updated_at"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateSubject2(SubjectList subject) {
+        String sql = "UPDATE subject_list SET name = ?, category = ?, number_of_lesson = ?, owner = ?, status = ?, " +
+                "featured = ?, thumbnail_url = ?, description = ?, updated_at = ? WHERE id = ?";
+        try (PreparedStatement ps = ServerConnectionInfo.getConnection().prepareStatement(sql)) {
+            ps.setString(1, subject.getName());
+            ps.setString(2, subject.getCategory());
+            ps.setInt(3, subject.getLessons());
+            ps.setString(4, subject.getOwner());
+            ps.setString(5, subject.getStatus());
+            ps.setBoolean(6, subject.isFeatured());
+            ps.setString(7, subject.getThumbnailUrl());
+            ps.setString(8, subject.getDescription());
+            ps.setTimestamp(9, new Timestamp(System.currentTimeMillis()));
+            ps.setInt(10, subject.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
