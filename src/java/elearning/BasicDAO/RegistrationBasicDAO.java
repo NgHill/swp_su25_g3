@@ -3,8 +3,10 @@ package elearning.BasicDAO;
 import elearning.constant.ServerConnectionInfo;
 import elearning.entities.Registration;
 import elearning.entities.SubjectPackage;
+
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RegistrationBasicDAO {
@@ -27,7 +29,7 @@ public class RegistrationBasicDAO {
                 stmt.setNull(1, Types.INTEGER);
             }
             stmt.setInt(2, registration.getSubjectId());
-            stmt.setInt(3, registration.getPackageMonths()); // thêm dòng này
+            stmt.setInt(3, registration.getPackageMonths());
             stmt.setString(4, registration.getStatus());
             stmt.setDouble(5, registration.getTotalCost());
             stmt.setTimestamp(6, registration.getValidFrom() != null ? new Timestamp(registration.getValidFrom().getTime()) : null);
@@ -117,6 +119,44 @@ public class RegistrationBasicDAO {
         return registrations;
     }
 
+    public List<Registration> searchByKeywordAndCategories(int userId, String keyword, String[] categories) throws SQLException {
+        List<Registration> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT r.*, "
+                + "sp.Id AS spId, sp.Title AS spTitle, sp.Category, sp.OriginalPrice, sp.SalePrice "
+                + "FROM Registrations r "
+                + "JOIN SubjectPackages sp ON r.SubjectId = sp.Id "
+                + "WHERE r.UserId = ? ");
+
+        List<Object> params = new ArrayList<>();
+        params.add(userId);
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append("AND sp.Title LIKE ? ");
+            params.add("%" + keyword.trim() + "%");
+        }
+
+        if (categories != null && categories.length > 0) {
+            sql.append("AND sp.Category IN (");
+            sql.append(String.join(",", Collections.nCopies(categories.length, "?")));
+            sql.append(") ");
+            Collections.addAll(params, categories);
+        }
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapRow(rs));
+                }
+            }
+        }
+
+        return list;
+    }
+
     private Registration mapRow(ResultSet rs) throws SQLException {
         SubjectPackage sp = new SubjectPackage();
         sp.setId(rs.getInt("spId"));
@@ -139,7 +179,23 @@ public class RegistrationBasicDAO {
                 .registeredEmail(rs.getString("RegisteredEmail"))
                 .registeredMobile(rs.getString("RegisteredMobile"))
                 .registeredGender((Boolean) rs.getObject("RegisteredGender"))
-                .subjectPackage(sp) // <-- gắn vào đây
+                .subjectPackage(sp)
                 .build();
+    }
+
+    public List<String> getAllCategories() throws SQLException {
+        List<String> categories = new ArrayList<>();
+        String sql = "SELECT DISTINCT Category FROM SubjectPackages WHERE Category IS NOT NULL ORDER BY Category";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String category = rs.getString("Category");
+                if (category != null && !category.trim().isEmpty()) {
+                    categories.add(category);
+                }
+            }
+        }
+
+        return categories;
     }
 }

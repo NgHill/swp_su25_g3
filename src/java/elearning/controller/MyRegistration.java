@@ -10,6 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(name = "MyRegistration", urlPatterns = {"/my-registration"})
@@ -34,13 +36,29 @@ public class MyRegistration extends HttpServlet {
             return;
         }
 
+        String keyword = request.getParameter("search");
+        String[] selectedCategories = request.getParameterValues("cat");
+
         try {
-            // ✅ Đúng phương thức
-            List<Registration> registrations = registrationDAO.findByUserId(user.getId());
+            // Gán danh sách tất cả category cố định
+            List<String> allCategories = Arrays.asList("Communication", "Self improve", "Teamwork", "Thinking");
+            request.setAttribute("allCategories", allCategories);
+            request.setAttribute("search", keyword);
+            request.setAttribute("selectedCategories", selectedCategories);
+
+            List<Registration> registrations;
+
+            if ((keyword != null && !keyword.trim().isEmpty()) || (selectedCategories != null && selectedCategories.length > 0)) {
+                registrations = registrationDAO.searchByKeywordAndCategories(user.getId(), keyword, selectedCategories);
+            } else {
+                registrations = registrationDAO.findByUserId(user.getId());
+            }
+
             request.setAttribute("registrations", registrations);
+
         } catch (Exception e) {
             request.setAttribute("error", "Lỗi khi lấy danh sách đăng ký: " + e.getMessage());
-            e.printStackTrace(); // để log ra cho dễ debug
+            e.printStackTrace();
         }
 
         request.getRequestDispatcher("myRegistration.jsp").forward(request, response);
@@ -63,7 +81,6 @@ public class MyRegistration extends HttpServlet {
             }
         }
 
-        // ✅ Sau khi xoá thì redirect để load lại danh sách
         response.sendRedirect("my-registration");
     }
 }
