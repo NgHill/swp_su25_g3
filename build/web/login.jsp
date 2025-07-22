@@ -314,7 +314,7 @@
                         ${success_message}
                     </div>
                 </c:if>
-                 <c:if test="${error != null}">
+                <c:if test="${error != null}">
                     <div class="error-message">
                         ${error}
                     </div>
