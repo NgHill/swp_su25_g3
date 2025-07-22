@@ -58,7 +58,7 @@ public class practiceList extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private final PracticeListDAO practiceListDAO = new PracticeListDAO();
-    
+    private static final int RECORDS_PER_PAGE = 10;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -73,6 +73,17 @@ public class practiceList extends HttpServlet {
         String scoreFilter = request.getParameter("scoreFilter");
         String search = request.getParameter("search");
 
+        int currentPage = 1;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.isEmpty()) {
+            try {
+                currentPage = Integer.parseInt(pageStr);
+                if (currentPage < 1) currentPage = 1;
+            } catch (NumberFormatException e) {
+                currentPage = 1;
+            }
+        }
+        
         List<PracticeList> practiceLists = new ArrayList<>();
 
         if (search != null && !search.trim().isEmpty()) {
@@ -103,11 +114,34 @@ public class practiceList extends HttpServlet {
             }
         }
         
+        // THÊM CODE TÍNH TOÁN PHÂN TRANG
+        int totalRecords = practiceLists.size();
+        int totalPages = (int) Math.ceil((double) totalRecords / RECORDS_PER_PAGE);
+
+        if (currentPage > totalPages && totalPages > 0) {
+            currentPage = totalPages;
+        }
+
+        // Tính toán offset và lấy danh sách cho trang hiện tại
+        int offset = (currentPage - 1) * RECORDS_PER_PAGE;
+        int endIndex = Math.min(offset + RECORDS_PER_PAGE, totalRecords);
+
+        List<PracticeList> pagedList = new ArrayList<>();
+        if (offset < totalRecords) {
+            pagedList = practiceLists.subList(offset, endIndex);
+        }
+        
         request.setAttribute("userId", userId);
-        request.setAttribute("practiceLists", practiceLists);
+        request.setAttribute("practiceLists", pagedList); // Thay đổi từ practiceLists thành pagedList
         request.setAttribute("scoreFilter", scoreFilter);
 
-        request.getRequestDispatcher("practiceList.jsp").forward(request, response);
+        // THÊM CÁC ATTRIBUTE CHO PHÂN TRANG
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalRecords", totalRecords);
+        request.setAttribute("offset", offset); // Thêm offset để tính ID đúng
+
+    request.getRequestDispatcher("practiceList.jsp").forward(request, response);
     }
 
 

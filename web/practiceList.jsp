@@ -8,387 +8,361 @@
         <title>Stimulation Exam</title>
         <style>
             /* Định dạng tổng thể */
-body {
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+    body {
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
 
-html, body {
-    height: 100%;
-}
+    html, body {
+        height: 100%;
+    }
 
-/* Sidebar */
-/* Sidebar */
-.sidebar {
-    width: 200px;
-    background-color: #34495e;
-    color: white;
-    padding: 20px;
-    min-height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    transition: transform 0.3s ease-in-out;
-}
+    /* Sidebar */
+    /* Sidebar */
+    .sidebar {
+        width: 200px;
+        background-color: #34495e;
+        color: white;
+        padding: 20px;
+        min-height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        transition: transform 0.3s ease-in-out;
+    }
 
-.sidebar.hidden {
-    transform: translateX(-100%);
-}
+    .sidebar.hidden {
+        transform: translateX(-100%);
+    }
 
-.avatar-wrapper {
-            width: 60px;
-            height: 60px;
-            background-color: #95a5a6;
-            border-radius: 50%;
-            margin: 0 auto 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            overflow: hidden; /* Cắt phần thừa */
-        }
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
 
-        .avatar-img {
-            width: 50px;     /* Nhỏ hơn wrapper một chút */
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            background-color: transparent;
-        }
+    .sidebar ul li {
+        margin: 20px 0;
+    }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        display: block;
+        padding: 10px 0;
+    }
 
-.sidebar ul li {
-    margin: 20px 0;
-}
+    .sidebar ul li a:hover {
+        color: #bdc3c7;
+    }
 
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    display: block;
-    padding: 10px 0;
-}
-
-.sidebar ul li a:hover {
-    color: #bdc3c7;
-}
-
-/* Nội dung chính */
-main {
-    flex: 1;
-    margin-left: 200px; /* Thay đổi khoảng cách với sidebar */
-    transition: margin-left 0.3s ease-in-out;
-}
-
-/* Khi sidebar ẩn, dịch nội dung chính sang trái */
-.sidebar.hidden + main {
-    margin-left: 0;
-}
-
-
-/* Nội dung chính */
-main {
-    flex: 1;
-    margin-left: 200px; /* Thay đổi khoảng cách với sidebar */
-    transition: margin-left 0.3s ease-in-out;
-}
-
-/* Khi sidebar ẩn, dịch nội dung chính sang trái */
-.sidebar.hidden + main {
-    margin-left: 0;
-}
-
-
-/* Nội dung chính */
-main {
+    /* Nội dung chính */
+    main {
     flex-grow: 1;
     padding: 20px;
     margin-left: 240px;
     transition: margin-left 0.3s ease-in-out;
-}
+    min-height: calc(100vh - 40px);
+    }
 
-/* Khi sidebar ẩn, dịch nội dung chính sang trái */
-.sidebar.hidden + main {
-    margin-left: 0;
-}
+    /* Khi sidebar ẩn, dịch nội dung chính sang trái */
+    .sidebar.hidden + main {
+        margin-left: 0;
+    }
 
-/* Header */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    border-radius: 8px;
-    color: white;
-    background-color: #277AB0;
+    /* Header */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        color: white;
+        background-color: #277AB0;
+
+    }
+
+    /* Nút Toggle Sidebar */
+    #toggleSidebar {
+        background-color: #34495e;
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-right: 15px;
+    }
+
+    #toggleSidebar:hover {
+        background-color: #2c3e50;
+    }
+
+    /* Khu vực chứa hai nút xanh */
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    /* Nút liên kết trong .controls */
+    .controls a {
+        font-size: 16px;
+        background-color: #27ae60;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .controls a:hover {
+        background-color: #2ecc71;
+    }
+
+    /* Bảng dữ liệu */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #2980b9;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f2f2f2;
+    }
+
+    /* Nút chỉnh sửa */
+    button.action {
+        background-color: #27ae60;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button.action:hover {
+        background-color: #2ecc71;
+    }
+
+    /* Ô tìm kiếm */
+    .search-box {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        padding: 10px;
+        border-radius: 25px;
+        border: 2px solid #003366;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        width: 300px;
+    }
+
+    .search-box input[type="search"] {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 25px;
+        outline: none;
+        font-size: 16px;
+    }
+
+    /* Nút tìm kiếm */
+    .search-button {
+        background-color: #003366;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 8px;
+    }
+
+    .search-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Bao bọc ô tìm kiếm để định vị dropdown */
+    .search-container {
+        position: relative;
+    }
+
+    /* Nút mũi tên dropdown */
+    .dropdown-toggle {
+        background-color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        padding-left: 10px;
+        text-decoration: none;
+        color: #003366;
+    }
+
+    /* Dropdown menu */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 5px);
+        right: 0;
+        width: 250px;
+        background-color: white;
+        border: 2px solid #003366;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        z-index: 100;
+    }
+
+    .dropdown-menu.visible {
+        display: block;
+    }
+
+    .dropdown-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .dropdown-menu li {
+        padding: 12px;
+        border-bottom: 1px solid #f4f4f4;
+        font-size: 16px;
+    }
+
+    .dropdown-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-menu li a {
+        text-decoration: none;
+        color: #003366;
+        display: block;
+    }
+
+    .dropdown-menu li:hover {
+        background-color: #f4f4f4;
+    }
+    .filter-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .filter-btn {
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-bottom: 30px;
+    }
+
+    .filter-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      left: 0;
+      background-color: white;
+      border: 1px solid #3498db;
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      width: 220px;
+    }
+
+    .filter-dropdown:hover .filter-content {
+      display: block;
+    }
+
+    .filter-content label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .filter-content input {
+      width: 100%;
+      padding: 5px;
+      margin-top: 2px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .view-btn {
+        font-size: 16px;            /* Tăng kích thước chữ */
+        padding: 10px 20px;         /* Tăng kích thước nút */
+        background-color: #2980b9;  /* Màu nền */
+        color: white;               /* Màu chữ */
+        border: none;               /* Bỏ viền */
+        border-radius: 6px;         /* Bo góc */
+        cursor: pointer;            /* Con trỏ tay khi hover */
+        transition: background-color 0.3s ease;
+    }
+
+    .view-btn:hover {
+        background-color: #1f6391;  /* Màu khi di chuột vào */
+    }
+
+    /* Phân trang */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        gap: 10px;
+    }
+
+    .pagination a,
+    .pagination span {
+        padding: 8px 12px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        color: #007bff;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #e9ecef;
+    }
+
+    .pagination .current {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled {
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .pagination .disabled:hover {
+        background-color: transparent;
+    }
     
-}
-
-/* Nút Toggle Sidebar */
-#toggleSidebar {
-    background-color: #34495e;
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 15px;
-}
-
-#toggleSidebar:hover {
-    background-color: #2c3e50;
-}
-
-/* Khu vực chứa hai nút xanh */
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-/* Nút liên kết trong .controls */
-.controls a {
-    font-size: 16px;
-    background-color: #27ae60;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-}
-
-.controls a:hover {
-    background-color: #2ecc71;
-}
-
-/* Bảng dữ liệu */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #2980b9;
-    color: white;
-}
-
-tr:hover {
-    background-color: #f2f2f2;
-}
-
-/* Nút chỉnh sửa */
-button.action {
-    background-color: #27ae60;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button.action:hover {
-    background-color: #2ecc71;
-}
-
-/* Ô tìm kiếm */
-.search-box {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    padding: 10px;
-    border-radius: 25px;
-    border: 2px solid #003366;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-    width: 300px;
-}
-
-.search-box input[type="search"] {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 25px;
-    outline: none;
-    font-size: 16px;
-}
-
-/* Nút tìm kiếm */
-.search-button {
-    background-color: #003366;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-left: 8px;
-}
-
-.search-button:hover {
-    background-color: #0056b3;
-}
-
-/* Bao bọc ô tìm kiếm để định vị dropdown */
-.search-container {
-    position: relative;
-}
-
-/* Nút mũi tên dropdown */
-.dropdown-toggle {
-    background-color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding-left: 10px;
-    text-decoration: none;
-    color: #003366;
-}
-
-/* Dropdown menu */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: calc(100% + 5px);
-    right: 0;
-    width: 250px;
-    background-color: white;
-    border: 2px solid #003366;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    z-index: 100;
-}
-
-.dropdown-menu.visible {
-    display: block;
-}
-
-.dropdown-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.dropdown-menu li {
-    padding: 12px;
-    border-bottom: 1px solid #f4f4f4;
-    font-size: 16px;
-}
-
-.dropdown-menu li:last-child {
-    border-bottom: none;
-}
-
-.dropdown-menu li a {
-    text-decoration: none;
-    color: #003366;
-    display: block;
-}
-
-.dropdown-menu li:hover {
-    background-color: #f4f4f4;
-}
-.filter-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.filter-btn {
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-bottom: 30px;
-}
-
-.filter-content {
-  display: none;
-  position: absolute;
-  top: 35px;
-  left: 0;
-  background-color: white;
-  border: 1px solid #3498db;
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 1;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  width: 220px;
-}
-
-.filter-dropdown:hover .filter-content {
-  display: block;
-}
-
-.filter-content label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-.filter-content input {
-  width: 100%;
-  padding: 5px;
-  margin-top: 2px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-.view-btn {
-    font-size: 16px;            /* Tăng kích thước chữ */
-    padding: 10px 20px;         /* Tăng kích thước nút */
-    background-color: #2980b9;  /* Màu nền */
-    color: white;               /* Màu chữ */
-    border: none;               /* Bỏ viền */
-    border-radius: 6px;         /* Bo góc */
-    cursor: pointer;            /* Con trỏ tay khi hover */
-    transition: background-color 0.3s ease;
-}
-
-.view-btn:hover {
-    background-color: #1f6391;  /* Màu khi di chuột vào */
-}
-
-
         </style>
     </head>
     <body>
         <!-- Sidebar -->
-            <nav class="sidebar" id="sidebar">
-                <a href="${pageContext.request.contextPath}/profile?id=${userId}">
-                    <div class="avatar-wrapper">
-                         <a href="<%= request.getContextPath() %>/profile">
-                            <div class="avatar-wrapper">
-                                <c:choose>
-                                    <c:when test="${not empty sessionScope.userAuth.avatar}">
-                                        <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="avatar-icon">👤</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                          </a>
-                    </div>
-                </a>
-
+            <nav class="sidebar" id="sidebar">              
                 <ul>
                     <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
                     <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>
@@ -443,9 +417,9 @@ button.action:hover {
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${practiceLists}" var="pl">
+                        <c:forEach items="${practiceLists}" var="pl" varStatus="status">
                             <tr>
-                                <td>${status.index + 1}</td> 
+                                <td>${offset + status.index + 1}</td> 
                                 <td>${pl.quizTitle}</td>
                                 <td>${pl.submittedAt}</td>
                                 <td>${pl.score}</td>                     
@@ -461,6 +435,42 @@ button.action:hover {
                     </tbody>
                 </table>
             </div>
+                                
+            <c:if test="${totalPages > 1}">
+            <div class="pagination">
+                <!-- Nút Previous -->
+                <c:choose>
+                    <c:when test="${currentPage > 1}">
+                        <a href="?page=${currentPage - 1}&scoreFilter=${scoreFilter}&search=${param.search}">« Previous</a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="disabled">« Previous</span>
+                    </c:otherwise>
+                </c:choose>
+
+                <!-- Các số trang -->
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <c:choose>
+                        <c:when test="${i == currentPage}">
+                            <span class="current">${i}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="?page=${i}&scoreFilter=${scoreFilter}&search=${param.search}">${i}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <!-- Nút Next -->
+                <c:choose>
+                    <c:when test="${currentPage < totalPages}">
+                        <a href="?page=${currentPage + 1}&scoreFilter=${scoreFilter}&search=${param.search}">Next »</a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="disabled">Next »</span>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
         </main>
         
        

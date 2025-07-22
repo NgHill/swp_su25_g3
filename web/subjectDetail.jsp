@@ -18,23 +18,32 @@
                 font-family: Arial, sans-serif;
             }
 
-            /* Nút icon AI */
+            /* Nút AI hình chữ nhật */
             #ai-icon {
-                background-color: #4a90e2;
+                background: linear-gradient(135deg, #4a90e2, #357abd);
                 color: white;
-                border-radius: 50%;
-                width: 60px;
-                height: 60px;
-                text-align: center;
-                line-height: 60px;
-                font-size: 26px;
+                border: none;
+                border-radius: 25px;
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 cursor: pointer;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-                transition: background-color 0.3s;
+                box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+                transition: all 0.3s ease;
+                font-size: 14px;
+                font-weight: 600;
+                white-space: nowrap;
             }
 
             #ai-icon:hover {
-                background-color: #357abd;
+                background: linear-gradient(135deg, #357abd, #2c5aa0);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
+            }
+
+            #ai-icon i {
+                font-size: 16px;
             }
 
             /* Hộp thoại chat */
@@ -514,7 +523,12 @@
                     flex-direction:column;
                     align-items:stretch;
                 }
+                #ai-icon {
+                    padding: 10px 16px;
+                    font-size: 12px;
+                }
             }
+
         </style>
     </head>
     <body>
@@ -586,13 +600,22 @@
                                 <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
                                 <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
                                 <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
+                                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                                    <input type="text" id="customQuestion" placeholder="Nhập câu hỏi của bạn..." style="flex:1;">
+                                    <button onclick="submitCustomQuestion()">Gửi</button>
+                                </div>
+
                             </ul>
                             <div id="ai-response" style="margin-top: 10px; font-style: italic; color: #333;"></div>
                         </div>
                     </div>
 
-                    <!-- Icon gọi trợ lý AI -->
-                    <div id="ai-icon" onclick="toggleAIChat()">💬</div>
+                    <!-- Nút AI Help hình chữ nhật -->
+                    <button id="ai-icon" onclick="toggleAIChat()">
+                        <i class="fas fa-headset"></i>
+                        <span>AI Help</span>
+                    </button>
+
                 </div>
         </div>
     </main>
@@ -631,7 +654,8 @@ Giá giảm: ${subject.salePrice}
     }
 
     function sendPromptToAI(message) {
-        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + message;
+        const customQuestion = document.getElementById('customQuestion').value;
+        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
 
         fetch('${pageContext.request.contextPath}/together-ai', {
             method: 'POST',
@@ -640,7 +664,7 @@ Giá giảm: ${subject.salePrice}
             },
             body: 'message=' + encodeURIComponent(fullMessage)
         })
-                .then(response => response.json())  
+                .then(response => response.json())
                 .then(data => {
                     const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
                     document.getElementById('ai-response').innerText = content.trim();
@@ -650,6 +674,26 @@ Giá giảm: ${subject.salePrice}
                     document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
                 });
     }
+
+    function submitCustomQuestion() {
+        const input = document.getElementById('customQuestion');
+        const question = input.value.trim();
+        if (question !== '') {
+            sendPromptToAI(question);
+            input.value = '';
+        }
+    }
+    // Gửi câu hỏi khi nhấn Enter trong ô nhập
+    document.getElementById('customQuestion').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Ngăn form submit nếu có
+            const question = this.value.trim();
+            if (question !== '') {
+                sendPromptToAI(question);
+                this.value = ''; // Xóa ô sau khi gửi
+            }
+        }
+    });
 
 </script>
 </body>

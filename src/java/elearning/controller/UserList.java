@@ -162,7 +162,197 @@ public class UserList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        // Set encoding để xử lý tiếng Việt
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        // Kiểm tra action để phân biệt Add hay Edit
+        String action = request.getParameter("action");
+
+        if ("edit".equals(action)) {
+            handleEditUser(request, response);
+            return;
+        }
+        
+        // Lấy dữ liệu từ form
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
+        String mobile = request.getParameter("mobile");
+        String gender = request.getParameter("gender");
+        String role = request.getParameter("role");
+        String status = request.getParameter("status");
+
+        // Biến để theo dõi có lỗi không
+        boolean hasError = false;
+
+        // Validate Full Name
+        if (fullName == null || fullName.trim().length() < 5) {
+            request.setAttribute("fullNameError", "Tên phải trên 5 ký tự");
+            hasError = true;
+        } else if (!isValidFullNameFormat(fullName.trim())) {
+            request.setAttribute("fullNameError", "Tên phải viết hoa chữ cái đầu mỗi từ (VD: Phan Thành Đạt)");
+            hasError = true;
+        }
+
+        // Validate Email
+        if (email == null || email.trim().isEmpty()) {
+            request.setAttribute("emailError", "Email không được để trống");
+            hasError = true;
+        } else if (!isValidEmail(email.trim())) {
+            request.setAttribute("emailError", "Email phải có dạng: ten@domain.com");
+            hasError = true;
+        }
+
+        // Validate Mobile
+        if (mobile == null || mobile.trim().isEmpty()) {
+            request.setAttribute("mobileError", "Số điện thoại không được để trống");
+            hasError = true;
+        } else if (!isValidMobile(mobile.trim())) {
+            request.setAttribute("mobileError", "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0");
+            hasError = true;
+        }
+
+        // Nếu có lỗi, quay lại trang với thông báo lỗi
+        if (hasError) {
+            // Giữ lại dữ liệu đã nhập
+            request.setAttribute("inputFullName", fullName);
+            request.setAttribute("inputEmail", email);
+            request.setAttribute("inputMobile", mobile);
+            request.setAttribute("inputGender", gender);
+            request.setAttribute("inputRole", role);
+            request.setAttribute("inputStatus", status);
+
+            // Mở modal add user
+            request.setAttribute("showAddModal", true);
+
+            // Gọi lại doGet để hiển thị trang
+            doGet(request, response);
+            return;
+        }
+
+        // Nếu không có lỗi, lưu user vào database
+        try {
+            elearning.entities.UserList newUser = new elearning.entities.UserList();
+            newUser.setFullName(fullName.trim());
+            newUser.setEmail(email.trim());
+            newUser.setMobile(mobile.trim());
+            newUser.setGender(Integer.parseInt(gender));
+            newUser.setRole(role);
+            newUser.setStatus(status);
+
+            // Gọi DAO để lưu user
+            boolean success = userlistDAO.addUser(newUser);
+
+            if (success) {
+                request.setAttribute("successMessage", "Thêm user thành công!");
+            } else {
+                request.setAttribute("errorMessage", "Có lỗi xảy ra khi thêm user!");
+            }
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+        }
+
+        // Redirect về trang userlist
+        response.sendRedirect(request.getContextPath() + "/userlist");
+    }
+    
+    private void handleEditUser(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+
+        String userIdStr = request.getParameter("userId");
+        String role = request.getParameter("role");
+        String status = request.getParameter("status");
+
+        if (userIdStr != null && role != null && status != null) {
+            try {
+                int userId = Integer.parseInt(userIdStr);
+
+                // Gọi DAO để update role và status
+                boolean success = userlistDAO.updateUserRoleStatus(userId, role, status);
+
+                if (success) {
+                    request.setAttribute("successMessage", "Cập nhật user thành công!");
+                } else {
+                    request.setAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật user!");
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "ID user không hợp lệ!");
+            }
+        }
+
+        // Redirect về trang userlist
+        response.sendRedirect(request.getContextPath() + "/userlist");
+    }
+
+    // Phương thức kiểm tra format tên
+    private boolean isValidFullNameFormat(String name) {
+        // Tách các từ bằng space
+        String[] words = name.split("\\s+");
+
+        for (String word : words) {
+            if (word.length() == 0) continue;
+
+            // Kiểm tra chữ cái đầu có viết hoa không
+            char firstChar = word.charAt(0);
+            if (!Character.isUpperCase(firstChar)) {
+                return false;
+            }
+
+            // Kiểm tra các chữ cái sau có viết thường không
+            for (int i = 1; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (Character.isLetter(c) && Character.isUpperCase(c)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Phương thức kiểm tra email
+    private boolean isValidEmail(String email) {
+        if (!email.contains("@")) {
+            return false;
+        }
+
+        int atIndex = email.indexOf("@");
+        // @ không được ở đầu hoặc cuối
+        if (atIndex == 0 || atIndex == email.length() - 1) {
+            return false;
+        }
+
+        // Kiểm tra chỉ có 1 ký tự @
+        if (email.indexOf("@", atIndex + 1) != -1) {
+            return false;
+        }
+
+        // Kiểm tra có ít nhất 1 ký tự trước và sau @
+        String beforeAt = email.substring(0, atIndex);
+        String afterAt = email.substring(atIndex + 1);
+
+        return beforeAt.length() > 0 && afterAt.length() > 0 && afterAt.contains(".");
+    }
+
+    // Phương thức kiểm tra số điện thoại
+    private boolean isValidMobile(String mobile) {
+        // Kiểm tra độ dài = 10
+        if (mobile.length() != 10) {
+            return false;
+        }
+
+        // Kiểm tra bắt đầu bằng số 0
+        if (!mobile.startsWith("0")) {
+            return false;
+        }
+
+        // Kiểm tra tất cả đều là số
+        for (char c : mobile.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /** 
