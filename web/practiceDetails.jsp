@@ -307,7 +307,7 @@ header {
                 <tr><th>Score</th><td>${pd.score}</td></tr>
             </table>
             <div class="center-button">
-                <button class="review-btn">Review Quiz</button>
+                <a href="<%= request.getContextPath() %>/quiz-review?resultId=${practiceDetail.resultId}" class="review-btn" style="text-decoration: none; display: inline-block;">Review Quiz</a>
             </div>
         </div>
 

@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -135,6 +134,7 @@
             </div>
 
             <a href="add-subject" class="add-btn">+ Add new subject</a>
+
             <table>
                 <thead>
                     <tr>
