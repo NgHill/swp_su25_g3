@@ -1,12 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Stimulation Exam</title>
+        <title>Simulation Exam</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <style>
             * {
@@ -165,11 +167,14 @@
                 font-size: 16px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
+            .filter-toggle:hover {
+                background: #5a67d8;
+            }
             .filter-sidebar {
                 position:absolute;
                 top:100%;
                 right:0;
-                width:250px;
+                width:300px;
                 background:#f9f9f9;
                 border:1px solid #ccc;
                 border-radius:8px;
@@ -177,6 +182,9 @@
                 padding:16px;
                 display:none;
                 z-index:100;
+            }
+            .filter-sidebar.show {
+                display:block;
             }
             .filter-sidebar h3 {
                 margin-top:0;
@@ -186,46 +194,76 @@
                 padding:8px;
                 border-radius:4px;
                 color:#667eea;
+                margin-bottom:15px;
             }
             .filter-group {
                 margin:12px 0;
+            }
+            .filter-group h4 {
+                margin-bottom:8px;
+                color:#2d3748;
+                font-size:14px;
+                font-weight:600;
             }
             .filter-group label {
                 display:flex;
                 align-items:center;
                 margin-bottom:8px;
                 cursor:pointer;
+                font-size:13px;
             }
-            .filter-group input {
+            .filter-group input[type="checkbox"] {
                 margin-right:8px;
+                cursor:pointer;
             }
-            .link-section {
+            .filter-actions {
                 display:flex;
-                flex-direction:column;
                 gap:8px;
-                margin-top:12px;
+                margin-top:15px;
             }
-            .link-section a {
-                text-decoration:none;
-                border:1px solid #667eea;
-                color:#667eea;
-                padding:6px;
+            .apply-filter, .clear-filter {
+                flex:1;
+                padding:8px 12px;
+                border:none;
                 border-radius:4px;
-                text-align:center;
+                cursor:pointer;
+                font-size:12px;
+                font-weight:600;
+                transition:background .3s;
+            }
+            .apply-filter {
+                background:#667eea;
+                color:white;
+            }
+            .apply-filter:hover {
+                background:#5a67d8;
             }
             .clear-filter {
                 background:#e53e3e;
                 color:white;
-                border:none;
-                padding:8px 16px;
-                border-radius:4px;
-                cursor:pointer;
-                font-size:12px;
-                margin-top:8px;
-                width:100%;
             }
             .clear-filter:hover {
                 background:#c53030;
+            }
+            .active-filters {
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+                margin-bottom:20px;
+            }
+            .filter-tag {
+                background:#667eea;
+                color:white;
+                padding:4px 8px;
+                border-radius:12px;
+                font-size:12px;
+                display:flex;
+                align-items:center;
+                gap:5px;
+            }
+            .filter-tag .remove {
+                cursor:pointer;
+                font-weight:bold;
             }
             .controls-section {
                 display:flex;
@@ -238,47 +276,9 @@
                 flex-wrap:wrap;
                 gap:15px;
             }
-            .controls-left {
-                display:flex;
-                align-items:center;
-                gap:20px;
-                flex-wrap:wrap;
-            }
-            .control-group {
-                display:flex;
-                align-items:center;
-                gap:8px;
-            }
-            .control-group label {
+            .results-info {
                 font-weight:500;
                 color:#2d3748;
-                white-space:nowrap;
-            }
-            .control-group input {
-                padding:8px 12px;
-                border:1px solid #cbd5e0;
-                border-radius:8px;
-                background:white;
-                font-size:14px;
-                cursor:pointer;
-                outline:none;
-            }
-            .control-group input:focus {
-                border-color:#667eea;
-                box-shadow:0 0 0 2px rgba(102,126,234,.2);
-            }
-            .display-options {
-                display:flex;
-                flex-wrap:wrap;
-                gap:15px;
-                align-items:center;
-            }
-            .display-options label {
-                display:flex;
-                align-items:center;
-                gap:5px;
-                font-size:14px;
-                cursor:pointer;
             }
             .subjects-grid {
                 display:grid;
@@ -332,21 +332,15 @@
             .subject-content {
                 padding:20px;
             }
-            .price-section {
-                display:flex;
-                align-items:center;
-                gap:10px;
-                margin-top:10px;
-            }
-            .sale-price {
-                font-size:18px;
-                font-weight:700;
-                color:#e53e3e;
-            }
-            .original-price {
+            .subject-content h3 {
+                margin-bottom:10px;
+                color:#2d3748;
                 font-size:16px;
-                color:red;
-                text-decoration:line-through;
+            }
+            .subject-content p {
+                margin:5px 0;
+                color:#4a5568;
+                font-size:14px;
             }
             .register-btn {
                 background:linear-gradient(135deg,#667eea,#764ba2);
@@ -358,45 +352,21 @@
                 cursor:pointer;
                 font-size:14px;
                 transition:transform .3s,box-shadow .3s;
+                margin-top:10px;
             }
             .register-btn:hover {
                 transform:scale(1.05);
                 box-shadow:0 4px 15px rgba(102,126,234,.4);
             }
-            .pagination {
-                display:flex;
-                justify-content:center;
-                gap:10px;
-                margin-top:30px;
-            }
-            .pagination a, .pagination span {
-                padding:10px 15px;
-                border:2px solid #e2e8f0;
-                background:white;
+            .no-results {
+                text-align:center;
+                padding:40px 20px;
                 color:#4a5568;
-                border-radius:8px;
-                font-weight:500;
-                text-decoration:none;
-                transition:background .3s,border-color .3s;
             }
-            .pagination a:hover {
-                background:#f7fafc;
-                border-color:#cbd5e0;
-            }
-            .current {
-                background:linear-gradient(135deg,#667eea,#764ba2);
-                color:white;
-                border-color:#667eea;
-            }
-            .pagination .current {
-                background: linear-gradient(135deg,#667eea,#764ba2);
-                color: white;
-                border-color: #667eea;
-                font-weight: bold;
-            }
-            .disabled {
-                opacity:.5;
-                pointer-events:none;
+            .no-results i {
+                font-size:48px;
+                color:#cbd5e0;
+                margin-bottom:15px;
             }
             @media(max-width:1024px){
                 .main-content{
@@ -430,6 +400,10 @@
                     flex-direction:column;
                     align-items:stretch;
                 }
+                .filter-sidebar{
+                    width:280px;
+                    right:-20px;
+                }
             }
         </style>
     </head>
@@ -448,69 +422,177 @@
                     <div class="header">
                         <div class="header-left">
                             <button id="toggleSidebar">☰</button>
-                            <h1>Stimulation Exam</h1>                            
+                            <h1>Simulation Exam</h1>                            
                         </div>     
                         <div class="header-right">
-                            <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm" ">
+                            <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm">
                                 <div class="search-wrapper">
                                     <div class="search-box">
-                                        <input type="search" id="searchInput" name="search" placeholder="Search exam..." value="${param.search}" />
-                                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                                        <input type="search" id="searchInput" name="search" 
+                                               placeholder="Search exam..." value="${param.search}" />
+                                        <button type="submit" class="search-button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
                                     </div>
-                                </div>                 
+                                    <button type="button" class="filter-toggle" id="filterToggle">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <div class="filter-sidebar" id="filterSidebar">
+                                        <h3>Filter Options</h3>
+
+                                        <div class="filter-group">
+                                            <h4>Category</h4>
+                                            <c:forEach items="${allCategories}" var="category">
+                                                <label>
+                                                    <input type="checkbox" name="cat" value="${category}"
+                                                           <c:if test="${fn:contains(paramValues.cat, category)}">checked</c:if>>
+                                                    ${category}
+                                                </label>
+                                            </c:forEach>
+                                        </div>
+
+                                        <div class="filter-actions">
+                                            <button type="button" class="apply-filter" onclick="applyFilters()">Apply</button>
+                                            <button type="button" class="clear-filter" onclick="clearFilters()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
-                    <div class="controls-section">
-                    </div>
+
                     <div class="subjects-grid">
-                        <c:forEach items="${stimulationList}" var="exam">
-                            <div class="subject-card" onclick="goToStimulation(${exam.id})">
-
-                                <div class="subject-thumbnail">
-                                    📘
+                        <c:choose>
+                            <c:when test="${empty stimulationList}">
+                                <div class="no-results">
+                                    <i class="fas fa-search"></i>
+                                    <h3>No exams found</h3>
+                                    <p>Try adjusting your search criteria or filters</p>
                                 </div>
-                                <div class="subject-content">
-                                    <h3>${exam.stimulationExam}</h3>
-                                    <p>Level: ${exam.level}</p>
-                                    <p>Number of question: ${exam.numberOfQuestions}</p>
-                                    <p>Time: ${exam.duration} minutes</p>
-                                    <p>Pass rate: ${exam.passRate}%</p>
-                                    <button class="register-btn" onclick="registerStimulation(event, ${exam.id})">Start</button>
-                                </div>
-                            </div>
-                        </c:forEach>
-
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${stimulationList}" var="exam">
+                                    <div class="subject-card" onclick="goToStimulation(${exam.id})">
+                                        <div class="subject-thumbnail">
+                                            📘
+                                        </div>
+                                        <div class="subject-content">
+                                            <h3>${exam.stimulationExam}</h3>
+                                            <p>Level: ${exam.level}</p>
+                                            <p>Number of question: ${exam.numberOfQuestions}</p>
+                                            <p>Time: ${exam.duration} minutes</p>
+                                            <p>Pass rate: ${exam.passRate}%</p>
+                                            <button class="register-btn" onclick="registerStimulation(event, ${exam.id})">Start</button>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
 
                 </div>
             </main>
         </div>
+
         <script>
+            // Chuyển đổi thanh bên (sidebar)
             document.getElementById('toggleSidebar').addEventListener('click', () =>
                 document.querySelector('.sidebar').classList.toggle('hidden')
             );
 
-            const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
-            ft.addEventListener('click', () => {
-                sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-                ft.querySelector('i').classList.toggle('fa-chevron-up');
-                ft.querySelector('i').classList.toggle('fa-chevron-down');
+            // Chức năng chuyển đổi bộ lọc
+            const filterToggle = document.getElementById('filterToggle');
+            const filterSidebar = document.getElementById('filterSidebar');
+
+            filterToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterSidebar.classList.toggle('show');
+                const icon = filterToggle.querySelector('i');
+                icon.classList.toggle('fa-filter');
+                icon.classList.toggle('fa-times');
             });
 
-            document.addEventListener('click', e => {
-                if (!sb.contains(e.target) && !ft.contains(e.target)) {
-                    sb.style.display = 'none';
-                    ft.querySelector('i').classList.add('fa-chevron-down');
-                    ft.querySelector('i').classList.remove('fa-chevron-up');
+            // Đóng thanh bên bộ lọc khi nhấp chuột ra ngoài
+            document.addEventListener('click', (e) => {
+                if (!filterSidebar.contains(e.target) && !filterToggle.contains(e.target)) {
+                    filterSidebar.classList.remove('show');
+                    const icon = filterToggle.querySelector('i');
+                    icon.classList.add('fa-filter');
+                    icon.classList.remove('fa-times');
                 }
             });
 
-            document.addEventListener('DOMContentLoaded', () => {
-                let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;
-                i.value = Math.min(Math.max(v, 1), 100);
+            // Ngăn chặn đóng khi nhấp vào bên trong thanh bên bộ lọc
+            filterSidebar.addEventListener('click', (e) => {
+                e.stopPropagation();
             });
-     
+
+            // Hàm áp dụng bộ lọc
+            function applyFilters() {
+                const form = document.getElementById('searchForm');
+
+                // Xóa các input hidden hiện tại để tránh trùng lặp
+                form.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
+
+                // Thêm các input hidden cho checkbox đã chọn
+                document.querySelectorAll('#filterSidebar input[name="cat"]:checked').forEach(cb => {
+                    form.appendChild(newHiddenInput('cat', cb.value));
+                });
+
+                // Nếu có giá trị tìm kiếm, thêm input hidden
+                const searchVal = document.getElementById('searchInput').value.trim();
+                if (searchVal) {
+                    form.appendChild(newHiddenInput('search', searchVal));
+                }
+
+                form.submit();
+            }
+
+            // Hàm xóa bộ lọc
+            function clearFilters() {
+                // Bỏ chọn tất cả checkbox
+                document.querySelectorAll('#filterSidebar input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+                // Xóa giá trị tìm kiếm
+                document.getElementById('searchInput').value = '';
+
+                // Xóa input hidden nếu có
+                document.getElementById('searchForm').querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
+
+                // Submit lại form
+                document.getElementById('searchForm').submit();
+            }
+
+           // Hàm tạo input hidden
+            function newHiddenInput(name, value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = value;
+                return input;
+            }
+
+            // Khởi tạo các ô đánh dấu bộ lọc dựa trên các tham số URL hiện tại
+            document.addEventListener('DOMContentLoaded', function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const categories = urlParams.getAll('cat');
+                const searchParam = urlParams.get('search');
+
+                // Đánh dấu các ô đánh dấu thích hợp
+                categories.forEach(category => {
+                    const checkbox = document.querySelector('#filterSidebar input[name="cat"][value="' + category + '"]');
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+
+                // Đặt giá trị ô tìm kiếm nếu có trong URL
+                const searchInput = document.getElementById('searchInput');
+                if (searchParam) {
+                    searchInput.value = searchParam;
+                }
+
+            });
         </script>
     </body>
 </html>
