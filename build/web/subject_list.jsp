@@ -82,13 +82,24 @@
                     cell.style.display = checkbox.checked ? '' : 'none';
                 });
             }
-            //logic điều khiển việc ẩn/hiện các cột khi người dùng tick/untick checkbox.
+
             function initializeColumns() {
                 var checkboxes = document.querySelectorAll('.column-toggle');
                 checkboxes.forEach(function (checkbox) {
                     toggleColumn(checkbox.value, checkbox);
+
                     checkbox.addEventListener('change', function () {
-                        toggleColumn(this.value, this);
+                        // Kiểm tra nếu người dùng bỏ chọn cột "Name"
+                        var nameCheckbox = document.querySelector('input.column-toggle[value="col-name"]');
+
+                        if (!nameCheckbox.checked) {
+                            alert(" [Name] cannot be hidden. Please keep it.");
+                            nameCheckbox.checked = true;
+                            toggleColumn("col-name", nameCheckbox);
+                            return;
+                        }
+
+                        toggleColumn(checkbox.value, checkbox);
                     });
                 });
             }
