@@ -4,6 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Lenovo/swp_su25_g3/src/java/elearning/constant/ServerConnectionInfo.java</file>
+            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/swp_su25_g3-main/web/subject_detail.jsp</file>
+            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/swp_su25_g3-main/src/java/elearning/entities/SubjectList.java</file>
+            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/swp_su25_g3-main/src/java/elearning/BasicDAO/SubjectListDAO.java</file>
+            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/swp_su25_g3-main/src/java/elearning/controller/EditSubjectServlet.java</file>
+            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/swp_su25_g3-main/src/java/elearning/controller/AddNewSubject.java</file>
         </group>
     </open-files>
 </project-private>

@@ -81,7 +81,7 @@
                     cell.style.display = checkbox.checked ? '' : 'none';
                 });
             }
-
+            //logic điều khiển việc ẩn/hiện các cột khi người dùng tick/untick checkbox.
             function initializeColumns() {
                 var checkboxes = document.querySelectorAll('.column-toggle');
                 checkboxes.forEach(function (checkbox) {
@@ -96,7 +96,7 @@
         </script>
     </head>
     <body>
-        <form method="get" action="subject-list">
+        <form method="get" action="subject-list2">
             <h1>Subject List</h1>
             <div class="filters">
                 <label>Status:</label>
@@ -156,7 +156,7 @@
                             <td class="col-lessons">${subject.lessons}</td>
                             <td class="col-owner">${subject.owner}</td>
                             <td class="col-status">${subject.status}</td>
-                            <td><a href="subject-detail.jsp?id=${subject.id}">👁️</a></td>
+                            <td><a href="edit-subject?id=${subject.id}">👁️</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -164,9 +164,9 @@
 
             <div class="pagination">
                 <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
-                <a href="subject-list?page=${currentPage > 1 ? currentPage-1 : 1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}"><<</a>
-                <a href="subject-list?page=${currentPage}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">${currentPage}</a>
-                <a href="subject-list?page=${currentPage+1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">>></a>
+                <a href="subject-list2?page=${currentPage > 1 ? currentPage-1 : 1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}"><<</a>
+                <a href="subject-list2?page=${currentPage}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">${currentPage}</a>
+                <a href="subject-list2?page=${currentPage+1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">>></a>
             </div>
         </form>
     </body>
