@@ -534,6 +534,12 @@
                             </div>
                         </c:when>
                     </c:choose>
+                    <c:if test="${not empty successMessage}">
+                        <script>
+        alert("${successMessage}");
+        window.location.href = "<c:url value='/subject-list' />";
+                        </script>
+                    </c:if>
 
                 </div>
             </main>

@@ -150,7 +150,9 @@ public class SubjectRegister extends HttpServlet {
             try {
                 RegistrationBasicDAO dao = new RegistrationBasicDAO();
                 dao.insert(registration); // Ghi dữ liệu vào bảng Registration
-                response.sendRedirect(request.getContextPath() + "/my-registration");
+                request.setAttribute("successMessage", "Đăng ký thành công!");
+                request.getRequestDispatcher("/subjectRegister.jsp").forward(request, response);
+
             } catch (SQLException ex) {
                 // Nếu lỗi khi insert → quay lại trang xác nhận, hiển thị lỗi
                 Logger.getLogger(SubjectRegister.class.getName()).log(Level.SEVERE, null, ex);

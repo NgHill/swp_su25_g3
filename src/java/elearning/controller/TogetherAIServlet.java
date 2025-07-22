@@ -64,7 +64,7 @@ public class TogetherAIServlet extends HttpServlet {
           "messages": [
             {
               "role": "system",
-              "content": "Bạn là trợ lý tư vấn khóa học. Hãy chắc chắn luôn sử dụng tiếng Việt để trả lời, nội dung ngắn gọn dễ hiểu. Không cần phải có bản tiếng Anh. Làm ngắn gọn nội dung lại"
+              "content": "Bạn là trợ lý tư vấn khóa học. nội dung ngắn gọn dễ hiểu. Làm ngắn gọn nội dung lại"
             },
             {
               "role": "user",

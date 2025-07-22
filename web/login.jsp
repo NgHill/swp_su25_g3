@@ -305,7 +305,7 @@
             <div class="form-section">
                 <div class="login-header">
                     <h1 class="login-title">LOGIN</h1>
-                    <span class="login-tab">LOG IN</span>
+                  
                 </div>
 
                 <!-- Error message display -->
@@ -321,7 +321,7 @@
                 </c:if>
                 <form method="post" id="loginForm" action="login">
                     <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Email</label>
                         <input 
                             type="text" 
                             id="username" 
