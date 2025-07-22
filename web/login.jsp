@@ -297,8 +297,8 @@
         <div class="login-container">
             <div class="image-section">
                 <div class="image-placeholder">
-                    📱<br>
-                    <div style="font-size: 1.5rem; margin-top: 20px;">Welcome back!</div>
+                    <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 150px; vertical-align: middle; margin-right: 8px;">
+                    <div style="font-size: 1.5rem; margin-top: 20px;">Welcome !</div>
                 </div>
             </div>
 
