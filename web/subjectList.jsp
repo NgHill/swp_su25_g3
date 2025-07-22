@@ -447,7 +447,7 @@
                 <div class="content-wrapper">
                     <div class="header">
                         <div class="header-left">
-                            <button id="toggleSidebar">☰</button>
+                            
                             <h1>Subject List</h1>
                         </div>
                         <div class="header-right">
@@ -595,10 +595,6 @@
             </main>
         </div>
         <script>
-            document.getElementById('toggleSidebar').addEventListener('click', () =>
-                document.querySelector('.sidebar').classList.toggle('hidden')
-            );
-
             const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
             ft.addEventListener('click', () => {
                 sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
