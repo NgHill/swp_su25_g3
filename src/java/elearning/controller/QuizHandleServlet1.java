@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name="QuizHandleServlet", urlPatterns={"/quizhandle"})
-public class QuizHandleServlet extends HttpServlet {
+public class QuizHandleServlet1 extends HttpServlet {
     private QuizDAO quizDAO;
     private QuizResultDAO quizResultDAO;
     
@@ -144,28 +144,44 @@ public class QuizHandleServlet extends HttpServlet {
     throws ServletException, IOException {
         
         int currentIndex = getIntParameter(request, "currentIndex", 0);
+        String answer = request.getParameter("answer");
+        String textAnswer = request.getParameter("textAnswer");
+
+        // Lưu đáp án trước khi chuyển câu
+        @SuppressWarnings("unchecked")
+        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
+        if (userAnswers == null) {
+            userAnswers = new HashMap<>();
+            session.setAttribute("userAnswers", userAnswers);
+        }
+
+        // Lưu đáp án nếu có
+        if (answer != null && !answer.trim().isEmpty()) {
+            userAnswers.put(currentIndex, answer);
+        } else if (textAnswer != null && !textAnswer.trim().isEmpty()) {
+            userAnswers.put(currentIndex, textAnswer.trim());
+        }
+
+        // Tiếp tục logic navigation như cũ...
         int targetIndex = getIntParameter(request, "targetIndex", currentIndex);
         String direction = request.getParameter("direction");
-        
+
         Quiz quiz = (Quiz) session.getAttribute("currentQuiz");
         if (quiz == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");
             return;
         }
-        
-        // Xử lý direction
+
         if ("next".equals(direction) && currentIndex < quiz.getQuestions().size() - 1) {
             targetIndex = currentIndex + 1;
         } else if ("prev".equals(direction) && currentIndex > 0) {
             targetIndex = currentIndex - 1;
         }
-        
-        // Validate target index
+
         if (targetIndex < 0 || targetIndex >= quiz.getQuestions().size()) {
             targetIndex = currentIndex;
         }
-        
-        // Redirect với index mới
+
         response.sendRedirect("quizhandle?quizId=" + quiz.getId() + "&questionIndex=" + targetIndex);
     }
     
