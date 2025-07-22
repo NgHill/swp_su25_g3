@@ -86,8 +86,19 @@
                 var checkboxes = document.querySelectorAll('.column-toggle');
                 checkboxes.forEach(function (checkbox) {
                     toggleColumn(checkbox.value, checkbox);
+
                     checkbox.addEventListener('change', function () {
-                        toggleColumn(this.value, this);
+                        // Kiểm tra nếu người dùng bỏ chọn cột "Name"
+                        var nameCheckbox = document.querySelector('input.column-toggle[value="col-name"]');
+
+                        if (!nameCheckbox.checked) {
+                            alert(" [Name] cannot be hidden. Please keep it.");
+                            nameCheckbox.checked = true;
+                            toggleColumn("col-name", nameCheckbox);
+                            return;
+                        }
+
+                        toggleColumn(checkbox.value, checkbox);
                     });
                 });
             }
@@ -96,7 +107,7 @@
         </script>
     </head>
     <body>
-        <form method="get" action="subject-list">
+        <form method="get" action="subject-list2">
             <h1>Subject List</h1>
             <div class="filters">
                 <label>Status:</label>
@@ -156,7 +167,7 @@
                             <td class="col-lessons">${subject.lessons}</td>
                             <td class="col-owner">${subject.owner}</td>
                             <td class="col-status">${subject.status}</td>
-                            <td><a href="subject-detail.jsp?id=${subject.id}">👁️</a></td>
+                            <td><a href="edit-subject?id=${subject.id}">👁️</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -164,9 +175,9 @@
 
             <div class="pagination">
                 <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
-                <a href="subject-list?page=${currentPage > 1 ? currentPage-1 : 1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}"><<</a>
-                <a href="subject-list?page=${currentPage}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">${currentPage}</a>
-                <a href="subject-list?page=${currentPage+1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">>></a>
+                <a href="subject-list2?page=${currentPage > 1 ? currentPage-1 : 1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}"><<</a>
+                <a href="subject-list2?page=${currentPage}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">${currentPage}</a>
+                <a href="subject-list2?page=${currentPage+1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">>></a>
             </div>
         </form>
     </body>

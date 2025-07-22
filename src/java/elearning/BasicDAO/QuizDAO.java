@@ -160,30 +160,23 @@ public class QuizDAO {
         return quiz;
     }
     
-    // Kiểm tra câu trả lời text có đúng không
     public boolean isTextAnswerCorrect(int questionId, String userAnswer) {
         if (userAnswer == null || userAnswer.trim().isEmpty()) {
             return false;
         }
-        
+
         List<QuestionAnswer> correctAnswers = getCorrectAnswers(questionId);
-        String normalizedUserAnswer = userAnswer.trim().toLowerCase();
-        
+        String normalizedUserAnswer = normalizeText(userAnswer);
+
         for (QuestionAnswer correctAnswer : correctAnswers) {
-            String normalizedCorrectAnswer = correctAnswer.getContent().trim().toLowerCase();
-            
-            // Kiểm tra exact match
+            String normalizedCorrectAnswer = normalizeText(correctAnswer.getContent());
+
+            // Kiểm tra exact match sau khi normalize
             if (normalizedUserAnswer.equals(normalizedCorrectAnswer)) {
                 return true;
             }
-            
-            // Kiểm tra contains (cho phép đáp án dài hơn)
-            if (normalizedUserAnswer.contains(normalizedCorrectAnswer) || 
-                normalizedCorrectAnswer.contains(normalizedUserAnswer)) {
-                return true;
-            }
         }
-        
+
         return false;
     }
     
@@ -204,5 +197,13 @@ public class QuizDAO {
             e.printStackTrace();
         }
         return "multiple_choice"; // default
+    }
+    
+    private String normalizeText(String text) {
+        if (text == null) return "";
+
+        return text.trim()                          // Loại bỏ khoảng trắng đầu cuối
+                  .toLowerCase()                    // Chuyển thành chữ thường
+                  .replaceAll("\\s+", " ");
     }
 }

@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="lib2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/jakarta.mail-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/jakarta.activation-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/lombok-1.18.30.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/jakarta.servlet.jsp.jstl-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/jaxb-api-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/jackson-databind-2.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/gson-2.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/WEB-INF/lib/mysql-connector-java-8.0.30.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

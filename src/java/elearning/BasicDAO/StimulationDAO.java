@@ -31,7 +31,6 @@ public class StimulationDAO {
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi lấy stimulation theo ID: " + e.getMessage());
-            e.printStackTrace();
         }
         return null;
     }
@@ -60,13 +59,42 @@ public class StimulationDAO {
         return list;
     }
 
-    public List<StimulationExam> searchByKeyword(String keyword) throws SQLException {
+   
+    // Tìm kiếm và lọc theo category
+    public List<StimulationExam> searchByKeywordAndCategories(String keyword, String[] categories) throws SQLException {
         List<StimulationExam> list = new ArrayList<>();
-        // Sử dụng tên cột nhất quán với các method khác
-        String sql = "SELECT * FROM Stimulations WHERE StimulationExam LIKE ?";
 
-        try (Connection conn = ServerConnectionInfo.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, "%" + keyword + "%");
+        StringBuilder sql = new StringBuilder("SELECT s.* FROM Stimulations s "
+                + "INNER JOIN SubjectPackages sp ON s.SubjectId = sp.Id WHERE 1=1");
+
+        List<String> params = new ArrayList<>();
+
+        // Thêm điều kiện keyword nếu có
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append(" AND s.StimulationExam LIKE ?");
+            params.add("%" + keyword.trim() + "%");
+        }
+
+        // Thêm điều kiện category nếu có
+        if (categories != null && categories.length > 0) {
+            sql.append(" AND sp.Category IN (");
+            for (int i = 0; i < categories.length; i++) {
+                sql.append("?");
+                params.add(categories[i]);
+                if (i < categories.length - 1) {
+                    sql.append(",");
+                }
+            }
+            sql.append(")");
+        }
+
+        try (Connection conn = ServerConnectionInfo.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                ps.setString(i + 1, params.get(i));
+            }
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     StimulationExam s = new StimulationExam();
@@ -84,6 +112,24 @@ public class StimulationDAO {
         }
 
         return list;
+    }
+
+    // Method mới: Lấy tất cả categories có sẵn từ SubjectPackages
+    public List<String> getAllCategories() throws SQLException {
+        List<String> categories = new ArrayList<>();
+        String sql = "SELECT DISTINCT Category FROM SubjectPackages WHERE Category IS NOT NULL ORDER BY Category";
+
+        try (Connection conn = ServerConnectionInfo.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                String category = rs.getString("Category");
+                if (category != null && !category.trim().isEmpty()) {
+                    categories.add(category);
+                }
+            }
+        }
+
+        return categories;
     }
 
     public List<SubjectPackage> findByCategory(String category, int page, int pageSize) throws SQLException {
@@ -110,5 +156,4 @@ public class StimulationDAO {
         }
         return packages;
     }
-
 }

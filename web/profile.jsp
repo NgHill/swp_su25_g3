@@ -319,18 +319,6 @@
 <body>
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
-        <a href="<%= request.getContextPath() %>/profile">
-            <div class="avatar-wrapper">
-        <c:choose>
-            <c:when test="${not empty profile.avatar}">
-                <img src="<%= request.getContextPath() %>/${profile.avatar}" alt="Avatar" class="avatar-img">
-            </c:when>
-            <c:otherwise>
-                <span class="avatar-icon">👤</span>
-            </c:otherwise>
-        </c:choose>
-            </div>
-        </a>
         <ul>
             <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
             <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>

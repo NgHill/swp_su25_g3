@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class PracticeDetail {
     private int userId;
-    private int quizResultId;
+    private int resultId;
     private String quizTitle;
     private String subjectDescription;
     private int duration;
@@ -15,7 +15,7 @@ public class PracticeDetail {
 
     public PracticeDetail(int userId, int quizResultId, String quizTitle, String subjectDescription, int duration, Timestamp submittedAt, double score) {
         this.userId = userId;
-        this.quizResultId = quizResultId;
+        this.resultId = quizResultId;
         this.quizTitle = quizTitle;
         this.subjectDescription = subjectDescription;
         this.duration = duration;
@@ -31,12 +31,12 @@ public class PracticeDetail {
         this.userId = userId;
     }
 
-    public int getQuizResultId() {
-        return quizResultId;
+    public int getResultId() {
+        return resultId;
     }
 
-    public void setQuizResultId(int quizResultId) {
-        this.quizResultId = quizResultId;
+    public void setResultId(int quizResultId) {
+        this.resultId = quizResultId;
     }
 
     public String getQuizTitle() {
