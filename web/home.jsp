@@ -575,7 +575,11 @@
                 <button class="menu-toggle" onclick="toggleSidebar()">
                     ☰ 
                 </button>
-                <div class="logo">🧠 Quiz Practice for Soft Skills</div>
+                <div class="logo">
+                    <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 90px; vertical-align: middle; margin-right: 8px;">
+                    Quiz Practice for Soft Skills
+                </div>
+
                 <div class="auth-buttons">
                     <c:choose>
                         <c:when test="${sessionScope.userAuth != null}">
