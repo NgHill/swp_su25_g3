@@ -421,7 +421,6 @@
                 <div class="content-wrapper">
                     <div class="header">
                         <div class="header-left">
-                            <button id="toggleSidebar">☰</button>
                             <h1>Simulation Exam</h1>                            
                         </div>     
                         <div class="header-right">
@@ -495,10 +494,6 @@
         </div>
 
         <script>
-            // Chuyển đổi thanh bên (sidebar)
-            document.getElementById('toggleSidebar').addEventListener('click', () =>
-                document.querySelector('.sidebar').classList.toggle('hidden')
-            );
 
             // Chức năng chuyển đổi bộ lọc
             const filterToggle = document.getElementById('filterToggle');
