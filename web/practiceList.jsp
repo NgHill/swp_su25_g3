@@ -301,7 +301,16 @@
                     gap: 10px;
                 }
             }
-
+            .filter-dropdown a {
+                font-size: 16px;
+                background-color: #27ae60;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                display: inline-block;
+                transition: background-color 0.3s ease;
+            }
         </style>
     </head>
     <body>
@@ -355,20 +364,22 @@
                                 <button type="submit">Apply</button>
                             </form>
                         </div>
-                    </div>
+                        <a href="${pageContext.request.contextPath}/quizhandle">Take a quiz</a>
+                </div>
 
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Submitted on</th>
-                                    <th>Score</th>
-                                    <th>Options</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Submitted on</th>
+                                <th>Score</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <c:forEach items="${practiceLists}" var="pl" varStatus="status">
                                 <tr>
                                     <td>${offset + status.index + 1}</td>
