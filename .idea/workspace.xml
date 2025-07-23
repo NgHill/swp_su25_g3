@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="update" />
+    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="update">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/BasicDAO/SubjectListDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/BasicDAO/SubjectListDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/controller/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/controller/Login.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Question.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Question.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuestionAnswer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuestionAnswer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Quiz.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Quiz.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuizResult.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuizResult.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/SubjectPackage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/SubjectPackage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/EducationPlatform.war" beforeDir="false" afterPath="$PROJECT_DIR$/dist/EducationPlatform.war" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/elearning/controller/ActiveAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/controller/ActiveAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/elearning/controller/AddNewSubject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/controller/AddNewSubject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/complete-register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/complete-register.jsp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,6 +48,16 @@
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/NgHill/swp_su25_g3.git&quot;,
     &quot;accountId&quot;: &quot;4dae4600-5892-4afc-82f7-01483331fcbd&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;NgHill&quot;,
+    &quot;repository&quot;: &quot;swp_su25_g3&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -45,7 +72,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "manh",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/admin/Downloads/swp_su25_g3-main (1)/code/swp_su25_g3",
@@ -57,6 +84,17 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -77,6 +115,7 @@
       <workItem from="1753151153394" duration="42000" />
       <workItem from="1753151457308" duration="354000" />
       <workItem from="1753158173963" duration="443000" />
+      <workItem from="1753252747834" duration="2025000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -99,6 +138,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update" />
