@@ -541,7 +541,7 @@
                 <div class="controls-section">
                     <div class="controls-left">
                         <div class="control-group">
-                            <label for="pageSize">Số bản ghi mỗi trang:</label>
+                            <label for="pageSize">Number of subjects per page:</label>
                             <input type="number" id="pageSize" name="pageSize" min="1" max="100" value="${param.pageSize != null ? param.pageSize : 9}" onchange="updatePageSize()" />
                         </div>
                         <c:set var="showTitle" value="${empty paramValues.displayOptions}" />
@@ -557,10 +557,10 @@
                             </c:choose>
                         </c:forEach>
                         <div class="display-options">
-                            <label><input type="checkbox" name="displayOptions" value="title" <c:if test="${showTitle}">checked</c:if> onchange="updateDisplayOptions()" /> Tiêu đề</label>
-                            <label><input type="checkbox" name="displayOptions" value="tagline" <c:if test="${showTagline}">checked</c:if> onchange="updateDisplayOptions()" /> Mô tả</label>
-                            <label><input type="checkbox" name="displayOptions" value="sale-price" <c:if test="${showSale}">checked</c:if> onchange="updateDisplayOptions()" /> Giá khuyến mãi</label>
-                            <label><input type="checkbox" name="displayOptions" value="original-price" <c:if test="${showOriginal}">checked</c:if> onchange="updateDisplayOptions()" /> Giá gốc</label>
+                            <label><input type="checkbox" name="displayOptions" value="title" <c:if test="${showTitle}">checked</c:if> onchange="updateDisplayOptions()" /> Tittle</label>
+                            <label><input type="checkbox" name="displayOptions" value="tagline" <c:if test="${showTagline}">checked</c:if> onchange="updateDisplayOptions()" /> Description</label>
+                            <label><input type="checkbox" name="displayOptions" value="sale-price" <c:if test="${showSale}">checked</c:if> onchange="updateDisplayOptions()" /> Sale price</label>
+                            <label><input type="checkbox" name="displayOptions" value="original-price" <c:if test="${showOriginal}">checked</c:if> onchange="updateDisplayOptions()" /> Original price</label>
                             </div>
                         </div>
                         <div class="controls-right">
@@ -620,7 +620,7 @@
                                                 <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
                                             </span>
                                         </c:if>
-                                        <button class="register-btn" onclick="registerSubject(event,${subject.id})">Đăng ký</button>
+                                   
                                     </div>
                                 </c:if>
                             </div>
