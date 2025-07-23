@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -344,7 +345,39 @@
                     <a href="${pageContext.request.contextPath}/stimulation-exam">Stimulation Exam</a>
                 </div>
             </header>
+            <!-- Search and Filter UI -->
+            <div class="search-container" style="margin: 20px 0; display: flex; justify-content: flex-end;">
+                <form id="searchForm" method="get" action="my-registration" style="display: flex; align-items: center;">
+                    <div class="search-box">
+                        <input type="search" id="searchInput" name="search" placeholder="Search subject..."
+                               value="${param.search != null ? param.search : ''}"/>
+                        <button type="button" class="search-button" onclick="applyFilters()">Search</button>
+                    </div>
+                    <button type="button" class="dropdown-toggle" onclick="toggleDropdown(this)">&#128269;</button>
 
+
+                    <div class="dropdown-menu" id="filterSidebar">
+                        <div class="filter-section">
+                            <div class="filter-title">Category</div>
+                            <div class="filter-options">
+                                <c:forEach items="${allCategories}" var="category">
+                                    <div class="filter-item">
+                                        <label>
+                                            <input type="checkbox" name="cat" value="${category}"
+                                                   <c:if test="${fn:contains(paramValues.cat, category)}">checked</c:if>>
+                                            ${category}
+                                        </label>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn-clear" onclick="clearFilters()">Clear</button>
+                            <button type="button" class="btn-apply" onclick="applyFilters()">Apply</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -435,3 +468,37 @@
         </main>
     </body>
 </html>
+<script>
+    function toggleDropdown(button) {
+        const dropdown = document.getElementById('filterSidebar');
+        dropdown.classList.toggle('visible');
+        button.classList.toggle('has-filters');
+    }
+
+    function applyFilters() {
+        const form = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+
+        // Gán lại giá trị cho input search nếu cần
+        let searchHiddenInput = form.querySelector('input[name="search"]');
+        if (searchHiddenInput) {
+            searchHiddenInput.value = searchInput.value;
+        }
+
+        form.submit();
+    }
+
+    function clearFilters() {
+        const form = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const checkboxes = document.querySelectorAll('#filterSidebar input[name="cat"]');
+
+        checkboxes.forEach(cb => cb.checked = false);
+        searchInput.value = '';
+
+        // Xóa các input ẩn (nếu có)
+        form.querySelectorAll('input[name="cat"][type="hidden"], input[name="search"][type="hidden"]').forEach(input => input.remove());
+
+        form.submit();
+    }
+</script>

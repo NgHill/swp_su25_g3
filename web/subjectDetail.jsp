@@ -545,7 +545,7 @@
                 <div class="content-wrapper">
                     <div class="header">
                         <div class="header-left">
-                            <button id="toggleSidebar">☰</button>
+                           
                             <h1>Subject Detail</h1>
                         </div>
                     </div>
@@ -641,11 +641,6 @@ Giá giảm: ${subject.salePrice}
     function closeAIChat() {
         document.getElementById('ai-chatbox').style.display = 'none';
     }
-
-
-    document.getElementById('toggleSidebar').addEventListener('click', () =>
-        document.querySelector('.sidebar').classList.toggle('hidden')
-    );
 
     function submitRegisterForm() {
         if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {

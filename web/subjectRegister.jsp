@@ -516,9 +516,12 @@
                                                         </select>
                                                     </div>
 
-                                                    <input type="text" name="fullName" placeholder="Họ và tên" required />
-                                                    <input type="email" name="email" placeholder="Email" required />
-                                                    <input type="text" name="mobile" placeholder="Số điện thoại" required />
+                                                    <input type="text" name="fullName" placeholder="Họ và tên" required pattern="[^\d]+" title="Họ và tên không được chứa số">
+
+                                                    <input type="email" name="email" placeholder="Email" required>
+
+                                                    <input type="text" name="mobile" placeholder="Số điện thoại" required pattern="[0-9]+" title="Số điện thoại chỉ được chứa số">
+
                                                     <select name="gender" required>
                                                         <option value="true">Nam</option>
                                                         <option value="false">Nữ</option>
@@ -534,6 +537,12 @@
                             </div>
                         </c:when>
                     </c:choose>
+                    <c:if test="${not empty successMessage}">
+                        <script>
+        alert("${successMessage}");
+        window.location.href = "<c:url value='/subject-list' />";
+                        </script>
+                    </c:if>
 
                 </div>
             </main>
