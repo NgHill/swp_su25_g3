@@ -6,385 +6,340 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Stimulation Exam</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <style>
-            /* Định dạng tổng thể */
-    body {
-        display: flex;
-        flex-direction: column;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
+            /* Global Styles */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-    html, body {
-        height: 100%;
-    }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                color: #333;
+            }
 
-    /* Sidebar */
-    /* Sidebar */
-    .sidebar {
-        width: 200px;
-        background-color: #34495e;
-        color: white;
-        padding: 20px;
-        min-height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        transition: transform 0.3s ease-in-out;
-    }
+            .container {
+                display: flex;
+                min-height: 100vh;
+            }
 
-    .sidebar.hidden {
-        transform: translateX(-100%);
-    }
+            /* === Sidebar (UPDATED) === */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
+            }
 
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
 
-    .sidebar ul li {
-        margin: 20px 0;
-    }
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
 
-    .sidebar ul li a {
-        color: white;
-        text-decoration: none;
-        font-size: 16px;
-        display: block;
-        padding: 10px 0;
-    }
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
 
-    .sidebar ul li a:hover {
-        color: #bdc3c7;
-    }
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
 
-    /* Nội dung chính */
-    main {
-    flex-grow: 1;
-    padding: 20px;
-    margin-left: 240px;
-    transition: margin-left 0.3s ease-in-out;
-    min-height: calc(100vh - 40px);
-    }
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
 
-    /* Khi sidebar ẩn, dịch nội dung chính sang trái */
-    .sidebar.hidden + main {
-        margin-left: 0;
-    }
+            .sidebar ul li {
+                margin: 15px 0;
+            }
 
-    /* Header */
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        border-radius: 8px;
-        color: white;
-        background-color: #277AB0;
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
+            }
 
-    }
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
+            }
 
-    /* Nút Toggle Sidebar */
-    #toggleSidebar {
-        background-color: #34495e;
-        color: white;
-        text-decoration: none;
-        padding: 10px 15px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-right: 15px;
-    }
+            /* Main Content Area */
+            .main-content {
+                flex-grow: 1;
+                margin-left: 220px;
+                transition: margin-left 0.3s;
+                padding: 20px;
+            }
 
-    #toggleSidebar:hover {
-        background-color: #2c3e50;
-    }
+            .sidebar.hidden + .main-content {
+                margin-left: 0;
+            }
 
-    /* Khu vực chứa hai nút xanh */
-    .controls {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin: 20px 0;
-    }
+            .content-wrapper {
+                background:rgba(255,255,255,.95);
+                backdrop-filter:blur(10px);
+                border-radius:15px;
+                padding:30px;
+                box-shadow:0 8px 32px rgba(0,0,0,.1);
+            }
 
-    /* Nút liên kết trong .controls */
-    .controls a {
-        font-size: 16px;
-        background-color: #27ae60;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        transition: background-color 0.3s ease;
-    }
+            /* Header */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+                border-radius: 8px;
+                color: #2d3748;
+                background-color: #fff;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+            }
 
-    .controls a:hover {
-        background-color: #2ecc71;
-    }
+            header h1 {
+                font-size: 24px;
+            }
 
-    /* Bảng dữ liệu */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
+            /* Controls & Filter */
+            .controls {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin: 20px 0;
+            }
 
-    th, td {
-        padding: 12px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
+            .filter-dropdown {
+                position: relative;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
 
-    th {
-        background-color: #2980b9;
-        color: white;
-    }
+            .filter-btn {
+                padding: 8px 15px;
+                cursor: pointer;
+                background-color: #3498db;
+                color: white;
+                border: none;
+                border-radius: 5px;
+            }
 
-    tr:hover {
-        background-color: #f2f2f2;
-    }
+            .filter-content {
+                display: none;
+                position: absolute;
+                top: 40px;
+                left: 0;
+                background-color: white;
+                border: 1px solid #ddd;
+                padding: 15px;
+                border-radius: 5px;
+                z-index: 1;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                width: 250px;
+            }
+            .filter-content button {
+                width: 100%;
+                padding: 8px;
+                margin-top: 10px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
 
-    /* Nút chỉnh sửa */
-    button.action {
-        background-color: #27ae60;
-        color: white;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+            /* Table Styles */
+            .table-container {
+                overflow-x: auto;
+            }
 
-    button.action:hover {
-        background-color: #2ecc71;
-    }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
 
-    /* Ô tìm kiếm */
-    .search-box {
-        display: flex;
-        align-items: center;
-        background-color: white;
-        padding: 10px;
-        border-radius: 25px;
-        border: 2px solid #003366;
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-        width: 300px;
-    }
+            th, td {
+                padding: 12px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
 
-    .search-box input[type="search"] {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 25px;
-        outline: none;
-        font-size: 16px;
-    }
+            th {
+                background-color: #3498db;
+                color: white;
+            }
 
-    /* Nút tìm kiếm */
-    .search-button {
-        background-color: #003366;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-left: 8px;
-    }
+            tr:hover {
+                background-color: #f2f2f2;
+            }
 
-    .search-button:hover {
-        background-color: #0056b3;
-    }
+            /* Action Buttons */
+            .view-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+                background-color: #2980b9;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                transition: background-color 0.3s ease;
+            }
 
-    /* Bao bọc ô tìm kiếm để định vị dropdown */
-    .search-container {
-        position: relative;
-    }
+            .view-btn:hover {
+                background-color: #1f6391;
+            }
 
-    /* Nút mũi tên dropdown */
-    .dropdown-toggle {
-        background-color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        padding-left: 10px;
-        text-decoration: none;
-        color: #003366;
-    }
+            /* Search Box */
+            .search-box {
+                display: flex;
+                align-items: center;
+            }
 
-    /* Dropdown menu */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: calc(100% + 5px);
-        right: 0;
-        width: 250px;
-        background-color: white;
-        border: 2px solid #003366;
-        border-radius: 5px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        z-index: 100;
-    }
+            .search-box input[type="search"] {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 20px 0 0 20px;
+                outline: none;
+            }
 
-    .dropdown-menu.visible {
-        display: block;
-    }
+            .search-button {
+                background-color: #3498db;
+                color: white;
+                border: 1px solid #3498db;
+                padding: 8px 12px;
+                border-radius: 0 20px 20px 0;
+                cursor: pointer;
+            }
 
-    .dropdown-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+            /* Pagination */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 20px 0;
+                gap: 10px;
+            }
 
-    .dropdown-menu li {
-        padding: 12px;
-        border-bottom: 1px solid #f4f4f4;
-        font-size: 16px;
-    }
+            .pagination a,
+            .pagination span {
+                padding: 8px 12px;
+                text-decoration: none;
+                border: 1px solid #ddd;
+                color: #007bff;
+                border-radius: 4px;
+                transition: background-color 0.3s;
+            }
 
-    .dropdown-menu li:last-child {
-        border-bottom: none;
-    }
+            .pagination a:hover {
+                background-color: #e9ecef;
+            }
 
-    .dropdown-menu li a {
-        text-decoration: none;
-        color: #003366;
-        display: block;
-    }
+            .pagination .current {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
 
-    .dropdown-menu li:hover {
-        background-color: #f4f4f4;
-    }
-    .filter-dropdown {
-      position: relative;
-      display: inline-block;
-    }
+            .pagination .disabled {
+                color: #6c757d;
+                cursor: not-allowed;
+                background-color: #fff;
+            }
 
-    .filter-btn {
-      padding: 5px 10px;
-      cursor: pointer;
-      margin-bottom: 30px;
-    }
+            @media (max-width: 768px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+                .main-content {
+                    margin-left: 0;
+                }
+                .sidebar.hidden {
+                    transform: translateX(-100%);
+                }
+                header {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            }
 
-    .filter-content {
-      display: none;
-      position: absolute;
-      top: 35px;
-      left: 0;
-      background-color: white;
-      border: 1px solid #3498db;
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 1;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      width: 220px;
-    }
-
-    .filter-dropdown:hover .filter-content {
-      display: block;
-    }
-
-    .filter-content label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    .filter-content input {
-      width: 100%;
-      padding: 5px;
-      margin-top: 2px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-
-    .view-btn {
-        font-size: 16px;            /* Tăng kích thước chữ */
-        padding: 10px 20px;         /* Tăng kích thước nút */
-        background-color: #2980b9;  /* Màu nền */
-        color: white;               /* Màu chữ */
-        border: none;               /* Bỏ viền */
-        border-radius: 6px;         /* Bo góc */
-        cursor: pointer;            /* Con trỏ tay khi hover */
-        transition: background-color 0.3s ease;
-    }
-
-    .view-btn:hover {
-        background-color: #1f6391;  /* Màu khi di chuột vào */
-    }
-
-    /* Phân trang */
-    .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 20px 0;
-        gap: 10px;
-    }
-
-    .pagination a,
-    .pagination span {
-        padding: 8px 12px;
-        text-decoration: none;
-        border: 1px solid #ddd;
-        color: #007bff;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
-
-    .pagination a:hover {
-        background-color: #e9ecef;
-    }
-
-    .pagination .current {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination .disabled {
-        color: #6c757d;
-        cursor: not-allowed;
-    }
-
-    .pagination .disabled:hover {
-        background-color: transparent;
-    }
-    
         </style>
     </head>
     <body>
-        <!-- Sidebar -->
-            <nav class="sidebar" id="sidebar">              
-                <ul>
-                    <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
-                    <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>
-                    <li><a href="<%= request.getContextPath() %>/myRegistration">My Registrations</a></li>
-                    <li><a href="<%= request.getContextPath() %>/settings">Setting</a></li>
-                </ul>
-            </nav>
 
-        <main>
-            <!-- Header -->
-            <header>
-                <h1>Practice List</h1>
-
-                <!-- Thanh tìm kiếm với dropdown -->
-                <div class="search-container">
-                    <form method="get" action="${pageContext.request.contextPath}/practicelist" class="search-box">
-                        <input type="search" name="search" placeholder="Search..." value="${search}">
-                        <button class="search-button" type="submit">🔍</button>
-                    </form>
+        <nav class="sidebar">
+            <a href="${pageContext.request.contextPath}/profile">
+                <div class="avatar-wrapper">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="${pageContext.request.contextPath}/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
+            </a>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
 
-            </header>
+        <div class="main-content">
+            <div class="content-wrapper">
+                <header>
+                    <h1>Practice List</h1>
+                    <div class="search-container">
+                        <form method="get" action="${pageContext.request.contextPath}/practicelist" class="search-box">
+                            <input type="search" name="search" placeholder="Search..." value="${search}">
+                            <button class="search-button" type="submit">🔍</button>
+                        </form>
+                    </div>
+                </header>
+
                 <div class="filter-dropdown">
                     <button type="button" class="filter-btn" onclick="toggleFilter()">Filter ▼</button>
                     <div class="filter-content" id="filterContent" style="display:none;">
@@ -395,108 +350,90 @@
                                     <option value="A" <c:if test="${scoreFilter == 'A' || scoreFilter == null}">selected</c:if>>All</option>
                                     <option value="L" <c:if test="${scoreFilter == 'L'}">selected</c:if>>Lower than 5</option>
                                     <option value="G" <c:if test="${scoreFilter == 'G'}">selected</c:if>>Greater than 5</option>
-                                </select>
-                            </label>
-                            <button type="submit">Apply</button>
-                        </form>
+                                    </select>
+                                </label>
+                                <button type="submit">Apply</button>
+                            </form>
+                        </div>
                     </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Submitted on</th>
+                                    <th>Score</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${practiceLists}" var="pl" varStatus="status">
+                                <tr>
+                                    <td>${offset + status.index + 1}</td>
+                                    <td>${pl.quizTitle}</td>
+                                    <td>${pl.submittedAt}</td>
+                                    <td>${pl.score}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/practicedetails?quizResultId=${pl.quizResultId}" class="view-btn">View</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
-            
 
+                <c:if test="${totalPages > 1}">
+                    <div class="pagination">
+                        <c:choose>
+                            <c:when test="${currentPage > 1}">
+                                <a href="?page=${currentPage - 1}&scoreFilter=${scoreFilter}&search=${param.search}">« Previous</a>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="disabled">« Previous</span>
+                            </c:otherwise>
+                        </c:choose>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Submitted on</th>
-                            <th>Score</th>
-                            <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${practiceLists}" var="pl" varStatus="status">
-                            <tr>
-                                <td>${offset + status.index + 1}</td> 
-                                <td>${pl.quizTitle}</td>
-                                <td>${pl.submittedAt}</td>
-                                <td>${pl.score}</td>                     
-                                <td>
-                                     <a href="${pageContext.request.contextPath}/practicedetails?quizResultId=${pl.quizResultId}" class="view-btn">View</a>
-
-                                </td>
-
-                            </tr>
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <span class="current">${i}</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="?page=${i}&scoreFilter=${scoreFilter}&search=${param.search}">${i}</a>
+                                </c:otherwise>
+                            </c:choose>
                         </c:forEach>
-                        
-                        
-                    </tbody>
-                </table>
-            </div>
-                                
-            <c:if test="${totalPages > 1}">
-            <div class="pagination">
-                <!-- Nút Previous -->
-                <c:choose>
-                    <c:when test="${currentPage > 1}">
-                        <a href="?page=${currentPage - 1}&scoreFilter=${scoreFilter}&search=${param.search}">« Previous</a>
-                    </c:when>
-                    <c:otherwise>
-                        <span class="disabled">« Previous</span>
-                    </c:otherwise>
-                </c:choose>
 
-                <!-- Các số trang -->
-                <c:forEach var="i" begin="1" end="${totalPages}">
-                    <c:choose>
-                        <c:when test="${i == currentPage}">
-                            <span class="current">${i}</span>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="?page=${i}&scoreFilter=${scoreFilter}&search=${param.search}">${i}</a>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-
-                <!-- Nút Next -->
-                <c:choose>
-                    <c:when test="${currentPage < totalPages}">
-                        <a href="?page=${currentPage + 1}&scoreFilter=${scoreFilter}&search=${param.search}">Next »</a>
-                    </c:when>
-                    <c:otherwise>
-                        <span class="disabled">Next »</span>
-                    </c:otherwise>
-                </c:choose>
+                        <c:choose>
+                            <c:when test="${currentPage < totalPages}">
+                                <a href="?page=${currentPage + 1}&scoreFilter=${scoreFilter}&search=${param.search}">Next »</a>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="disabled">Next »</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:if>
             </div>
-        </c:if>
-        </main>
-        
-       
+        </div>
+
         <script>
             function toggleFilter() {
                 const content = document.getElementById('filterContent');
                 content.style.display = (content.style.display === 'block') ? 'none' : 'block';
             }
 
-            // Ẩn khi click ra ngoài
             window.addEventListener('click', function (e) {
                 const dropdown = document.querySelector('.filter-dropdown');
                 const content = document.getElementById('filterContent');
-                if (!dropdown.contains(e.target)) {
+                if (content && !dropdown.contains(e.target)) {
                     content.style.display = 'none';
                 }
             });
+
         </script>
-        <script>
-    // Thêm sự kiện click cho nút toggleSidebar
-            document.getElementById("toggleSidebar").addEventListener("click", function (e) {
-            e.preventDefault(); // Ngăn trình duyệt nhảy lên đầu trang do href="#"
-            document.querySelector(".sidebar").classList.toggle("hidden"); // Toggle class 'hidden'
-            });
-        </script>
-        
+
     </body>
 </html>
-
-

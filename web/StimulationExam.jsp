@@ -27,41 +27,83 @@
                 background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
                 min-height:100vh;
             }
+            /* === Sidebar container (UPDATED) === */
             .sidebar {
-                width:220px;
-                background:#2c3e50;
-                color:white;
-                padding:20px;
-                position:fixed;
-                top:0;
-                left:0;
-                height:100%;
-                transition:transform .3s;
-                z-index:200;
+                position: fixed;
+                top: 0px;
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
             }
+
             .sidebar.hidden {
-                transform:translateX(-100%);
+                transform: translateX(-100%);
             }
+
+            /* === Sidebar avatar (UPDATED) === */
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
+
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
+            /* === Sidebar navigation list (UPDATED) === */
             .sidebar ul {
-                list-style:none;
+                list-style: none;
+                padding: 0;
+                margin: 0;
             }
-            .sidebar li {
-                margin:15px 0;
+
+            .sidebar ul li {
+                margin: 15px 0;
             }
-            .sidebar a {
-                color:white;
-                text-decoration:none;
-                display:block;
-                padding:10px;
-                border-radius:5px;
-                transition:background .3s;
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
             }
-            .sidebar a:hover {
-                background:#34495e;
+
+            /* === Hover effect (modern) (UPDATED) === */
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
             }
+
             .main-content {
                 flex-grow:1;
-                margin-left:220px;
+                margin-left:220px; /* Adjust this to match sidebar width */
                 padding:20px;
                 transition:margin .3s;
             }
@@ -90,24 +132,13 @@
                 align-items:center;
                 gap:15px;
             }
-            #toggleSidebar {
-                background:#34495e;
-                color:white;
-                padding:10px 15px;
-                font-size:16px;
-                border:none;
-                border-radius:5px;
-                cursor:pointer;
-            }
-            #toggleSidebar:hover {
-                background:#2c3e50;
-            }
             .header h1 {
                 color:#2d3748;
                 font-size:28px;
                 font-weight:700;
             }
             .header-right {
+                position: relative;
                 display:flex;
                 align-items:center;
                 gap:20px;
@@ -362,6 +393,7 @@
                 text-align:center;
                 padding:40px 20px;
                 color:#4a5568;
+                grid-column: 1 / -1;
             }
             .no-results i {
                 font-size:48px;
@@ -370,7 +402,7 @@
             }
             @media(max-width:1024px){
                 .main-content{
-                    margin-left:200px;
+                    margin-left:220px;
                 }
                 .search-box{
                     width:250px;
@@ -382,7 +414,7 @@
                     padding:15px;
                 }
                 .sidebar{
-                    transform:translateX(-100%);
+                    transform:translateX(-100%); /* Hide sidebar on small screens */
                 }
                 .subjects-grid{
                     grid-template-columns:1fr;
@@ -402,100 +434,113 @@
                 }
                 .filter-sidebar{
                     width:280px;
-                    right:-20px;
+                    right:0;
+                    left: auto;
                 }
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <nav class="sidebar">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
-                    <li><a href="${pageContext.request.contextPath}/my-registration">My Registrations</a></li>
-                    <li><a href="#">Setting</a></li>
-                </ul>
-            </nav>
-            <main class="main-content">
-                <div class="content-wrapper">
-                    <div class="header">
-                        <div class="header-left">
-                            <h1>Simulation Exam</h1>                            
-                        </div>     
-                        <div class="header-right">
-                            <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm">
-                                <div class="search-wrapper">
-                                    <div class="search-box">
-                                        <input type="search" id="searchInput" name="search" 
-                                               placeholder="Search exam..." value="${param.search}" />
-                                        <button type="submit" class="search-button">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                    <button type="button" class="filter-toggle" id="filterToggle">
-                                        <i class="fas fa-filter"></i>
-                                    </button>
-                                    <div class="filter-sidebar" id="filterSidebar">
-                                        <h3>Filter Options</h3>
 
-                                        <div class="filter-group">
-                                            <h4>Category</h4>
-                                            <c:forEach items="${allCategories}" var="category">
-                                                <label>
-                                                    <input type="checkbox" name="cat" value="${category}"
-                                                           <c:if test="${fn:contains(paramValues.cat, category)}">checked</c:if>>
-                                                    ${category}
-                                                </label>
-                                            </c:forEach>
-                                        </div>
-
-                                        <div class="filter-actions">
-                                            <button type="button" class="apply-filter" onclick="applyFilters()">Apply</button>
-                                            <button type="button" class="clear-filter" onclick="clearFilters()">Clear</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="subjects-grid">
-                        <c:choose>
-                            <c:when test="${empty stimulationList}">
-                                <div class="no-results">
-                                    <i class="fas fa-search"></i>
-                                    <h3>No exams found</h3>
-                                    <p>Try adjusting your search criteria or filters</p>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach items="${stimulationList}" var="exam">
-                                    <div class="subject-card" onclick="goToStimulation(${exam.id})">
-                                        <div class="subject-thumbnail">
-                                            📘
-                                        </div>
-                                        <div class="subject-content">
-                                            <h3>${exam.stimulationExam}</h3>
-                                            <p>Level: ${exam.level}</p>
-                                            <p>Number of question: ${exam.numberOfQuestions}</p>
-                                            <p>Time: ${exam.duration} minutes</p>
-                                            <p>Pass rate: ${exam.passRate}%</p>
-                                            <button class="register-btn" onclick="registerStimulation(event, ${exam.id})">Start</button>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-
+        <nav class="sidebar">
+            <a href="<%= request.getContextPath() %>/profile">
+                <div class="avatar-wrapper">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
-            </main>
-        </div>
+            </a>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
+        <main class="main-content" id="mainContent">
+            <div class="content-wrapper">
+                <div class="header">
+                    <div class="header-left">
+                        <h1>Simulation Exam</h1>
+                    </div>
+                    <div class="header-right">
+                        <form method="GET" action="${pageContext.request.contextPath}/stimulation-exam" id="searchForm">
+                            <div class="search-wrapper">
+                                <div class="search-box">
+                                    <input type="search" id="searchInput" name="search"
+                                           placeholder="Search exam..." value="${param.search}" />
+                                    <button type="submit" class="search-button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <button type="button" class="filter-toggle" id="filterToggle">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <div class="filter-sidebar" id="filterSidebar">
+                                    <h3>Filter Options</h3>
+
+                                    <div class="filter-group">
+                                        <h4>Category</h4>
+                                        <c:forEach items="${allCategories}" var="category">
+                                            <label>
+                                                <input type="checkbox" name="cat" value="${category}"
+                                                       <c:if test="${fn:contains(paramValues.cat, category)}">checked</c:if>>
+                                                ${category}
+                                            </label>
+                                        </c:forEach>
+                                    </div>
+
+                                    <div class="filter-actions">
+                                        <button type="button" class="apply-filter" onclick="applyFilters()">Apply</button>
+                                        <button type="button" class="clear-filter" onclick="clearFilters()">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="subjects-grid">
+                    <c:choose>
+                        <c:when test="${empty stimulationList}">
+                            <div class="no-results">
+                                <i class="fas fa-search"></i>
+                                <h3>No exams found</h3>
+                                <p>Try adjusting your search criteria or filters</p>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${stimulationList}" var="exam">
+                                <div class="subject-card" onclick="goToStimulation(${exam.id})">
+                                    <div class="subject-thumbnail">
+                                        📘
+                                    </div>
+                                    <div class="subject-content">
+                                        <h3>${exam.stimulationExam}</h3>
+                                        <p>Level: ${exam.level}</p>
+                                        <p>Number of question: ${exam.numberOfQuestions}</p>
+                                        <p>Time: ${exam.duration} minutes</p>
+                                        <p>Pass rate: ${exam.passRate}%</p>
+                                        <button class="register-btn" onclick="registerStimulation(event, ${exam.id})">Start</button>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+            </div>
+        </main>
+
 
         <script>
-
-            // Chức năng chuyển đổi bộ lọc
+            // Filter sidebar toggle functionality
             const filterToggle = document.getElementById('filterToggle');
             const filterSidebar = document.getElementById('filterSidebar');
 
@@ -507,7 +552,7 @@
                 icon.classList.toggle('fa-times');
             });
 
-            // Đóng thanh bên bộ lọc khi nhấp chuột ra ngoài
+            // Close filter sidebar when clicking outside
             document.addEventListener('click', (e) => {
                 if (!filterSidebar.contains(e.target) && !filterToggle.contains(e.target)) {
                     filterSidebar.classList.remove('show');
@@ -517,24 +562,24 @@
                 }
             });
 
-            // Ngăn chặn đóng khi nhấp vào bên trong thanh bên bộ lọc
+            // Prevent closing when clicking inside the filter sidebar
             filterSidebar.addEventListener('click', (e) => {
                 e.stopPropagation();
             });
 
-            // Hàm áp dụng bộ lọc
+            // Function to apply filters
             function applyFilters() {
                 const form = document.getElementById('searchForm');
 
-                // Xóa các input hidden hiện tại để tránh trùng lặp
+                // Remove current hidden inputs to prevent duplicates
                 form.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
 
-                // Thêm các input hidden cho checkbox đã chọn
+                // Add hidden inputs for selected checkboxes
                 document.querySelectorAll('#filterSidebar input[name="cat"]:checked').forEach(cb => {
                     form.appendChild(newHiddenInput('cat', cb.value));
                 });
 
-                // Nếu có giá trị tìm kiếm, thêm input hidden
+                // Add search input as hidden if it has a value
                 const searchVal = document.getElementById('searchInput').value.trim();
                 if (searchVal) {
                     form.appendChild(newHiddenInput('search', searchVal));
@@ -543,22 +588,22 @@
                 form.submit();
             }
 
-            // Hàm xóa bộ lọc
+            // Function to clear filters
             function clearFilters() {
-                // Bỏ chọn tất cả checkbox
+                // Uncheck all checkboxes
                 document.querySelectorAll('#filterSidebar input[type="checkbox"]').forEach(cb => cb.checked = false);
 
-                // Xóa giá trị tìm kiếm
+                // Clear search input value
                 document.getElementById('searchInput').value = '';
 
-                // Xóa input hidden nếu có
+                // Remove hidden inputs for filters and search
                 document.getElementById('searchForm').querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
 
-                // Submit lại form
+                // Submit the form to refresh with no filters/search
                 document.getElementById('searchForm').submit();
             }
 
-           // Hàm tạo input hidden
+            // Helper function to create hidden input
             function newHiddenInput(name, value) {
                 const input = document.createElement('input');
                 input.type = 'hidden';
@@ -567,13 +612,13 @@
                 return input;
             }
 
-            // Khởi tạo các ô đánh dấu bộ lọc dựa trên các tham số URL hiện tại
+            // Initialize filter checkboxes based on current URL parameters
             document.addEventListener('DOMContentLoaded', function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 const categories = urlParams.getAll('cat');
                 const searchParam = urlParams.get('search');
 
-                // Đánh dấu các ô đánh dấu thích hợp
+                // Mark appropriate checkboxes
                 categories.forEach(category => {
                     const checkbox = document.querySelector('#filterSidebar input[name="cat"][value="' + category + '"]');
                     if (checkbox) {
@@ -581,13 +626,24 @@
                     }
                 });
 
-                // Đặt giá trị ô tìm kiếm nếu có trong URL
+                // Set search input value if present in URL
                 const searchInput = document.getElementById('searchInput');
                 if (searchParam) {
                     searchInput.value = searchParam;
                 }
-
             });
+
+            // Functions for subject card actions (placeholders)
+            function goToStimulation(examId) {
+                window.location.href = '${pageContext.request.contextPath}/stimulation-detail?id=' + examId;
+            }
+
+            function registerStimulation(event, examId) {
+                event.stopPropagation(); // Prevent card click event from firing
+                console.log('Registering for exam ID:', examId);
+                alert('Starting exam ' + examId); // Placeholder action
+                window.location.href = '${pageContext.request.contextPath}/start-exam?id=' + examId;
+            }
         </script>
     </body>
 </html>
