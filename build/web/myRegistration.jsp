@@ -12,7 +12,7 @@
             /* Định dạng tổng thể */
             body {
                 display: flex;
-                font-family: Arial, sans-serif;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
                 background-color: #f4f4f4;
@@ -20,7 +20,7 @@
 
             /* Sidebar */
             .sidebar {
-                width: 220px;
+                width: 180px;
                 background: #2c3e50;
                 color: white;
                 padding: 20px;
@@ -31,15 +31,12 @@
                 transition: transform 0.3s ease-in-out;
             }
 
-            /* Ẩn sidebar khi có class "hidden" */
-            .sidebar.hidden {
-                transform: translateX(-100%);
-            }
 
             /* Danh sách sidebar */
             .sidebar ul {
                 list-style: none;
                 padding: 0;
+                padding-top:20px;
             }
 
             .sidebar ul li {
@@ -56,7 +53,78 @@
             }
 
             .sidebar ul li a:hover {
-                background-color: #deddf0;
+                /* === Sidebar container === */
+                .sidebar {
+                    width: 220px;
+                    background: #2c3e50;
+                    color: white;
+                    padding: 20px;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    transition: transform 0.3s;
+                    z-index: 200;
+                }
+
+                .sidebar.hidden {
+                    transform: translateX(-100%);
+                }
+
+                /* === Sidebar avatar === */
+                .sidebar .avatar-wrapper {
+                    width: 60px;
+                    height: 60px;
+                    background-color: #95a5a6;
+                    border-radius: 50%;
+                    margin: 10px auto 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    overflow: hidden;
+                }
+
+                .sidebar .avatar-img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    background-color: transparent;
+                }
+
+                .sidebar .avatar-icon {
+                    font-size: 24px;
+                    color: white;
+                }
+
+                /* === Sidebar navigation list === */
+                .sidebar ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                .sidebar ul li {
+                    margin: 15px 0;
+                }
+
+                .sidebar ul li a {
+                    color: white;
+                    text-decoration: none;
+                    display: block;
+                    padding: 10px;
+                    border-radius: 5px;
+                    transition: background 0.3s, transform 0.2s;
+                }
+
+                /* === Hover effect (không tím) === */
+                .sidebar ul li a:hover {
+                    background-color: rgba(255, 255, 255, 0.05); /* nhẹ nhàng hiện đại */
+                    transform: translateX(5px);
+                    color: #ecf0f1;
+                }
+
             }
 
             /* Nội dung chính */
@@ -65,12 +133,9 @@
                 padding: 20px;
                 margin-left: 240px;
                 transition: margin-left 0.3s ease-in-out;
+
             }
 
-            /* Khi sidebar ẩn, dịch nội dung chính sang trái */
-            .sidebar.hidden + main {
-                margin-left: 0;
-            }
 
             /* Header */
             header {
@@ -80,18 +145,6 @@
                 padding: 15px;
                 border-radius: 8px;
                 color: rgb(0, 0, 0);
-            }
-
-            /* Nút Toggle Sidebar */
-            #toggleSidebar {
-                background-color: #34495e;
-                color: white;
-                text-decoration: none;
-                padding: 10px 15px;
-                font-size: 16px;
-                cursor: pointer;
-                border-radius: 5px;
-                margin-right: 15px;
             }
 
             #toggleSidebar:hover {
@@ -197,7 +250,9 @@
             .search-button:hover {
                 background-color: #0056b3;
             }
-
+            a {
+                text-decoration: none;
+            }
             /* Bao bọc ô tìm kiếm để định vị dropdown */
             .search-container {
                 position: relative;
@@ -323,19 +378,133 @@
                 font-size: 14px;
                 color: #2c3e50;
             }
+            .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 0 auto 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+                margin-top: 30px;
+            }
+
+            .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .avatar-wrapper .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+            /* === Sidebar container === */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 180px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
+            }
+
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
+
+            /* === Sidebar avatar === */
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
+
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
+            /* === Sidebar navigation list === */
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar ul li {
+                margin: 15px 0;
+            }
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            /* === Hover effect (modern, không tím) === */
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
+            }
+
 
         </style>
     </head>
     <body>
         <!-- Sidebar -->
         <nav class="sidebar">
+            <a href="<%= request.getContextPath() %>/profile">
+                <div class="avatar-wrapper">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </a>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
                 <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
-                <li><a href="${pageContext.request.contextPath}/my-registration">My Registrations</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
                 <li><a href="#">Setting</a></li>
             </ul>
         </nav>
+
 
         <main>
             <header>
