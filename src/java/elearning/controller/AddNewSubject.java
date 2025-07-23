@@ -91,7 +91,7 @@ public class AddNewSubject extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-
+        // Lấy các tham số từ form gửi lên
         String name = request.getParameter("name");
         String category = request.getParameter("category");
         int numberOfLesson = Integer.parseInt(request.getParameter("numberOfLesson"));
@@ -108,12 +108,13 @@ public class AddNewSubject extends HttpServlet {
             filePath = "uploads" + File.separator + System.currentTimeMillis() + "_" + fileName;
             filePart.write(uploadPath + File.separator + System.currentTimeMillis() + "_" + fileName);
         }
-
+        // Tạo đối tượng Subject từ dữ liệu form
         SubjectList subject = new SubjectList(name, category, numberOfLesson, featured, owner, description, filePath);
-
+        
+        // Gọi DAO để thêm dữ liệu vào database
         SubjectListDAO dao = new SubjectListDAO();
         try {
-            dao.addSubject(subject);
+            dao.addSubject(subject);//add to DB
             response.sendRedirect("subject-list");
         } catch (Exception e) {
             e.printStackTrace();
