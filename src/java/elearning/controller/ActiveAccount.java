@@ -70,7 +70,7 @@ public class ActiveAccount extends HttpServlet {
         request.setAttribute("activeCode", activeCode);
 
         // Chuyển hướng người dùng tới trang active-account.jsp để nhập mật khẩu mới và kích hoạt tài khoản
-        request.getRequestDispatcher("active-account.jsp").forward(request, response);
+        request.getRequestDispatcher("complete-register.jsp").forward(request, response);
     }
 
 // Phương thức xử lý khi người dùng submit form kích hoạt tài khoản (POST request)
