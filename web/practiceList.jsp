@@ -374,7 +374,6 @@
         <main>
             <!-- Header -->
             <header>
-                <a href="#" id="toggleSidebar">☰ Toggle Sidebar</a>
                 <h1>Practice List</h1>
 
                 <!-- Thanh tìm kiếm với dropdown -->

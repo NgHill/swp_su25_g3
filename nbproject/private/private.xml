@@ -3,14 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/web/subjectRegister.jsp</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/web/register.jsp</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/web/subjectList.jsp</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/web/myRegistration.jsp</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/BasicDAO/StimulationDAO.java</file>
-            <file>file:/C:/Users/DUNG/swp_su25_g3/web/StimulationExam.jsp</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/controller/SubjectRegister.java</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/web/practiceList.jsp</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/web/login.jsp</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/controller/StimulationExamServlet.java</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/web/home.jsp</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/controller/TogetherAIServlet.java</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/BasicDAO/PracticeListDAO.java</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/controller/HomeServlet.java</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/web/StimulationExam.jsp</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/web/subjectDetail.jsp</file>
             <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/constant/ServerConnectionInfo.java</file>
+            <file>file:/C:/Users/DUNG/swp_su25_g3/src/java/elearning/BasicDAO/HomeDAO.java</file>
         </group>
     </open-files>
 </project-private>
