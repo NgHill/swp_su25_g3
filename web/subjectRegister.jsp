@@ -25,37 +25,75 @@
                 background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
                 min-height:100vh;
             }
+            /* === Sidebar (UPDATED) === */
             .sidebar {
-                width:220px;
-                background:#2c3e50;
-                color:white;
-                padding:20px;
-                position:fixed;
-                top:0;
-                left:0;
-                height:100%;
-                transition:transform .3s;
-                z-index:200;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
             }
+
             .sidebar.hidden {
-                transform:translateX(-100%);
+                transform: translateX(-100%);
             }
+
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
+
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
             .sidebar ul {
-                list-style:none;
+                list-style: none;
+                padding: 0;
+                margin: 0;
             }
-            .sidebar li {
-                margin:15px 0;
+
+            .sidebar ul li {
+                margin: 15px 0;
             }
-            .sidebar a {
-                color:white;
-                text-decoration:none;
-                display:block;
-                padding:10px;
-                border-radius:5px;
-                transition:background .3s;
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
             }
-            .sidebar a:hover {
-                background:#34495e;
+
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
             }
             .main-content {
                 flex-grow:1;
@@ -434,140 +472,150 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <nav class="sidebar">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
-                    <li><a href="${pageContext.request.contextPath}/my-registration">My Registrations</a></li>
-                    <li><a href="#">Setting</a></li>
-                </ul>
-            </nav>
-            <main class="main-content">
-                <div class="content-wrapper">
-                    <div class="header">
-                        <div class="header-left">
-                            <button id="toggleSidebar">☰</button>
-                            <h1>Subject Register</h1>
-                        </div>
-                    </div>
-
+        <nav class="sidebar">
+            <a href="${pageContext.request.contextPath}/profile">
+                <div class="avatar-wrapper">
                     <c:choose>
-                        <c:when test="${subject != null}">
-                            <div class="subject-card" style="cursor: default;">
-                                <div class="subject-content" style="padding: 30px;">
-                                    <h2 style="font-size: 24px; color: #2d3748;">${subject.title}</h2>
-                                    <div class="price-section" style="margin-top: 10px;">
-                                        <span class="sale-price" style="font-size: 20px; color: #e53e3e;">
-                                            <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
-                                        </span>
-                                    </div>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="${pageContext.request.contextPath}/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </a>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="header">
+                    <div class="header-left">
+                        <button id="toggleSidebar">☰</button>
+                        <h1>Subject Register</h1>
+                    </div>
+                </div>
 
-                                    <hr style="margin: 20px 0;">
+                <c:choose>
+                    <c:when test="${subject != null}">
+                        <div class="subject-card" style="cursor: default;">
+                            <div class="subject-content" style="padding: 30px;">
+                                <h2 style="font-size: 24px; color: #2d3748;">${subject.title}</h2>
+                                <div class="price-section" style="margin-top: 10px;">
+                                    <span class="sale-price" style="font-size: 20px; color: #e53e3e;">
+                                        <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
+                                    </span>
+                                </div>
+
+                                <hr style="margin: 20px 0;">
 
 
-                                    <div class="form-group">
-                                        <h3>Thông tin người dùng:</h3>
+                                <div class="form-group">
+                                    <h3>Thông tin người dùng:</h3>
 
-                                        <c:choose>
-                                            <c:when test="${sessionScope.userAuth != null}">
-                                                <%-- Nếu đã đăng nhập --%>
-                                                <p><strong>Họ và tên:</strong> ${sessionScope.userAuth.fullName}</p>
-                                                <p><strong>Email:</strong> ${sessionScope.userAuth.email}</p>
-                                                <p><strong>Số điện thoại:</strong> ${sessionScope.userAuth.mobile}</p>
-                                                <p><strong>Giới tính:</strong> 
-                                                    <c:choose>
-                                                        <c:when test="${sessionScope.userAuth.gender == true}">Nam</c:when>
-                                                        <c:when test="${sessionScope.userAuth.gender == false}">Nữ</c:when>
-                                                        <c:otherwise>Khác</c:otherwise>
-                                                    </c:choose>
-                                                </p>
-                                                <form method="post" action="${pageContext.request.contextPath}/subject-register">
-                                                    <input type="hidden" name="subjectId" value="${subject.id}" />
-                                                    <input type="hidden" name="price" value="${subject.salePrice}" />
-                                                    <input type="hidden" name="confirm" value="true" />
+                                    <c:choose>
+                                        <c:when test="${sessionScope.userAuth != null}">
+                                            <%-- Nếu đã đăng nhập --%>
+                                            <p><strong>Họ và tên:</strong> ${sessionScope.userAuth.fullName}</p>
+                                            <p><strong>Email:</strong> ${sessionScope.userAuth.email}</p>
+                                            <p><strong>Số điện thoại:</strong> ${sessionScope.userAuth.mobile}</p>
+                                            <p><strong>Giới tính:</strong> 
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.userAuth.gender == true}">Nam</c:when>
+                                                    <c:when test="${sessionScope.userAuth.gender == false}">Nữ</c:when>
+                                                    <c:otherwise>Khác</c:otherwise>
+                                                </c:choose>
+                                            </p>
+                                            <form method="post" action="${pageContext.request.contextPath}/subject-register">
+                                                <input type="hidden" name="subjectId" value="${subject.id}" />
+                                                <input type="hidden" name="price" value="${subject.salePrice}" />
+                                                <input type="hidden" name="confirm" value="true" />
 
-                                                    <div class="form-group">
-                                                        <label for="packageSelect"><strong>Chọn gói học:</strong></label><br>
-                                                        <select id="packageSelect" name="packageMonths" style="margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-                                                            <option value="1">1 tháng</option>
-                                                            <option value="3">3 tháng</option>
-                                                            <option value="6">6 tháng</option>
-                                                        </select>
-                                                    </div>
-                                                    <hr style="margin: 20px 0;">
-                                                    <button type="submit" class="register-btn">Xác nhận đăng kí</button>
-                                                </form>
-                                            </c:when>
-
-                                            <c:otherwise>
-                                                <%-- Nếu chưa đăng nhập --%>
-                                                <form id="registerForm" method="post" action="${pageContext.request.contextPath}/subject-register">
-                                                    <input type="hidden" name="subjectId" value="${subject.id}" />
-                                                    <input type="hidden" name="price" value="${subject.salePrice}" />
-                                                    <input type="hidden" name="confirm" value="true" />
-
-                                                    <div class="form-group">
-                                                        <label for="packageSelect"><strong>Chọn gói học:</strong></label><br>
-                                                        <select id="packageSelect" name="packageMonths" style="margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-                                                            <option value="1">1 tháng</option>
-                                                            <option value="3">3 tháng</option>
-                                                            <option value="6">6 tháng</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <input type="text" name="fullName" placeholder="Họ và tên" required pattern="[^\d]+" title="Họ và tên không được chứa số">
-
-                                                    <input type="email" name="email" placeholder="Email" required>
-
-                                                    <input type="text" name="mobile" placeholder="Số điện thoại" required pattern="[0-9]+" title="Số điện thoại chỉ được chứa số">
-
-                                                    <select name="gender" required>
-                                                        <option value="true">Nam</option>
-                                                        <option value="false">Nữ</option>
+                                                <div class="form-group">
+                                                    <label for="packageSelect"><strong>Chọn gói học:</strong></label><br>
+                                                    <select id="packageSelect" name="packageMonths" style="margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                                                        <option value="1">1 tháng</option>
+                                                        <option value="3">3 tháng</option>
+                                                        <option value="6">6 tháng</option>
                                                     </select>
+                                                </div>
+                                                <hr style="margin: 20px 0;">
+                                                <button type="submit" class="register-btn">Xác nhận đăng kí</button>
+                                            </form>
+                                        </c:when>
 
-                                                    <button type="submit" class="register-btn" onclick="return confirm('Bạn có chắc muốn đăng ký môn học này?')">Xác nhận đăng ký</button>
-                                                </form>
+                                        <c:otherwise>
+                                            <%-- Nếu chưa đăng nhập --%>
+                                            <form id="registerForm" method="post" action="${pageContext.request.contextPath}/subject-register">
+                                                <input type="hidden" name="subjectId" value="${subject.id}" />
+                                                <input type="hidden" name="price" value="${subject.salePrice}" />
+                                                <input type="hidden" name="confirm" value="true" />
 
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="packageSelect"><strong>Chọn gói học:</strong></label><br>
+                                                    <select id="packageSelect" name="packageMonths" style="margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                                                        <option value="1">1 tháng</option>
+                                                        <option value="3">3 tháng</option>
+                                                        <option value="6">6 tháng</option>
+                                                    </select>
+                                                </div>
+
+                                                <input type="text" name="fullName" placeholder="Họ và tên" required pattern="[^\d]+" title="Họ và tên không được chứa số">
+
+                                                <input type="email" name="email" placeholder="Email" required>
+
+                                                <input type="text" name="mobile" placeholder="Số điện thoại" required pattern="[0-9]+" title="Số điện thoại chỉ được chứa số">
+
+                                                <select name="gender" required>
+                                                    <option value="true">Nam</option>
+                                                    <option value="false">Nữ</option>
+                                                </select>
+
+                                                <button type="submit" class="register-btn" onclick="return confirm('Bạn có chắc muốn đăng ký môn học này?')">Xác nhận đăng ký</button>
+                                            </form>
+
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
-                        </c:when>
-                    </c:choose>
-                    <c:if test="${not empty successMessage}">
-                        <script>
-        alert("${successMessage}");
-        window.location.href = "<c:url value='/subject-list' />";
-                        </script>
-                    </c:if>
+                        </div>
+                    </c:when>
+                </c:choose>
+                <c:if test="${not empty successMessage}">
+                    <script>
+                            alert("${successMessage}");
+                            window.location.href = "<c:url value='/subject-list' />";
+                    </script>
+                </c:if>
+            </div>
+        </main>
+    <script>
+        document.getElementById('toggleSidebar').addEventListener('click', () =>
+            document.querySelector('.sidebar').classList.toggle('hidden')
+        );
 
-                </div>
-            </main>
-        </div>
-        <script>
-            document.getElementById('toggleSidebar').addEventListener('click', () =>
-                document.querySelector('.sidebar').classList.toggle('hidden')
-            );
+        const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
+        ft.addEventListener('click', () => {
+            sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
+            ft.querySelector('i').classList.toggle('fa-chevron-up');
+            ft.querySelector('i').classList.toggle('fa-chevron-down');
+        });
 
-            const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
-            ft.addEventListener('click', () => {
-                sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-                ft.querySelector('i').classList.toggle('fa-chevron-up');
-                ft.querySelector('i').classList.toggle('fa-chevron-down');
-            });
-
-            document.addEventListener('click', e => {
-                if (!sb.contains(e.target) && !ft.contains(e.target)) {
-                    sb.style.display = 'none';
-                    ft.querySelector('i').classList.add('fa-chevron-down');
-                    ft.querySelector('i').classList.remove('fa-chevron-up');
-                }
-            });
+        document.addEventListener('click', e => {
+            if (!sb.contains(e.target) && !ft.contains(e.target)) {
+                sb.style.display = 'none';
+                ft.querySelector('i').classList.add('fa-chevron-down');
+                ft.querySelector('i').classList.remove('fa-chevron-up');
+            }
+        });
 
 
-        </script>
-    </body>
+    </script>
+</body>
 </html>
