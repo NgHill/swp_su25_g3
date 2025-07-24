@@ -133,7 +133,7 @@
 
         <div class="sidebar">
             <h2>📊 Dashboard</h2>
-            <a href="post_detail.jsp">➕ Add New Post</a>
+            <a href="post-detail">➕ Add New Post</a>
             <a href="slider-list">📋 View All Slider List</a>
             <a href="#">🖼️ Add New Slider</a>
         </div>

@@ -194,7 +194,7 @@
                                     ${post.category} - 
                                     <fmt:formatDate value="${post.createdAt}" pattern="dd/MM/yyyy" /> by ${post.getAuthorFunc().getFullName()}
                                 </p>
-                                <a href="blog-detail?id=${post.id}">Link - Abcxyz.com</a>
+                                <a href="blog-detail?id=${post.id}">View detail click here</a>
 
                             </div>
                         </div>

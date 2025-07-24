@@ -1,7 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<!-- Cấu hình JSP để sử dụng JSTL và charset UTF-8 -->
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -156,7 +154,7 @@
 
                 <!-- Nút Cancel và Save -->
                 <div class="right">
-                    <a href="postList.jsp" class="btn btn-outline-dark">Cancel</a>
+                    <a href="mtk_dashboard" class="btn btn-outline-dark">Cancel</a>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
