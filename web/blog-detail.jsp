@@ -14,27 +14,90 @@
 
         <!-- CSS tùy chỉnh cho giao diện blog -->
         <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(145deg, #d7c7ff, #bca4f4);
+                min-height: 100vh;
+            }
+
+            .container {
+                background-color: rgba(255, 255, 255, 0.95);
+                padding: 2rem;
+                border-radius: 16px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            }
+
             .sidebar-title {
                 font-size: 1.5rem;
                 font-weight: bold;
                 margin-bottom: 1rem;
+                color: #5e35b1;
             }
+
             .contact-info {
                 font-size: 0.9rem;
+                color: #4f2ca3;
             }
+
+            .latest-post-title a {
+                font-size: 0.9rem;
+                font-weight: bold;
+                color: #4f2ca3;
+                text-decoration: none;
+            }
+
+            .latest-post-title a:hover {
+                text-decoration: underline;
+            }
+
+            .text-muted {
+                color: #6c4db4 !important;
+            }
+
+            .btn-dark {
+                background-color: #5e35b1;
+                border: none;
+            }
+
+            .btn-dark:hover {
+                background-color: #45218a;
+            }
+
+            .input-group input.form-control {
+                border-radius: 6px 0 0 6px;
+            }
+
+            .input-group button.btn {
+                background-color: #7b1fa2;
+                color: white;
+                border-radius: 0 6px 6px 0;
+            }
+
+            .input-group button.btn:hover {
+                background-color: #6a1b9a;
+            }
+
             .post-detail h2 {
                 font-weight: bold;
+                color: #4f2ca3;
             }
+
             .post-detail p.meta {
                 font-size: 0.9rem;
                 color: #555;
             }
+
             .post-detail img {
                 max-width: 100%;
                 height: auto;
                 margin: 15px 0;
                 display: block;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             }
+
             .post-detail video {
                 max-width: 100%;
                 height: auto;
@@ -44,7 +107,21 @@
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                 max-height: 500px;
             }
+
+            hr {
+                border-top: 1px solid #d3bfff;
+            }
+
+            a.text-decoration-none {
+                color: #4f2ca3;
+            }
+
+            a.text-decoration-none:hover {
+                text-decoration: underline;
+                color: #321c74;
+            }
         </style>
+
     </head>
 
     <body>
