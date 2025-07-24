@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/BasicDAO/SubjectListDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/BasicDAO/SubjectListDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/controller/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/controller/Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Question.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Question.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuestionAnswer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuestionAnswer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Quiz.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Quiz.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuizResult.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuizResult.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/SubjectPackage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/SubjectPackage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/EducationPlatform.war" beforeDir="false" afterPath="$PROJECT_DIR$/dist/EducationPlatform.war" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/elearning/controller/ActiveAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/controller/ActiveAccount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/elearning/controller/AddNewSubject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/controller/AddNewSubject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/complete-register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/complete-register.jsp" afterDir="false" />
-    </list>
+    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="fix: active account" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,7 +55,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "manh",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/admin/Downloads/swp_su25_g3-main (1)/code/swp_su25_g3",
@@ -152,6 +135,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="fix: active account" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: active account" />
   </component>
 </project>

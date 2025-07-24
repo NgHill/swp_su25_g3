@@ -461,6 +461,21 @@
                     align-items:stretch;
                 }
             }
+            .featured-subject-item {
+                border: 1px solid #ccc;
+                padding: 8px 10px;
+                margin-bottom: 6px;
+                border-radius: 6px;
+                font-size: 13px;
+                cursor: pointer;
+                background-color: #f9f9f9;
+                transition: background-color 0.2s;
+            }
+
+            .featured-subject-item:hover {
+                background-color: #e9ecef;
+            }
+
         </style>
     </head>
     <body>
@@ -507,21 +522,21 @@
                                 <div class="filter-sidebar" id="filterSidebar">
                                     <h3>Categories</h3>
                                     <div class="filter-group">
-                                        <label><input type="radio" name="cat" value="" ${empty param.cat ? 'checked' : ''}> Tất cả</label>
+                                        <label><input type="radio" name="cat" value="" ${empty param.cat ? 'checked' : ''}> All</label>
                                         <label><input type="radio" name="cat" value="Teamwork" ${param.cat == 'Teamwork' ? 'checked' : ''}> Teamwork</label>
                                         <label><input type="radio" name="cat" value="Communication" ${param.cat == 'Communication' ? 'checked' : ''}> Communication</label>
                                         <label><input type="radio" name="cat" value="Self improve" ${param.cat == 'Self improve' ? 'checked' : ''}> Self improve</label>
                                         <label><input type="radio" name="cat" value="Thinking" ${param.cat == 'Thinking' ? 'checked' : ''}> Thinking</label>
                                     </div>
-                                    <button type="button" class="clear-filter" onclick="clearFilter()">Xóa bộ lọc</button>
+
 
                                     <h3>Featured Subject</h3>
-                                    <div class="filter-group">
-                                        <label><a href="#">Subject A</a></label>
-                                        <label><a href="#">Subject B</a></label>
-                                        <label><a href="#">Subject C</a></label>
-                                        <label><a href="#">Subject D</a></label>
-                                    </div>
+                                    <c:forEach var="subject" items="${featureSubjects}">
+                                        <div class="featured-subject-item"  onclick="window.location.href = '${pageContext.request.contextPath}/subject-detail?id=${subject.id}'">
+                                            ${subject.title}
+                                        </div>
+                                    </c:forEach>
+
                                     <div class="link-section">
                                         <a href="#">Privacy Policy</a>
                                         <a href="#">Terms of Service</a>
@@ -620,7 +635,7 @@
                                                 <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
                                             </span>
                                         </c:if>
-                                   
+
                                     </div>
                                 </c:if>
                             </div>
@@ -630,8 +645,8 @@
                 <c:if test="${empty subjects}">
                     <div style="text-align:center;padding:50px;color:#666;">
                         <i class="fas fa-search" style="font-size:48px;margin-bottom:20px;"></i>
-                        <h3>Không tìm thấy môn học nào</h3>
-                        <p>Thử thay đổi từ khóa tìm kiếm hoặc xem tất cả môn học</p>
+                        <h3>No subject can be found</h3>
+
                     </div>
                 </c:if>
             </div>
@@ -667,14 +682,6 @@
                 let url = new URL(window.location.href);
                 url.searchParams.set('cat', categoryValue);
                 url.searchParams.set('page', '1'); // Reset về trang 1
-                window.location.href = url;
-            }
-
-            // Function xóa filter
-            function clearFilter() {
-                let url = new URL(window.location.href);
-                url.searchParams.delete('cat');
-                url.searchParams.set('page', '1');
                 window.location.href = url;
             }
 
