@@ -4,6 +4,8 @@ import elearning.JDBC.BaseDAO;
 import elearning.constant.ServerConnectionInfo;
 import elearning.entities.PracticeDetail;
 import elearning.entities.PracticeList;
+import elearning.entities.Quiz;
+import elearning.entities.SubjectPackage;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -163,5 +165,57 @@ public class PracticeListDAO {
 
         return list;
     }
+    
+    public List<SubjectPackage> getRegisteredSubjectsByUserId(int userId) {
+        List<SubjectPackage> list = new ArrayList<>();
 
+        String sql = """
+            SELECT DISTINCT sp.Id, sp.Title 
+            FROM Registrations r 
+            JOIN SubjectPackages sp ON r.SubjectId = sp.Id 
+            WHERE r.UserId = ? AND r.Status = 'submitted'
+            """;
+
+        try (Connection conn = ServerConnectionInfo.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    SubjectPackage subject = new SubjectPackage();
+                    subject.setId(rs.getInt("Id"));
+                    subject.setTitle(rs.getString("Title"));
+                    list.add(subject);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Quiz> getQuizzesBySubjectId(int subjectId) {
+        List<Quiz> list = new ArrayList<>();
+
+        String sql = """
+            SELECT Id, Title 
+            FROM Quizzes 
+            WHERE SubjectId = ? AND Status = 'active'
+            """;
+
+        try (Connection conn = ServerConnectionInfo.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, subjectId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Quiz quiz = new Quiz();
+                    quiz.setId(rs.getInt("Id"));
+                    quiz.setTitle(rs.getString("Title"));
+                    list.add(quiz);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
