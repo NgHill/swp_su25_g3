@@ -145,6 +145,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update" />
     <MESSAGE value="fix: active account" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: active account" />
+    <MESSAGE value="update UI Blog list &amp; Blog Detail" />
+    <option name="LAST_COMMIT_MESSAGE" value="update UI Blog list &amp; Blog Detail" />
   </component>
 </project>
