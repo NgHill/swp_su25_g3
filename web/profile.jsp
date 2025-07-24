@@ -283,6 +283,25 @@
                     gap: 15px;
                 }
             }
+            .avatar-placeholder {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 40px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: 3px solid #667eea;
+            }
+
+            .avatar-container:hover .avatar-placeholder {
+                transform: scale(1.05);
+                background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            }
         </style>
     </head>
     <body>
@@ -291,8 +310,8 @@
             <a href="${pageContext.request.contextPath}/profile">
                 <div class="avatar-wrapper">
                     <c:choose>
-                        <c:when test="${not empty sessionScope.userAuth.avatar}">
-                            <img src="${pageContext.request.contextPath}/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        <c:when test="${not empty profile.avatar}">
+                            <img src="${pageContext.request.contextPath}/avatar/${profile.avatar}" alt="Avatar" class="avatar-img">
                         </c:when>
                         <c:otherwise>
                             <span class="avatar-icon">👤</span>
@@ -317,7 +336,17 @@
 
                         <div class="avatar-section">
                             <div class="avatar-container">
-                                <img src="${pageContext.request.contextPath}/${profile.avatar}" alt="Profile Avatar" class="avatar" id="avatarPreview">
+                                <c:choose>
+                                    <c:when test="${not empty profile.avatar}">
+                                        <img src="${pageContext.request.contextPath}/avatar/${profile.avatar}" 
+                                             alt="Profile Avatar" class="avatar" id="avatarPreview">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="avatar-placeholder" id="avatarPreview">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                                 <div class="avatar-overlay" onclick="document.getElementById('avatarInput').click()">
                                     <span>Change<br>Photo</span>
                                 </div>

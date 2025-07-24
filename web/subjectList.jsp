@@ -485,7 +485,7 @@
                 <div class="avatar-wrapper">
                     <c:choose>
                         <c:when test="${not empty sessionScope.userAuth.avatar}">
-                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                            <img src="${pageContext.request.contextPath}/avatar/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
                         </c:when>
                         <c:otherwise>
                             <span class="avatar-icon">👤</span>
