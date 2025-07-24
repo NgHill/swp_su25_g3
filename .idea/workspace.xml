@@ -4,19 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="fix: active account" />
+    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="update UI Blog list &amp; Blog Detail" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="manh" />
+    <option name="BRANCH" value="origin/manh" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="manh" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,7 +55,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "#34 on manh",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/admin/Downloads/swp_su25_g3-main (1)/code/swp_su25_g3",
@@ -66,7 +66,7 @@
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
@@ -99,6 +99,7 @@
       <workItem from="1753151457308" duration="354000" />
       <workItem from="1753158173963" duration="443000" />
       <workItem from="1753252747834" duration="2025000" />
+      <workItem from="1753340861293" duration="495000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -116,7 +117,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753158188341</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="screen : mtk_dashborad">
+      <option name="closed" value="true" />
+      <created>1753341013304</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1753341013304</updated>
+    </task>
+    <task id="LOCAL-00004" summary="update UI Blog list &amp; Blog Detail">
+      <option name="closed" value="true" />
+      <created>1753352966799</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1753352966799</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,6 +153,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update" />
     <MESSAGE value="fix: active account" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: active account" />
+    <MESSAGE value="update UI Blog list &amp; Blog Detail" />
+    <option name="LAST_COMMIT_MESSAGE" value="update UI Blog list &amp; Blog Detail" />
   </component>
 </project>

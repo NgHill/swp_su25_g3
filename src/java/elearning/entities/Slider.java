@@ -36,12 +36,17 @@ public class Slider {
     Integer orderNumber;
     @Column(name = "backlink")
     String backlink;
+    
     public String getBacklink() {
         return description;
+    }
+     public void setBacklink(String backlink) {
+        this.backlink = backlink;
     }
 
     public String getStatus() {
         return type;
     }
+    
     
 }

@@ -43,7 +43,7 @@ public class PostBasicDAO {
         return false;
     }
     public static void main(String[] args) throws SQLException {
-        System.out.println(new PostBasicDAO().getAll().get(0).getAuthor().getFullName());
+        System.out.println(new PostBasicDAO().getAllCategory());
     }
     
 

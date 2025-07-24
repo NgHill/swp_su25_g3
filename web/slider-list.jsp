@@ -155,7 +155,7 @@
                                     <td>${slider.id}</td>
                                     <td>${slider.title}</td>
                                     <td><img src="${slider.image}" class="slider-img" alt="slider"/></td>
-                                    <td><a href="${slider.backlink}">${slider.backlink}</a></td>
+                                    <td><a href="${slider.getDescription()}">${slider.getDescription()}</a></td>
                                     <td>${slider.type}</td>
                                     <td style="text-align:center;">
                                         <a href="viewSlider?id=${slider.id}" title="View">

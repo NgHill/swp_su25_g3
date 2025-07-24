@@ -122,7 +122,7 @@ public class PostDetailServlet extends HttpServlet {
         new PostBasicDAO().insert(post);
 
         // Sau khi lưu xong thì redirect về danh sách bài viết
-        resp.sendRedirect("blog");
+        resp.sendRedirect("mtk_dashboard");
     }
 
     /**

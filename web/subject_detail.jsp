@@ -105,7 +105,7 @@
     <input type="hidden" name="id" value="<%= subject.getId() %>">
     <input type="hidden" name="existingThumbnail" value="<%= subject.getThumbnailUrl() %>">
 
-    <button type="button" onclick="window.location.href = 'subject-list.jsp'">Back</button>
+    <button type="button" onclick="window.location.href = 'subject-list2'">Back</button>
     <h1>Edit Subject</h1>
 
     <div class="form-section">
@@ -178,7 +178,7 @@
 
     <!-- Footer -->
     <div class="form-footer">
-        <button type="button" onclick="window.location.href = 'subject-list.jsp'">Cancel</button>
+        <button type="button" ><a href="subject-list2">Cancel</a></button>
         <button type="submit" class="save-btn">Save</button>
     </div>
 </form>

@@ -123,7 +123,7 @@ public class SliderBasicDAO {
                 s.setId(rs.getInt("id"));
                 s.setTitle(rs.getString("title"));
                 s.setImage(rs.getString("image"));
-                s.setBacklink(rs.getString("backlink"));
+                s.setDescription(rs.getString("description"));
                 s.setType(rs.getString("type"));
                 list.add(s); // Thêm slider vào danh sách kết quả
             }
@@ -133,6 +133,6 @@ public class SliderBasicDAO {
 
     // Phương thức test nhanh DAO bằng hàm main
     public static void main(String[] args) throws SQLException {
-        System.out.println(new SliderBasicDAO().getFiltered("", "Hide"));
+        System.out.println(new SliderBasicDAO().getFiltered("", "Hiển thị").size());
     }
 }

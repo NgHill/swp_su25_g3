@@ -54,7 +54,11 @@ public class Login extends HttpServlet {
         // Nếu đã đăng nhập rồi thì chuyển hướng sang trang home
         User userAuth = (User) request.getSession().getAttribute("userAuth");
         if (userAuth != null) {
-            response.sendRedirect("home");
+            if (userAuth.getRole().equals("mtk")) {
+                response.sendRedirect("mtk-dashboard");
+            } else {
+                response.sendRedirect("home");
+            }
             return;
         }
 

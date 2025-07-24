@@ -115,7 +115,7 @@ public class AddNewSubject extends HttpServlet {
         SubjectListDAO dao = new SubjectListDAO();
         try {
             dao.addSubject(subject);//add to DB
-            response.sendRedirect("subject-list");
+            response.sendRedirect("subject-list2");
         } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().println("Error: " + e.getMessage());

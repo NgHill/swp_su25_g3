@@ -215,7 +215,7 @@
 
             <!-- Nút Cancel / Add -->
             <div class="buttons">
-                <button type="button" onclick="window.location.href = 'subject-list.jsp'">Cancel</button>
+                <button type="button"><a href="subject-list2">Cancel</a></button>
                 <button type="submit">Add</button>
             </div>
 
