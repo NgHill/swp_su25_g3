@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Quiz Practice for Soft Skills - Trang Chủ</title>
+        <title>Quiz Practice for Soft Skills - Home page</title>
         <style>
             * {
                 margin: 0;
@@ -29,6 +29,7 @@
                 position: sticky;
                 top: 0;
                 z-index: 1000;
+                margin-left: 220px;
             }
 
             .header-content {
@@ -37,6 +38,7 @@
                 align-items: center;
                 max-width: 1200px;
                 margin: 0 auto;
+                margin-left:180px;
             }
 
             .logo {
@@ -95,41 +97,42 @@
 
             /* Left Sidebar */
             .sidebar {
+                text-decoration: none;
                 position: fixed;
-                left: -280px;
                 top: 0;
-                width: 280px;
+                width: 220px;
                 height: 100vh;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(15px);
+                background: #2c3e50;
                 box-shadow: 2px 0 20px rgba(0,0,0,0.1);
                 transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1001;
                 overflow-y: auto;
             }
 
-            .sidebar.active {
-                left: 0;
-            }
 
             .sidebar-header {
                 padding: 2rem 1.5rem;
                 border-bottom: 1px solid rgba(0,0,0,0.1);
                 text-align: center;
+                text-decoration: none;
             }
 
             .sidebar-nav {
-                padding: 2rem 0;
+                padding: auto;
+                padding-top:20px;
+                text-decoration: none;
             }
 
             .nav-item {
                 display: flex;
                 align-items: center;
                 padding: 1rem 1.5rem;
-                color: #333;
+                color: white;
                 text-decoration: none;
                 transition: all 0.3s ease;
                 border-left: 3px solid transparent;
+                text-decoration: none;
+
             }
 
             .nav-item:hover {
@@ -141,12 +144,14 @@
             .nav-icon {
                 margin-right: 12px;
                 font-size: 1.2rem;
+                text-decoration: none;
             }
 
             /* Main Content */
             .main-content {
                 max-width: 1200px;
                 margin: 0 auto;
+                margin-left: 220px;
                 padding: 2rem;
                 transition: margin-left 0.3s ease;
             }
@@ -449,11 +454,12 @@
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-                overflow: hidden; /* Cắt phần thừa */
+                overflow: hidden;
+                margin-top: 30px;
             }
 
             .avatar-img {
-                width: 50px;     /* Nhỏ hơn wrapper một chút */
+                width: 50px;
                 height: 50px;
                 border-radius: 50%;
                 object-fit: cover;
@@ -480,6 +486,7 @@
                 display: grid;
                 grid-template-columns: 2fr 1fr 1fr;
                 gap: 3rem;
+                margin-left: 280px;
             }
 
             .footer-section h3 {
@@ -502,7 +509,9 @@
                 text-decoration: none;
                 transition: color 0.3s ease;
             }
-
+            a {
+                text-decoration: none;
+            }
             .footer-links a:hover {
                 color: #667eea;
             }
@@ -528,14 +537,83 @@
                     gap: 2rem;
                 }
             }
+            /* === Sidebar container === */
+            .sidebar {
+                width: 220px;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transition: transform 0.3s;
+                z-index: 200;
+            }
+
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
+
+            /* === Sidebar avatar === */
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
+
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
+            /* === Sidebar navigation list === */
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar ul li {
+                margin: 15px 0;
+            }
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            /* === Hover effect (không tím) === */
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05); /* nhẹ nhàng hiện đại */
+                transform: translateX(5px);
+                color: #ecf0f1;
+            }
+
         </style>
     </head>
     <body>
-        <!-- Overlay -->
-        <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-
         <!-- Left Sidebar -->
-        <div class="sidebar" id="sidebar">
+        <nav class="sidebar">
             <a href="<%= request.getContextPath() %>/profile">
                 <div class="avatar-wrapper">
                     <c:choose>
@@ -548,33 +626,20 @@
                     </c:choose>
                 </div>
             </a>
-            <nav class="sidebar-nav">
-                <a href="<%= request.getContextPath() %>/home" class="nav-item">
-                    <span class="nav-icon">🏠</span>
-                    <span>Home</span>
-                </a>
-                <a href="<%= request.getContextPath() %>/subject-list" class="nav-item">
-                    <span class="nav-icon">🧠</span>
-                    <span>Subject</span>
-                </a>
-                <a href="<%= request.getContextPath() %>/my-registration" class="nav-item">
-                    <span class="nav-icon">📝</span>
-                    <span>My Registrations</span>
-                </a>
-                <a href="<%= request.getContextPath() %>/setting" class="nav-item">
-                    <span class="nav-icon">⚙️</span>
-                    <span>Settings</span>
-                </a>   
-            </nav>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
 
-        </div>
 
         <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <button class="menu-toggle" onclick="toggleSidebar()">
-                    ☰ 
-                </button>
+
                 <div class="logo">
                     <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 90px; vertical-align: middle; margin-right: 8px;">
                     Quiz Practice for Soft Skills
@@ -653,7 +718,8 @@
                         </div>
                         <div class="subject-grid">
                             <c:forEach var="subject" items="${featureSubjects}">
-                                <div class="subject-card" onclick="window.open('${pageContext.request.contextPath}/subject/${subject.id}', '_blank')">
+                                <div class="subject-card" onclick="window.location.href = '${pageContext.request.contextPath}/subject-detail?id=${subject.id}'">
+
                                     <div class="subject-thumbnail" style="background-image: url('${subject.thumbnail}')"></div>
                                     <h3 class="subject-title">${subject.title}</h3>
                                     <p class="subject-tagline">${subject.description}</p>
@@ -696,32 +762,31 @@
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Về Quiz Practice for Soft Skills</h3>
+                    <h3>About Quiz Practice for Soft Skills</h3>
                     <p class="system-description">
-                        Hệ thống luyện tập trắc nghiệm kỹ năng mềm giúp bạn nâng cao khả năng giao tiếp, 
-                        làm việc nhóm, tư duy phản biện và các kỹ năng cần thiết trong môi trường công việc hiện đại.
-                        Với kho câu hỏi phong phú và giao diện thân thiện, chúng tôi cam kết mang đến 
-                        trải nghiệm học tập tốt nhất cho người dùng.
+                        Our soft skills quiz practice platform helps you improve communication, teamwork, critical thinking, 
+                        and other essential skills for the modern workplace.
+                        With a rich question bank and user-friendly interface, we are committed to providing the best learning experience.
                     </p>
                 </div>
 
                 <div class="footer-section">
-                    <h3>Hỗ trợ</h3>
+                    <h3>Support</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Trung tâm trợ giúp</a></li>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Điều khoản</a></li>
-                        <li><a href="#">Bảo mật</a></li>
-                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-section">
-                    <h3>Kết nối</h3>
+                    <h3>Connect with Us</h3>
                     <ul class="footer-links">
-                        <li><a href="mailto:support@quizpractice.com">Email hỗ trợ</a></li>
+                        <li><a href="mailto:support@quizpractice.com">Support Email</a></li>
                         <li><a href="https://web.facebook.com" target="_blank">Facebook</a></li>
-                        <li><a href="https://www.youtube.com" target="_blank">Youtube</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
                         <li><a href="#">Hotline: 1900-xxxx</a></li>
                     </ul>
                 </div>
@@ -732,34 +797,8 @@
             </div>
         </footer>
 
+
         <script>
-            // Hàm mở hoặc đóng sidebar khi người dùng nhấn nút ☰
-            function toggleSidebar() {
-                var sidebar = document.getElementById('sidebar');      // Lấy phần tử sidebar
-                var overlay = document.getElementById('overlay');      // Lấy phần tử overlay mờ
-
-                if (sidebar && overlay) {                              // Nếu cả hai phần tử tồn tại
-                    if (sidebar.classList.contains('active')) {        // Nếu sidebar đang mở
-                        sidebar.classList.remove('active');            // Ẩn sidebar
-                        overlay.classList.remove('active');            // Ẩn lớp mờ overlay
-                    } else {
-                        sidebar.classList.add('active');               // Mở sidebar
-                        overlay.classList.add('active');               // Hiển thị lớp mờ overlay
-                    }
-                }
-            }
-
-            // Hàm ẩn sidebar khi người dùng click ra ngoài hoặc nhấn ESC
-            function closeSidebar() {
-                var sidebar = document.getElementById('sidebar');      // Lấy phần tử sidebar
-                var overlay = document.getElementById('overlay');      // Lấy phần tử overlay
-
-                if (sidebar && overlay) {                              // Nếu tồn tại
-                    sidebar.classList.remove('active');                // Xóa class active => đóng sidebar
-                    overlay.classList.remove('active');                // Xóa lớp mờ overlay
-                }
-            }
-
             // Hàm chuyển slider sang slide có chỉ số là index
             function goToSlide(index) {
                 var slider = document.getElementById('slider');        // Lấy phần tử slider chính

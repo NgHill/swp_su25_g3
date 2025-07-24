@@ -118,37 +118,75 @@
                 background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
                 min-height:100vh;
             }
+            /* === Sidebar (UPDATED) === */
             .sidebar {
-                width:220px;
-                background:#2c3e50;
-                color:white;
-                padding:20px;
-                position:fixed;
-                top:0;
-                left:0;
-                height:100%;
-                transition:transform .3s;
-                z-index:200;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
             }
+
             .sidebar.hidden {
-                transform:translateX(-100%);
+                transform: translateX(-100%);
             }
+
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
+
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
             .sidebar ul {
-                list-style:none;
+                list-style: none;
+                padding: 0;
+                margin: 0;
             }
-            .sidebar li {
-                margin:15px 0;
+
+            .sidebar ul li {
+                margin: 15px 0;
             }
-            .sidebar a {
-                color:white;
-                text-decoration:none;
-                display:block;
-                padding:10px;
-                border-radius:5px;
-                transition:background .3s;
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
             }
-            .sidebar a:hover {
-                background:#34495e;
+
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
             }
             .main-content {
                 flex-grow:1;
@@ -532,164 +570,175 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <nav class="sidebar">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
-                    <li><a href="${pageContext.request.contextPath}/my-registration">My Registrations</a></li>
-                    <li><a href="#">Setting</a></li>
-                </ul>
-            </nav>
-            <main class="main-content">
-                <div class="content-wrapper">
-                    <div class="header">
-                        <div class="header-left">
-                           
-                            <h1>Subject Detail</h1>
-                        </div>
-                    </div>
 
+        <nav class="sidebar">
+            <a href="${pageContext.request.contextPath}/profile">
+                <div class="avatar-wrapper">
                     <c:choose>
-                        <c:when test="${subject != null}">
-                            <div class="subject-card" style="cursor: default">
-                                <div class="subject-thumbnail">
-                                    <c:choose>
-                                        <c:when test="${not empty subject.thumbnail}">
-                                            <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/>
-                                        </c:when>
-                                        <c:otherwise>📚</c:otherwise>
-                                    </c:choose>
-                                </div>
-                                <div class="subject-content">
-                                    <h2>${subject.title}</h2>
-                                    <p>${subject.description}</p>
-                                    <p><strong>Tag line:</strong> ${subject.tagLine}</p>
-                                    <p><strong>Brief info:</strong> ${subject.briefInfo}</p>
-                                    <div class="price-section">
-                                        <span class="sale-price">
-                                            <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
-                                        </span>
-                                        <span class="original-price">
-                                            <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
-                                        </span>
-                                    </div>
-                                    <form id="registerForm" action="${pageContext.request.contextPath}/subject-register" method="post" style="display:none;">
-                                        <input type="hidden" name="subjectId" value="${subject.id}" />
-                                        <input type="hidden" name="price" value="${subject.salePrice}" />
-                                        <input type="hidden" name="packageMonths" value="3" />
-                                    </form>
-
-                                    <button type="button" class="register-btn" onclick="submitRegisterForm()">Đăng ký</button>
-                                </div>
-                            </div>
-                        </c:when>                      
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="${pageContext.request.contextPath}/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
                     </c:choose>
-
                 </div>
-                <div id="ai-assistant-container">
-                    <!-- Hộp chat ẩn, chỉ hiện khi mở -->
-                    <div id="ai-chatbox" style="display: none;">
-                        <div id="ai-header">
-                            <span>Trợ lý AI</span>
-                            <button onclick="closeAIChat()">×</button>
-                        </div>
-                        <div id="ai-body">
-                            <p><strong>Chọn một câu hỏi:</strong></p>
-                            <ul id="ai-prompts">
-                                <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
-                                <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
-                                <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
-                                <div style="display: flex; gap: 8px; margin-top: 10px;">
-                                    <input type="text" id="customQuestion" placeholder="Nhập câu hỏi của bạn..." style="flex:1;">
-                                    <button onclick="submitCustomQuestion()">Gửi</button>
-                                </div>
+            </a>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="header">
+                    <div class="header-left">
 
-                            </ul>
-                            <div id="ai-response" style="margin-top: 10px; font-style: italic; color: #333;"></div>
-                        </div>
+                        <h1>Subject Detail</h1>
                     </div>
-
-                    <!-- Nút AI Help hình chữ nhật -->
-                    <button id="ai-icon" onclick="toggleAIChat()">
-                        <i class="fas fa-headset"></i>
-                        <span>AI Help</span>
-                    </button>
-
                 </div>
+
+                <c:choose>
+                    <c:when test="${subject != null}">
+                        <div class="subject-card" style="cursor: default">
+                            <div class="subject-thumbnail">
+                                <c:choose>
+                                    <c:when test="${not empty subject.thumbnail}">
+                                        <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/>
+                                    </c:when>
+                                    <c:otherwise>📚</c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="subject-content">
+                                <h2>${subject.title}</h2>
+                                <p>${subject.description}</p>
+                                <p><strong>Tag line:</strong> ${subject.tagLine}</p>
+                                <p><strong>Brief info:</strong> ${subject.briefInfo}</p>
+                                <div class="price-section">
+                                    <span class="sale-price">
+                                        <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
+                                    </span>
+                                    <span class="original-price">
+                                        <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
+                                    </span>
+                                </div>
+                                <form id="registerForm" action="${pageContext.request.contextPath}/subject-register" method="post" style="display:none;">
+                                    <input type="hidden" name="subjectId" value="${subject.id}" />
+                                    <input type="hidden" name="price" value="${subject.salePrice}" />
+                                    <input type="hidden" name="packageMonths" value="3" />
+                                </form>
+
+                                <button type="button" class="register-btn" onclick="submitRegisterForm()">Đăng ký</button>
+                            </div>
+                        </div>
+                    </c:when>                      
+                </c:choose>
+
+            </div>
+            <div id="ai-assistant-container">
+                <!-- Hộp chat ẩn, chỉ hiện khi mở -->
+                <div id="ai-chatbox" style="display: none;">
+                    <div id="ai-header">
+                        <span>Trợ lý AI</span>
+                        <button onclick="closeAIChat()">×</button>
+                    </div>
+                    <div id="ai-body">
+                        <p><strong>Chọn một câu hỏi:</strong></p>
+                        <ul id="ai-prompts">
+                            <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
+                            <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
+                            <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
+                            <div style="display: flex; gap: 8px; margin-top: 10px;">
+                                <input type="text" id="customQuestion" placeholder="Nhập câu hỏi của bạn..." style="flex:1;">
+                                <button onclick="submitCustomQuestion()">Gửi</button>
+                            </div>
+
+                        </ul>
+                        <div id="ai-response" style="margin-top: 10px; font-style: italic; color: #333;"></div>
+                    </div>
+                </div>
+
+                <!-- Nút AI Help hình chữ nhật -->
+                <button id="ai-icon" onclick="toggleAIChat()">
+                    <i class="fas fa-headset"></i>
+                    <span>AI Help</span>
+                </button>
+
+            </div>
         </div>
-    </main>
-</div>
-<script>
-    const subjectInfo = `
-Tên khoá học: ${subject.title}
-Mô tả: ${subject.description}
-Tag line: ${subject.tagLine}
-Thông tin ngắn: ${subject.briefInfo}
-Giá gốc: ${subject.originalPrice}
-Giá giảm: ${subject.salePrice}
-        `.trim();
-    function toggleAIChat() {
-        const chatbox = document.getElementById('ai-chatbox');
-        if (chatbox.style.display === 'none') {
-            chatbox.style.display = 'block';
-        } else {
-            chatbox.style.display = 'none';
-        }
-    }
-
-    function closeAIChat() {
-        document.getElementById('ai-chatbox').style.display = 'none';
-    }
-
-    function submitRegisterForm() {
-        if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
-            document.getElementById('registerForm').submit(); // submit đúng POST
-        }
-    }
-
-    function sendPromptToAI(message) {
-        const customQuestion = document.getElementById('customQuestion').value;
-        const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
-
-        fetch('${pageContext.request.contextPath}/together-ai', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'message=' + encodeURIComponent(fullMessage)
-        })
-                .then(response => response.json())
-                .then(data => {
-                    const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
-                    document.getElementById('ai-response').innerText = content.trim();
-                })
-                .catch(error => {
-                    console.error('Lỗi khi gửi yêu cầu:', error);
-                    document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
-                });
-    }
-
-    function submitCustomQuestion() {
-        const input = document.getElementById('customQuestion');
-        const question = input.value.trim();
-        if (question !== '') {
-            sendPromptToAI(question);
-            input.value = '';
-        }
-    }
-    // Gửi câu hỏi khi nhấn Enter trong ô nhập
-    document.getElementById('customQuestion').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Ngăn form submit nếu có
-            const question = this.value.trim();
-            if (question !== '') {
-                sendPromptToAI(question);
-                this.value = ''; // Xóa ô sau khi gửi
+        <script>
+            const subjectInfo = `
+        Tên khoá học: ${subject.title}
+        Mô tả: ${subject.description}
+        Tag line: ${subject.tagLine}
+        Thông tin ngắn: ${subject.briefInfo}
+        Giá gốc: ${subject.originalPrice}
+        Giá giảm: ${subject.salePrice}
+                `.trim();
+            function toggleAIChat() {
+                const chatbox = document.getElementById('ai-chatbox');
+                if (chatbox.style.display === 'none') {
+                    chatbox.style.display = 'block';
+                } else {
+                    chatbox.style.display = 'none';
+                }
             }
-        }
-    });
 
-</script>
+            function closeAIChat() {
+                document.getElementById('ai-chatbox').style.display = 'none';
+            }
+
+            function submitRegisterForm() {
+                if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
+                    document.getElementById('registerForm').submit(); // submit đúng POST
+                }
+            }
+
+            function sendPromptToAI(message) {
+                const customQuestion = document.getElementById('customQuestion').value;
+                const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
+
+                fetch('${pageContext.request.contextPath}/together-ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'message=' + encodeURIComponent(fullMessage)
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
+                            document.getElementById('ai-response').innerText = content.trim();
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi gửi yêu cầu:', error);
+                            document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
+                        });
+            }
+
+            function submitCustomQuestion() {
+                const input = document.getElementById('customQuestion');
+                const question = input.value.trim();
+                if (question !== '') {
+                    sendPromptToAI(question);
+                    input.value = '';
+                }
+            }
+            // Gửi câu hỏi khi nhấn Enter trong ô nhập
+            document.getElementById('customQuestion').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Ngăn form submit nếu có
+                    const question = this.value.trim();
+                    if (question !== '') {
+                        sendPromptToAI(question);
+                        this.value = ''; // Xóa ô sau khi gửi
+                    }
+                }
+            });
+
+        </script>
 </body>
 </html>
