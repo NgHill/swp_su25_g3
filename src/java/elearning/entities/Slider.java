@@ -36,4 +36,12 @@ public class Slider {
     Integer orderNumber;
     @Column(name = "backlink")
     String backlink;
+    public String getBacklink() {
+        return description;
+    }
+
+    public String getStatus() {
+        return type;
+    }
+    
 }
