@@ -695,7 +695,7 @@
                         </div>
                         <div class="post-grid">                           
                             <c:forEach var="post" items="${hotPosts}">
-                                <div class="post-card" onclick="window.open('${pageContext.request.contextPath}/post/${post.id}', '_blank')">
+                                <div class="post-card" onclick="window.location.href='${pageContext.request.contextPath}/blog-detail?id=${post.id}'">
                                     <div class="post-thumbnail" style="background-image: url('${post.thumbnail}')"></div>
                                     <div class="post-info">
                                         <h3>${post.title}</h3>
@@ -731,7 +731,7 @@
                     <div class="latest-posts">
                         <h3>📝 Latest Posts</h3>
                         <c:forEach var="latestPost" items="${latestPosts}">
-                            <div class="latest-post-item" onclick="window.open('${pageContext.request.contextPath}/post/${latestPost.id}', '_blank')">
+                            <div class="latest-post-item" onclick="window.location.href='${pageContext.request.contextPath}/blog-detail?id=${latestPost.id}'">
                                 <img src="${latestPost.thumbnail}" alt="${latestPost.title}" class="latest-post-icon">
                                 <div class="latest-post-content">
                                     <h4 class="latest-post-title">${latestPost.title}</h4>
