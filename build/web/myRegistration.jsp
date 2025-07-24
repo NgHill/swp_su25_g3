@@ -260,14 +260,24 @@
 
             /* Nút mũi tên dropdown */
             .dropdown-toggle {
-                background-color: white;
-                border: none;
-                cursor: pointer;
-                font-size: 18px;
-                padding-left: 10px;
-                text-decoration: none;
+                background-color: #ffffff;
+                border: 2px solid #003366;
+                border-radius: 50px;
+                padding: 8px 16px;
+                font-size: 16px;
                 color: #003366;
+                cursor: pointer;
+                margin-left: 10px;
+                transition: background-color 0.3s;
+                display: flex;
+                align-items: center;
+                gap: 5px;
             }
+
+            .dropdown-toggle:hover {
+                background-color: #e6f0ff;
+            }
+
 
             /* Dropdown menu */
             .dropdown-menu {
@@ -522,7 +532,9 @@
                                value="${param.search != null ? param.search : ''}"/>
                         <button type="button" class="search-button" onclick="applyFilters()">Search</button>
                     </div>
-                    <button type="button" class="dropdown-toggle" onclick="toggleDropdown(this)">&#128269;</button>
+                    <button type="button" class="dropdown-toggle" onclick="toggleDropdown(this)">
+                        Filter ▼
+                    </button>
 
 
                     <div class="dropdown-menu" id="filterSidebar">
@@ -628,7 +640,7 @@
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <td colspan="9">Không tìm thấy đăng ký nào.</td>
+                                <td colspan="9">No registration can be found.</td>
                             </tr>
                         </c:otherwise>
                     </c:choose>

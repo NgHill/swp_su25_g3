@@ -718,7 +718,8 @@
                         </div>
                         <div class="subject-grid">
                             <c:forEach var="subject" items="${featureSubjects}">
-                                <div class="subject-card" onclick="window.open('${pageContext.request.contextPath}/subject/${subject.id}', '_blank')">
+                                <div class="subject-card" onclick="window.location.href = '${pageContext.request.contextPath}/subject-detail?id=${subject.id}'">
+
                                     <div class="subject-thumbnail" style="background-image: url('${subject.thumbnail}')"></div>
                                     <h3 class="subject-title">${subject.title}</h3>
                                     <p class="subject-tagline">${subject.description}</p>
@@ -761,32 +762,31 @@
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Về Quiz Practice for Soft Skills</h3>
+                    <h3>About Quiz Practice for Soft Skills</h3>
                     <p class="system-description">
-                        Hệ thống luyện tập trắc nghiệm kỹ năng mềm giúp bạn nâng cao khả năng giao tiếp, 
-                        làm việc nhóm, tư duy phản biện và các kỹ năng cần thiết trong môi trường công việc hiện đại.
-                        Với kho câu hỏi phong phú và giao diện thân thiện, chúng tôi cam kết mang đến 
-                        trải nghiệm học tập tốt nhất cho người dùng.
+                        Our soft skills quiz practice platform helps you improve communication, teamwork, critical thinking, 
+                        and other essential skills for the modern workplace.
+                        With a rich question bank and user-friendly interface, we are committed to providing the best learning experience.
                     </p>
                 </div>
 
                 <div class="footer-section">
-                    <h3>Hỗ trợ</h3>
+                    <h3>Support</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Trung tâm trợ giúp</a></li>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Điều khoản</a></li>
-                        <li><a href="#">Bảo mật</a></li>
-                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-section">
-                    <h3>Kết nối</h3>
+                    <h3>Connect with Us</h3>
                     <ul class="footer-links">
-                        <li><a href="mailto:support@quizpractice.com">Email hỗ trợ</a></li>
+                        <li><a href="mailto:support@quizpractice.com">Support Email</a></li>
                         <li><a href="https://web.facebook.com" target="_blank">Facebook</a></li>
-                        <li><a href="https://www.youtube.com" target="_blank">Youtube</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
                         <li><a href="#">Hotline: 1900-xxxx</a></li>
                     </ul>
                 </div>
@@ -796,6 +796,7 @@
                 <p>&copy; 2025 Quiz Practice for Soft Skills. All rights reserved.</p>
             </div>
         </footer>
+
 
         <script>
             // Hàm chuyển slider sang slide có chỉ số là index

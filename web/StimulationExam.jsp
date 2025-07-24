@@ -633,11 +633,6 @@
                 }
             });
 
-            // Functions for subject card actions (placeholders)
-            function goToStimulation(examId) {
-                window.location.href = '${pageContext.request.contextPath}/stimulation-detail?id=' + examId;
-            }
-
             function registerStimulation(event, examId) {
                 event.stopPropagation(); // Prevent card click event from firing
                 console.log('Registering for exam ID:', examId);
