@@ -18,6 +18,12 @@
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
+                margin-left: 280px; /* Sidebar luôn hiện */
+            }
+
+            /* Thêm class khi sidebar đóng */
+            body.sidebar-closed {
+                margin-left: 0;
             }
 
             /* Header */
@@ -37,7 +43,6 @@
                 align-items: center;
                 max-width: 1200px;
                 margin: 0 auto;
-                margin-left:180px;
             }
 
             .logo {
@@ -45,23 +50,7 @@
                 font-weight: bold;
                 color: #667eea;
             }
-
-            .menu-toggle {
-                background: #667eea;
-                border: none;
-                padding: 10px 15px;
-                border-radius: 8px;
-                color: white;
-                cursor: pointer;
-                font-size: 1.2rem;
-                transition: all 0.3s ease;
-            }
-
-            .menu-toggle:hover {
-                background: #5a6fd8;
-                transform: scale(1.05);
-            }
-
+           
             .auth-buttons {
                 display: flex;
                 gap: 1rem;
@@ -94,20 +83,19 @@
                 background: #5a6fd8;
             }
 
-            /* Left Sidebar */
             .sidebar {
                 position: fixed;
-                left: -280px;
+                left: 0; /* Luôn hiện */
                 top: 0;
                 width: 280px;
                 height: 100vh;
-                background: rgba(255, 255, 255, 0.95);  /* Màu trắng mờ như JSP 2 */
+                background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(15px);
                 box-shadow: 2px 0 20px rgba(0,0,0,0.1);
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1001;
                 overflow-y: auto;
             }
+
             
             .sidebar-nav {
                 padding: 2rem 0;
@@ -117,10 +105,6 @@
                 padding: 2rem 1.5rem;
                 border-bottom: 1px solid rgba(0,0,0,0.1);
                 text-align: center;
-            }
-
-            .sidebar.active {
-                left: 0;
             }
 
             .nav-item {
@@ -404,26 +388,7 @@
             .contact-link:hover {
                 color: #667eea;
             }
-
-            /* Overlay */
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                z-index: 1000;
-            }
-
-            .overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
-
+        
             /* Responsive */
             @media (max-width: 768px) {
                 .content-grid {
@@ -482,7 +447,6 @@
                 display: grid;
                 grid-template-columns: 2fr 1fr 1fr;
                 gap: 3rem;
-                margin-left: 280px;
             }
 
             .footer-section h3 {
@@ -588,11 +552,25 @@
                 color: #ecf0f1;
             }
 
+            /* Responsive cho mobile */
+            @media (max-width: 768px) {
+                body {
+                    margin-left: 0 !important;
+                }
+
+                .sidebar {
+                    left: -280px;
+                    z-index: 1002;
+                }
+
+                .sidebar:not(.closed) {
+                    left: 0;
+                }
+             
         </style>
     </head>
     <body>
-        <!-- Left Sidebar -->
-        <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+        <!-- Left Sidebar -->       
         <div class="sidebar" id="sidebar">
             <a href="<%= request.getContextPath() %>/profile">
                 <div class="avatar-wrapper">
@@ -633,10 +611,7 @@
 
         <!-- Header --> 
         <header class="header">
-            <div class="header-content">
-                <button class="menu-toggle" onclick="toggleSidebar()">
-                    ☰ 
-                </button>
+            <div class="header-content">              
                 <div class="logo">
                     <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 90px; vertical-align: middle; margin-right: 8px;">
                     Quiz Practice for Soft Skills
@@ -795,34 +770,7 @@
         </footer>
 
 
-        <script>
-            
-            // Hàm mở hoặc đóng sidebar
-            function toggleSidebar() {
-                var sidebar = document.getElementById('sidebar');
-                var overlay = document.getElementById('overlay');
-
-                if (sidebar && overlay) {
-                    if (sidebar.classList.contains('active')) {
-                        sidebar.classList.remove('active');
-                        overlay.classList.remove('active');
-                    } else {
-                        sidebar.classList.add('active');
-                        overlay.classList.add('active');
-                    }
-                }
-            }
-
-            // Hàm ẩn sidebar
-            function closeSidebar() {
-                var sidebar = document.getElementById('sidebar');
-                var overlay = document.getElementById('overlay');
-
-                if (sidebar && overlay) {
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                }
-            }
+        <script>                  
             
             // Hàm chuyển slider sang slide có chỉ số là index
             function goToSlide(index) {
@@ -869,15 +817,7 @@
                     cards[i].style.transform = 'translateY(0)';        // Reset lại vị trí di chuyển về 0
                     cards[i].style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     // Áp dụng hiệu ứng mượt mà khi card hiện ra: mờ và dịch chuyển
-                }
-
-                // Lắng nghe phím ESC để ẩn sidebar
-                document.addEventListener('keydown', function (e) {
-                    if (e.keyCode === 27) {                            // 27 là mã ESC
-                        closeSidebar();                                // Gọi hàm đóng sidebar
-                    }
-                });
-            }
+                }              
 
             // Nếu trang chưa load xong, gắn sự kiện DOMContentLoaded
             if (document.readyState === 'loading') {

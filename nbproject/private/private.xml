@@ -1,45 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Lenovo/swp_su25_g3/src/java/elearning/BasicDAO/HomeDAO.java</file>
-            <file>file:/C:/Users/Lenovo/swp_su25_g3/web/practiceList.jsp</file>
-            <file>file:/C:/Users/Lenovo/swp_su25_g3/src/java/elearning/controller/QuizHandleServlet.java</file>
-            <file>file:/C:/Users/Lenovo/swp_su25_g3/web/quizhandle.jsp</file>
-            <file>file:/C:/Users/Lenovo/swp_su25_g3/src/java/elearning/controller/practiceList.java</file>
-            <file>file:/C:/Users/Lenovo/swp_su25_g3/src/java/elearning/BasicDAO/QuizDAO.java</file>
-=======
-
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/post_detail.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/BasicDAO/PracticeListDAO.java</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/StimulationExam.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/subjectList.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/myRegistration.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/addnew_subject.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/complete-register.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/practiceList.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/controller/QuizHandleServlet1.java</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/controller/ActiveAccount.java</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/controller/practiceList.java</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/quizhandle.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/subject_list.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/subjectDetail.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/practiceDetails.jsp</file>
-            <file>file:/D:/Ducky_shop/swp_su25_g3/web/home.jsp</file>
-
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/BasicDAO/PostBasicDAO.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/entities/Slider.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/BasicDAO/SliderBasicDAO.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/entities/Post.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/controller/mtk_dashboardController.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/web/mtk_dashboard.jsp</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/constant/ServerConnectionInfo.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/BasicDAO/mtk_dashboardDAO.java</file>
-
->>>>>>> b940f919d5a166a8cecd1256a6bc036616d036b3
+            <file>file:/C:/Users/Lenovo/swp_su25_g3/src/java/elearning/AuthorizationFilter.java</file>
         </group>
     </open-files>
 </project-private>
