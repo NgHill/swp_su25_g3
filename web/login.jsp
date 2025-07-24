@@ -297,15 +297,15 @@
         <div class="login-container">
             <div class="image-section">
                 <div class="image-placeholder">
-                    📱<br>
-                    <div style="font-size: 1.5rem; margin-top: 20px;">Welcome back!</div>
+                    <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 150px; vertical-align: middle; margin-right: 8px;">
+                    <div style="font-size: 1.5rem; margin-top: 20px;">Welcome !</div>
                 </div>
             </div>
 
             <div class="form-section">
                 <div class="login-header">
                     <h1 class="login-title">LOGIN</h1>
-                    <span class="login-tab">LOG IN</span>
+                  
                 </div>
 
                 <!-- Error message display -->
@@ -321,7 +321,7 @@
                 </c:if>
                 <form method="post" id="loginForm" action="login">
                     <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Email</label>
                         <input 
                             type="text" 
                             id="username" 

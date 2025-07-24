@@ -15,7 +15,7 @@
                 box-sizing:border-box;
             }
             body {
-                font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
                 min-height:100vh;
                 color:#333;
@@ -25,41 +25,83 @@
                 background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
                 min-height:100vh;
             }
+            /* === Sidebar container === */
             .sidebar {
-                width:220px;
-                background:#2c3e50;
-                color:white;
-                padding:20px;
-                position:fixed;
-                top:0;
-                left:0;
-                height:100%;
-                transition:transform .3s;
-                z-index:200;
+                position: fixed;
+                top: 0px;
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
             }
+
             .sidebar.hidden {
-                transform:translateX(-100%);
+                transform: translateX(-100%);
             }
+
+            /* === Sidebar avatar === */
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
+            }
+
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
+            /* === Sidebar navigation list === */
             .sidebar ul {
-                list-style:none;
+                list-style: none;
+                padding: 0;
+                margin: 0;
             }
-            .sidebar li {
-                margin:15px 0;
+
+            .sidebar ul li {
+                margin: 15px 0;
             }
-            .sidebar a {
-                color:white;
-                text-decoration:none;
-                display:block;
-                padding:10px;
-                border-radius:5px;
-                transition:background .3s;
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
             }
-            .sidebar a:hover {
-                background:#34495e;
+
+            /* === Hover effect (modern) === */
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
             }
+
             .main-content {
                 flex-grow:1;
-                margin-left:220px;
+                margin-left:220px; /* Adjust this to match sidebar width */
                 padding:20px;
                 transition:margin .3s;
             }
@@ -87,18 +129,6 @@
                 display:flex;
                 align-items:center;
                 gap:15px;
-            }
-            #toggleSidebar {
-                background:#34495e;
-                color:white;
-                padding:10px 15px;
-                font-size:16px;
-                border:none;
-                border-radius:5px;
-                cursor:pointer;
-            }
-            #toggleSidebar:hover {
-                background:#2c3e50;
             }
             .header h1 {
                 color:#2d3748;
@@ -412,7 +442,7 @@
                     padding:15px;
                 }
                 .sidebar{
-                    transform:translateX(-100%);
+                    transform:translateX(-100%); /* Hide sidebar on small screens */
                 }
                 .subjects-grid{
                     grid-template-columns:1fr;
@@ -431,174 +461,198 @@
                     align-items:stretch;
                 }
             }
+            .featured-subject-item {
+                border: 1px solid #ccc;
+                padding: 8px 10px;
+                margin-bottom: 6px;
+                border-radius: 6px;
+                font-size: 13px;
+                cursor: pointer;
+                background-color: #f9f9f9;
+                transition: background-color 0.2s;
+            }
+
+            .featured-subject-item:hover {
+                background-color: #e9ecef;
+            }
+
         </style>
     </head>
     <body>
-        <div class="container">
-            <nav class="sidebar">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
-                    <li><a href="${pageContext.request.contextPath}/my-registration">My Registrations</a></li>
-                    <li><a href="#">Setting</a></li>
-                </ul>
-            </nav>
-            <main class="main-content">
-                <div class="content-wrapper">
-                    <div class="header">
-                        <div class="header-left">
-                            <button id="toggleSidebar">☰</button>
-                            <h1>Subject List</h1>
-                        </div>
-                        <div class="header-right">
-                            <form method="GET" action="${pageContext.request.contextPath}/subject-list" id="searchForm" onsubmit="document.getElementById('searchPage').value = '1'">
-                                <div class="search-wrapper">
-                                    <div class="search-box">
-                                        <input type="search" id="searchInput" name="search" placeholder="Search subject..." value="${param.search}" />
-                                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+
+        <nav class="sidebar">
+            <a href="<%= request.getContextPath() %>/profile">
+                <div class="avatar-wrapper">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </a>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="header">
+                    <div class="header-left">
+                        <h1>Subject List</h1>
+                    </div>
+                    <div class="header-right">
+                        <form method="GET" action="${pageContext.request.contextPath}/subject-list" id="searchForm" onsubmit="document.getElementById('searchPage').value = '1'">
+                            <div class="search-wrapper">
+                                <div class="search-box">
+                                    <input type="search" id="searchInput" name="search" placeholder="Search subject..." value="${param.search}" />
+                                    <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                                </div>
+
+                                <button type="button" class="filter-toggle" id="filterToggle" title="Lọc bộ môn">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <div class="filter-sidebar" id="filterSidebar">
+                                    <h3>Categories</h3>
+                                    <div class="filter-group">
+                                        <label><input type="radio" name="cat" value="" ${empty param.cat ? 'checked' : ''}> All</label>
+                                        <label><input type="radio" name="cat" value="Teamwork" ${param.cat == 'Teamwork' ? 'checked' : ''}> Teamwork</label>
+                                        <label><input type="radio" name="cat" value="Communication" ${param.cat == 'Communication' ? 'checked' : ''}> Communication</label>
+                                        <label><input type="radio" name="cat" value="Self improve" ${param.cat == 'Self improve' ? 'checked' : ''}> Self improve</label>
+                                        <label><input type="radio" name="cat" value="Thinking" ${param.cat == 'Thinking' ? 'checked' : ''}> Thinking</label>
                                     </div>
 
-                                    <button type="button" class="filter-toggle" id="filterToggle" title="Lọc bộ môn">
-                                        <i class="fas fa-filter"></i>
-                                    </button>
-                                    <div class="filter-sidebar" id="filterSidebar">
-                                        <h3>Categories</h3>
-                                        <div class="filter-group">
-                                            <label><input type="radio" name="cat" value="" ${empty param.cat ? 'checked' : ''}> Tất cả</label>
-                                            <label><input type="radio" name="cat" value="Teamwork" ${param.cat == 'Teamwork' ? 'checked' : ''}> Teamwork</label>
-                                            <label><input type="radio" name="cat" value="Communication" ${param.cat == 'Communication' ? 'checked' : ''}> Communication</label>
-                                            <label><input type="radio" name="cat" value="Self improve" ${param.cat == 'Self improve' ? 'checked' : ''}> Self improve</label>
-                                            <label><input type="radio" name="cat" value="Thinking" ${param.cat == 'Thinking' ? 'checked' : ''}> Thinking</label>
-                                        </div>
-                                        <button type="button" class="clear-filter" onclick="clearFilter()">Xóa bộ lọc</button>
 
-                                        <h3>Featured Subject</h3>
-                                        <div class="filter-group">
-                                            <label><a href="#">Subject A</a></label>
-                                            <label><a href="#">Subject B</a></label>
-                                            <label><a href="#">Subject C</a></label>
-                                            <label><a href="#">Subject D</a></label>
+                                    <h3>Featured Subject</h3>
+                                    <c:forEach var="subject" items="${featureSubjects}">
+                                        <div class="featured-subject-item"  onclick="window.location.href = '${pageContext.request.contextPath}/subject-detail?id=${subject.id}'">
+                                            ${subject.title}
                                         </div>
-                                        <div class="link-section">
-                                            <a href="#">Privacy Policy</a>
-                                            <a href="#">Terms of Service</a>
-                                            <a href="#">FAQ</a>
-                                        </div>
+                                    </c:forEach>
+
+                                    <div class="link-section">
+                                        <a href="#">Privacy Policy</a>
+                                        <a href="#">Terms of Service</a>
+                                        <a href="#">FAQ</a>
                                     </div>
                                 </div>
-                                <input type="hidden" id="searchPage" name="page" value="${param.page != null ? param.page : 1}" />
-                                <input type="hidden" name="pageSize" value="${param.pageSize != null ? param.pageSize : 9}" />
-                                <input type="hidden" name="cat" value="${param.cat}" />
-                                <c:forEach items="${paramValues.displayOptions}" var="opt">
-                                    <input type="hidden" name="displayOptions" value="${opt}" />
-                                </c:forEach>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="controls-section">
-                        <div class="controls-left">
-                            <div class="control-group">
-                                <label for="pageSize">Số bản ghi mỗi trang:</label>
-                                <input type="number" id="pageSize" name="pageSize" min="1" max="100" value="${param.pageSize != null ? param.pageSize : 9}" onchange="updatePageSize()" />
                             </div>
-                            <c:set var="showTitle" value="${empty paramValues.displayOptions}" />
-                            <c:set var="showTagline" value="${empty paramValues.displayOptions}" />
-                            <c:set var="showSale" value="${empty paramValues.displayOptions}" />
-                            <c:set var="showOriginal" value="${empty paramValues.displayOptions}" />
+                            <input type="hidden" id="searchPage" name="page" value="${param.page != null ? param.page : 1}" />
+                            <input type="hidden" name="pageSize" value="${param.pageSize != null ? param.pageSize : 9}" />
+                            <input type="hidden" name="cat" value="${param.cat}" />
                             <c:forEach items="${paramValues.displayOptions}" var="opt">
-                                <c:choose>
-                                    <c:when test="${opt=='title'}"><c:set var="showTitle" value="true"/></c:when>
-                                    <c:when test="${opt=='tagline'}"><c:set var="showTagline" value="true"/></c:when>
-                                    <c:when test="${opt=='sale-price'}"><c:set var="showSale" value="true"/></c:when>
-                                    <c:when test="${opt=='original-price'}"><c:set var="showOriginal" value="true"/></c:when>
+                                <input type="hidden" name="displayOptions" value="${opt}" />
+                            </c:forEach>
+                        </form>
+                    </div>
+                </div>
+                <div class="controls-section">
+                    <div class="controls-left">
+                        <div class="control-group">
+                            <label for="pageSize">Number of subjects per page:</label>
+                            <input type="number" id="pageSize" name="pageSize" min="1" max="100" value="${param.pageSize != null ? param.pageSize : 9}" onchange="updatePageSize()" />
+                        </div>
+                        <c:set var="showTitle" value="${empty paramValues.displayOptions}" />
+                        <c:set var="showTagline" value="${empty paramValues.displayOptions}" />
+                        <c:set var="showSale" value="${empty paramValues.displayOptions}" />
+                        <c:set var="showOriginal" value="${empty paramValues.displayOptions}" />
+                        <c:forEach items="${paramValues.displayOptions}" var="opt">
+                            <c:choose>
+                                <c:when test="${opt=='title'}"><c:set var="showTitle" value="true"/></c:when>
+                                <c:when test="${opt=='tagline'}"><c:set var="showTagline" value="true"/></c:when>
+                                <c:when test="${opt=='sale-price'}"><c:set var="showSale" value="true"/></c:when>
+                                <c:when test="${opt=='original-price'}"><c:set var="showOriginal" value="true"/></c:when>
+                            </c:choose>
+                        </c:forEach>
+                        <div class="display-options">
+                            <label><input type="checkbox" name="displayOptions" value="title" <c:if test="${showTitle}">checked</c:if> onchange="updateDisplayOptions()" /> Tittle</label>
+                            <label><input type="checkbox" name="displayOptions" value="tagline" <c:if test="${showTagline}">checked</c:if> onchange="updateDisplayOptions()" /> Description</label>
+                            <label><input type="checkbox" name="displayOptions" value="sale-price" <c:if test="${showSale}">checked</c:if> onchange="updateDisplayOptions()" /> Sale price</label>
+                            <label><input type="checkbox" name="displayOptions" value="original-price" <c:if test="${showOriginal}">checked</c:if> onchange="updateDisplayOptions()" /> Original price</label>
+                            </div>
+                        </div>
+                        <div class="controls-right">
+                            <div class="pagination">
+                            <c:if test="${currentPage>1}">
+                                <a href="?page=${currentPage-1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                            </c:if>
+                            <c:if test="${currentPage<=1}">
+                                <span class="disabled"><i class="fas fa-chevron-left"></i></span>
+                                </c:if>
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <c:choose>
+                                        <c:when test="${i==currentPage}">
+                                        <span class="current">${i}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="?page=${i}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">${i}</a>
+                                    </c:otherwise>
                                 </c:choose>
                             </c:forEach>
-                            <div class="display-options">
-                                <label><input type="checkbox" name="displayOptions" value="title" <c:if test="${showTitle}">checked</c:if> onchange="updateDisplayOptions()" /> Tiêu đề</label>
-                                <label><input type="checkbox" name="displayOptions" value="tagline" <c:if test="${showTagline}">checked</c:if> onchange="updateDisplayOptions()" /> Mô tả</label>
-                                <label><input type="checkbox" name="displayOptions" value="sale-price" <c:if test="${showSale}">checked</c:if> onchange="updateDisplayOptions()" /> Giá khuyến mãi</label>
-                                <label><input type="checkbox" name="displayOptions" value="original-price" <c:if test="${showOriginal}">checked</c:if> onchange="updateDisplayOptions()" /> Giá gốc</label>
-                                </div>
-                            </div>
-                            <div class="controls-right">
-                                <div class="pagination">
-                                <c:if test="${currentPage>1}">
-                                    <a href="?page=${currentPage-1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </a>
+                            <c:if test="${currentPage<totalPages}">
+                                <a href="?page=${currentPage+1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                            </c:if>
+                            <c:if test="${currentPage>=totalPages}">
+                                <span class="disabled"><i class="fas fa-chevron-right"></i></span>
                                 </c:if>
-                                <c:if test="${currentPage<=1}">
-                                    <span class="disabled"><i class="fas fa-chevron-left"></i></span>
-                                    </c:if>
-                                    <c:forEach begin="1" end="${totalPages}" var="i">
-                                        <c:choose>
-                                            <c:when test="${i==currentPage}">
-                                            <span class="current">${i}</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="?page=${i}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">${i}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                                <c:if test="${currentPage<totalPages}">
-                                    <a href="?page=${currentPage+1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </a>
-                                </c:if>
-                                <c:if test="${currentPage>=totalPages}">
-                                    <span class="disabled"><i class="fas fa-chevron-right"></i></span>
-                                    </c:if>
-                            </div>
                         </div>
                     </div>
-                    <div class="subjects-grid">
-                        <c:forEach items="${subjects}" var="subject">
-                            <div class="subject-card" onclick="goToSubject(${subject.id})">
-                                <div class="subject-thumbnail">
-                                    <c:choose>
-                                        <c:when test="${not empty subject.thumbnail}">
-                                            <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='📚';"/>
-                                        </c:when>
-                                        <c:otherwise>📚</c:otherwise>
-                                    </c:choose>
-                                </div>
-                                <div class="subject-content">
-                                    <c:if test="${showTitle}"><h3>${subject.title}</h3></c:if>
-                                    <c:if test="${showTagline}"><p>${subject.description}</p></c:if>
-                                    <c:if test="${showSale or showOriginal}">
-                                        <div class="price-section">
-                                            <c:if test="${showSale}">
-                                                <span class="sale-price">
-                                                    <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
-                                                </span>
-                                            </c:if>
-                                            <c:if test="${showOriginal}">
-                                                <span class="original-price">
-                                                    <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
-                                                </span>
-                                            </c:if>
-                                            <button class="register-btn" onclick="registerSubject(event,${subject.id})">Đăng ký</button>
-                                        </div>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                    <c:if test="${empty subjects}">
-                        <div style="text-align:center;padding:50px;color:#666;">
-                            <i class="fas fa-search" style="font-size:48px;margin-bottom:20px;"></i>
-                            <h3>Không tìm thấy môn học nào</h3>
-                            <p>Thử thay đổi từ khóa tìm kiếm hoặc xem tất cả môn học</p>
-                        </div>
-                    </c:if>
                 </div>
-            </main>
-        </div>
-        <script>
-            document.getElementById('toggleSidebar').addEventListener('click', () =>
-                document.querySelector('.sidebar').classList.toggle('hidden')
-            );
+                <div class="subjects-grid">
+                    <c:forEach items="${subjects}" var="subject">
+                        <div class="subject-card" onclick="goToSubject(${subject.id})">
+                            <div class="subject-thumbnail">
+                                <c:choose>
+                                    <c:when test="${not empty subject.thumbnail}">
+                                        <img src="${pageContext.request.contextPath}/images/${subject.thumbnail}" alt="${subject.title}" onerror="this.style.display='none';this.parentElement.innerHTML='&#128218;';"/>
+                                    </c:when>
+                                    <c:otherwise>&#128218;</c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="subject-content">
+                                <c:if test="${showTitle}"><h3>${subject.title}</h3></c:if>
+                                <c:if test="${showTagline}"><p>${subject.description}</p></c:if>
+                                <c:if test="${showSale or showOriginal}">
+                                    <div class="price-section">
+                                        <c:if test="${showSale}">
+                                            <span class="sale-price">
+                                                <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${showOriginal}">
+                                            <span class="original-price">
+                                                <fmt:formatNumber value="${subject.originalPrice}" type="currency" currencyCode="VND"/>
+                                            </span>
+                                        </c:if>
 
+                                    </div>
+                                </c:if>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+                <c:if test="${empty subjects}">
+                    <div style="text-align:center;padding:50px;color:#666;">
+                        <i class="fas fa-search" style="font-size:48px;margin-bottom:20px;"></i>
+                        <h3>No subject can be found</h3>
+
+                    </div>
+                </c:if>
+            </div>
+        </main>
+
+        <script>
             const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
             ft.addEventListener('click', () => {
                 sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
@@ -623,19 +677,11 @@
                 });
             });
 
-// Function xử lý filter
+            // Function xử lý filter
             function submitFilter(categoryValue = '') {
                 let url = new URL(window.location.href);
                 url.searchParams.set('cat', categoryValue);
                 url.searchParams.set('page', '1'); // Reset về trang 1
-                window.location.href = url;
-            }
-
-// Function xóa filter
-            function clearFilter() {
-                let url = new URL(window.location.href);
-                url.searchParams.delete('cat');
-                url.searchParams.set('page', '1');
                 window.location.href = url;
             }
 
@@ -658,17 +704,18 @@
                 window.location.href = u;
             }
 
-            function goToSubject(id) {
-                window.location.href = '${pageContext.request.contextPath}/subject-detail?id=' + id;
+            function goToSubject(subjectId) {
+                // Implement navigation to subject detail page
+                window.location.href = "${pageContext.request.contextPath}/subject-detail?id=" + subjectId;
             }
 
-            function registerSubject(e, id) {
-                e.stopPropagation();
-                
-                    if (confirm('Bạn có chắc muốn đăng ký môn học này?'))
-                        window.location.href = '${pageContext.request.contextPath}/subject-register?subjectId=' + id;
-                }
-            
+            function registerSubject(event, subjectId) {
+                event.stopPropagation(); // Prevent card click event from firing
+                // Implement registration logic
+                alert("Đăng ký môn học ID: " + subjectId);
+                // You might want to redirect to a registration page or send an AJAX request
+            }
+
 
             document.addEventListener('DOMContentLoaded', () => {
                 let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;

@@ -1,475 +1,415 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">    
-    <title>Profile</title>
-    <style>
-        /* RESET & BODY LAYOUT */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <style>
+            /* RESET & BODY LAYOUT */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            min-height: 100vh;
-        }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                color: #333;
+            }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 200px;
-            background-color: #34495e;
-            color: white;
-            padding: 20px;
-            min-height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            transition: transform 0.3s ease-in-out;
-        }
+            .container {
+                display: flex;
+                min-height: 100vh;
+            }
 
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            margin: 20px 0;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            display: block;
-            padding: 10px 0;
-        }
-
-        .sidebar ul li a:hover {
-            color: #bdc3c7;
-        }
-
-        /* MAIN CONTENT */
-        main {
-            flex: 1;
-            margin-left: 200px;
-            transition: margin-left 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar.hidden + main {
-            margin-left: 0;
-        }
-
-        /* HEADER */
-        header {
-            position: relative;
-            background-color: #277AB0;
-            color: white;
-            padding: 15px 20px;
-            height: 60px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #toggleSidebar {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #34495e;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        #toggleSidebar:hover {
-            background-color: #2c3e50;
-            transform: translateY(-50%) scale(1.05);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            line-height: 60px;
-        }
-
-        /* PROFILE CONTENT */
-        .profile-content {
-            flex: 1;
-            background-color: #e8e8e8;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: calc(100vh - 70px);
-        }
-
-        .profile-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            background-color: #e8e8e8;
-        }
-
-        .profile-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .form-group label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 10px;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 14px;
-            background-color: white;
-        }
-
-        .form-group input:disabled {
-            background-color: #ecf0f1;
-            color: #7f8c8d;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        /* BUTTON */
-        .save-btn {
-            align-self: center;
-            padding: 12px 30px;
-            background-color: #95a5a6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-
-        .save-btn:hover {
-            background-color: #7f8c8d;
-        }
-
-        /* AVATAR SECTION */
-        .avatar-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .avatar-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #3498db;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .avatar:hover {
-            transform: scale(1.05);
-            border-color: #2980b9;
-        }
-
-        .avatar-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .avatar-container:hover .avatar-overlay {
-            opacity: 1;
-        }
-
-        .avatar-overlay span {
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .avatar-input {
-            display: none;
-        }
-
-        .avatar-wrapper {
-            width: 60px;
-            height: 60px;
-            background-color: #95a5a6;
-            border-radius: 50%;
-            margin: 0 auto 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            overflow: hidden; /* THÊM: Cắt phần thừa */
-        }
-      
-        .avatar-img {
-            width: 50px;     /* Nhỏ hơn wrapper một chút */
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            background-color: transparent; /* THÊM */
-        }
-        
-        .avatar-wrapper .avatar-icon {
-            font-size: 24px;
-            color: white;
-        }
-
-        /* MESSAGE NOTIFICATION */
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 4px;
-        }
-
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-left: 5px solid #dc3545;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 4px;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
+            /* === Sidebar (UPDATED) === */
             .sidebar {
-                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
+                overflow-y: auto;
+            }
+
+            .sidebar.hidden {
                 transform: translateX(-100%);
             }
 
-            main {
-                margin-left: 0;
+            .sidebar .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+                background-color: #95a5a6;
+                border-radius: 50%;
+                margin: 10px auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                overflow: hidden;
             }
 
-            .row {
+            .sidebar .avatar-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: transparent;
+            }
+
+            .sidebar .avatar-icon {
+                font-size: 24px;
+                color: white;
+            }
+
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar ul li {
+                margin: 15px 0;
+            }
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            .sidebar ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateX(5px);
+                color: #ecf0f1;
+            }
+
+            /* MAIN CONTENT */
+            .main-content {
+                flex-grow: 1;
+                margin-left: 220px;
+                padding: 20px;
+                transition: margin-left 0.3s;
+            }
+
+            .content-wrapper {
+                background:rgba(255,255,255,.95);
+                backdrop-filter:blur(10px);
+                border-radius:15px;
+                padding:30px;
+                box-shadow:0 8px 32px rgba(0,0,0,.1);
+            }
+
+            .page-header {
+                font-size: 28px;
+                font-weight: 700;
+                color: #2d3748;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #e2e8f0;
+            }
+
+            /* PROFILE CONTENT (Original styles preserved) */
+            .profile-container {
+                width: 100%;
+                max-width: 600px; /* Increased max-width for better spacing */
+                margin: 0 auto; /* Center the form */
+            }
+
+            .profile-form {
+                display: flex;
                 flex-direction: column;
                 gap: 15px;
             }
-        }
 
-        .no-select {
-            background-color: #ecf0f1;
-            color: #7f8c8d;
-            cursor: not-allowed;
-            user-select: none;        /* Chặn chọn nội dung */
-            pointer-events: none;     /* Chặn cả click, copy, focus */
-        }
-               
+            .row {
+                display: flex;
+                gap: 15px;
+            }
 
-   </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <ul>
-            <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
-            <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>
-            <li><a href="<%= request.getContextPath() %>/myRegistration">My Registrations</a></li>
-            <li><a href="<%= request.getContextPath() %>/settings">Setting</a></li>
-        </ul>
-    </nav>
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
 
-    <main>
-        <!-- Header -->
-        <header>
-            <a href="#" id="toggleSidebar">☰ Toggle Sidebar</a>
-            <h1 class="header-title">Profile</h1>
-        </header>
+            .form-group label {
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #2c3e50;
+                font-size: 14px;
+            }
 
-        <!-- Profile Content -->
-        <div class="profile-content">
-            <div class="profile-container">           
-                
-                <form class="profile-form" method="post" action="<%= request.getContextPath() %>/profile" enctype="multipart/form-data">
-                    <div class="avatar-section">
-                        <div class="avatar-container">
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+                border: 1px solid #bdc3c7;
+                border-radius: 4px;
+                font-size: 14px;
+                background-color: white;
+            }
 
-                            <img src="<%= request.getContextPath() %>/${profile.avatar}" alt="Profile Avatar" class="avatar" id="avatarPreview">
-                            <div class="avatar-overlay" onclick="document.getElementById('avatarInput').click()">
-                                <span>Change<br>Photo</span>
+            .form-group textarea {
+                resize: vertical;
+                min-height: 80px;
+            }
+
+            .save-btn {
+                align-self: center;
+                padding: 12px 30px;
+                background-color: #667eea;
+                color: white;
+                border: none;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                margin-top: 20px;
+                transition: background-color .3s, transform .2s;
+            }
+
+            .save-btn:hover {
+                background-color: #5a67d8;
+                transform: scale(1.05);
+            }
+
+            /* AVATAR SECTION */
+            .avatar-section {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .avatar-container {
+                position: relative;
+                display: inline-block;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid #667eea;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .avatar-container:hover .avatar {
+                transform: scale(1.05);
+            }
+
+            .avatar-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+
+            .avatar-container:hover .avatar-overlay {
+                opacity: 1;
+            }
+
+            .avatar-overlay span {
+                color: white;
+                font-size: 12px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .avatar-input {
+                display: none;
+            }
+
+            .no-select {
+                background-color: #ecf0f1;
+                color: #7f8c8d;
+                cursor: not-allowed;
+                user-select: none;
+            }
+
+            .error-message {
+                color: #e53e3e;
+                font-size: 12px;
+                margin-top: 4px;
+            }
+
+            .success-message {
+                color: #38a169;
+                background-color: #f0fff4;
+                border: 1px solid #9ae6b4;
+                padding: 10px;
+                border-radius: 5px;
+                text-align: center;
+                margin-bottom: 15px;
+            }
+
+            /* RESPONSIVE */
+            @media (max-width: 768px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+                .sidebar.hidden {
+                    transform: translateX(-100%);
+                }
+                .main-content {
+                    margin-left: 0;
+                    padding: 10px;
+                }
+                .row {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav class="sidebar">
+            <a href="${pageContext.request.contextPath}/profile">
+                <div class="avatar-wrapper">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.userAuth.avatar}">
+                            <img src="${pageContext.request.contextPath}/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                        </c:when>
+                        <c:otherwise>
+                            <span class="avatar-icon">👤</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </a>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <h1 class="page-header">User Profile</h1>
+                <div class="profile-container">
+                    <form class="profile-form" method="post" action="${pageContext.request.contextPath}/profile" enctype="multipart/form-data">
+
+                        <div class="avatar-section">
+                            <div class="avatar-container">
+                                <img src="${pageContext.request.contextPath}/${profile.avatar}" alt="Profile Avatar" class="avatar" id="avatarPreview">
+                                <div class="avatar-overlay" onclick="document.getElementById('avatarInput').click()">
+                                    <span>Change<br>Photo</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <input type="file" id="avatarInput" name="avatar" class="avatar-input" accept="image/*" onchange="previewAvatar(this)">
 
-                    <div class="row">
+                        <input type="file" id="avatarInput" name="avatar" class="avatar-input" accept="image/*" onchange="previewAvatar(this)">
+
+                        <c:if test="${not empty message}">
+                            <div class="success-message">${message}</div>
+                        </c:if>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" value="${profile.fullName}" required>
+                                <c:if test="${not empty errors.fullNameError}">
+                                    <div class="error-message">${errors.fullNameError}</div>
+                                </c:if>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" value="${profile.fullName}" required>
-                            <c:if test="${not empty errors.fullNameError}">
-                                <div style="color: red;">${errors.fullNameError}</div>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" value="${profile.email}" readonly class="no-select">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" value="${profile.username}" required>
+                            <c:if test="${not empty errors && not empty errors.usernameError}">
+                                <div class="error-message">${errors.usernameError}</div>
                             </c:if>
-                        </div>           
-                    </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="${profile.email}" readonly class="no-select">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value="${profile.username}" required>
-                        <c:if test="${not empty errors && not empty errors.usernameError}">
-                            <div style="color: red;">${errors.usernameError}</div>
-                        </c:if>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mobile">Phone Number</label>
-                        <input type="text" id="mobile" name="mobile" value="${profile.mobile}"required>
-                        <c:if test="${not empty errors.mobileError}">
-                            <div style="color: red;">${errors.mobileError}</div>
-                        </c:if>
-                    </div>
-
-                    <div class="row">
                         <div class="form-group">
-                            <label for="dateOfBirth">Date of Birth</label>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" value="${profile.dateOfBirth}">
+                            <label for="mobile">Phone Number</label>
+                            <input type="text" id="mobile" name="mobile" value="${profile.mobile}" required>
+                            <c:if test="${not empty errors.mobileError}">
+                                <div class="error-message">${errors.mobileError}</div>
+                            </c:if>
                         </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" name="dateOfBirth" value="${profile.dateOfBirth}">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender">
+                                    <option value="1" ${profile.gender == '1' ? 'selected' : ''}>Male</option>
+                                    <option value="0" ${profile.gender == '0' ? 'selected' : ''}>Female</option>
+                                    <option value="2" ${profile.gender == '2' ? 'selected' : ''}>Other</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select id="gender" name="gender">
-                                <option value="1" ${profile.gender == '1' ? 'selected' : ''}>Male</option>
-                                <option value="0" ${profile.gender == '0' ? 'selected' : ''}>Female</option>
-                                <option value="2" ${profile.gender == '2' ? 'selected' : ''}>Other</option>
-
-                            </select>
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" name="bio" rows="4">${profile.bio}</textarea>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="bio">Bio</label>
-                        <textarea id="bio" name="bio" rows="4">${profile.bio}</textarea>
-                    </div>
-
-                    <c:if test="${not empty message}">
-                        <div style="color: green;">
-                            ${message}
-                            <button type="button" class="close-btn" onclick="this.parentElement.style.display='none';">×</button>
-                        </div>
-                    </c:if>
-                    
-                    <button type="submit" class="save-btn">Save Changes</button>
-                </form>
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <script>
-        function previewAvatar(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
+        <script>
+            function previewAvatar(input) {
+                if (input.files && input.files[0]) {
+                    const file = input.files[0];
 
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('Ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 5MB.');
-                    input.value = '';
-                    return;
-                }
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Image is too large! Please select an image smaller than 5MB.');
+                        input.value = '';
+                        return;
+                    }
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please select an image file!');
+                        input.value = '';
+                        return;
+                    }
 
-                if (!file.type.startsWith('image/')) {
-                    alert('Vui lòng chọn file ảnh!');
-                    input.value = '';
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const maxSize = 300;
-                        let { width, height } = img;
-
-                        if (width > height) {
-                            if (width > maxSize) {
-                                height = (height * maxSize) / width;
-                                width = maxSize;
-                            }
-                        } else {
-                            if (height > maxSize) {
-                                width = (width * maxSize) / height;
-                                height = maxSize;
-                            }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
-                        const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                        document.getElementById('avatarPreview').src = resizedDataUrl;
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('avatarPreview').src = e.target.result;
                     };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
+                }
             }
-        }
-
-        document.getElementById("toggleSidebar").addEventListener("click", function (e) {
-            e.preventDefault();
-            document.querySelector(".sidebar").classList.toggle("hidden");
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
