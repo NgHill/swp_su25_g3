@@ -3,13 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/web/addnew_subject.jsp</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/controller/SubjectListController.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/web/subject_list.jsp</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/web/subject_detail.jsp</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/BasicDAO/SubjectListDAO.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/controller/AddNewSubject.java</file>
-            <file>file:/C:/Users/admin/Downloads/swp_su25_g3-main%20(1)/code/swp_su25_g3/src/java/elearning/AuthorizationFilter.java</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/post_detail.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/BasicDAO/PracticeListDAO.java</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/StimulationExam.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/subjectList.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/myRegistration.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/addnew_subject.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/complete-register.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/practiceList.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/controller/QuizHandleServlet1.java</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/controller/ActiveAccount.java</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/src/java/elearning/controller/practiceList.java</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/quizhandle.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/subject_list.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/subjectDetail.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/practiceDetails.jsp</file>
+            <file>file:/D:/Ducky_shop/swp_su25_g3/web/home.jsp</file>
         </group>
     </open-files>
 </project-private>
