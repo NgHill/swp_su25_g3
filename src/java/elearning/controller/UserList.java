@@ -7,6 +7,7 @@ package elearning.controller;
 
 import elearning.BasicDAO.PracticeListDAO;
 import elearning.BasicDAO.UserListDAO;
+import elearning.anotation.AccessRoles;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -58,6 +59,7 @@ public class UserList extends HttpServlet {
     private final UserListDAO userlistDAO = new UserListDAO();
     
     @Override
+    @AccessRoles(roles = "admin")
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         // Lấy dữ liệu filter & search từ request

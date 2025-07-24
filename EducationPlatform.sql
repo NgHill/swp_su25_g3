@@ -14,6 +14,9 @@ CREATE TABLE Users (
     Role VARCHAR(50) DEFAULT 'customer',
     Status VARCHAR(50) DEFAULT 'active',
     ActiveCode VARCHAR(10),
+    Username VARCHAR(50) UNIQUE,
+    Bio TEXT,
+    DateOfBirth DATE,
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -240,11 +243,10 @@ INSERT INTO Posts (Title, Image, Content, Thumbnail, Category, AuthorId, ViewCou
     '2024-01-28 10:00:00'
 );
 
--- Insert Users
-INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status) VALUES
-('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active'),
-('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active'),
-('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active');
+INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status, Username, Bio, DateOfBirth) VALUES
+('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
+('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
+('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08');
 
 -- Insert SubjectPackages for Teamwork (8 subjects)
 INSERT INTO SubjectPackages (Title, Description, BriefInfo, Tagline, Thumbnail, LowestPrice, OriginalPrice, SalePrice, OwnerId, Category, Status) VALUES
@@ -651,24 +653,6 @@ VALUES
   'Trust', 
   TRUE, 
   'Trust is the foundation of collaboration'
-),
-(
-  (SELECT Id FROM Questions WHERE Content = 'The key to successful collaboration is building _______ among team members.' LIMIT 1),
-  'Speed', 
-  FALSE, 
-  'Speed is not the most important factor'
-),
-(
-  (SELECT Id FROM Questions WHERE Content = 'The key to successful collaboration is building _______ among team members.' LIMIT 1),
-  'Competition', 
-  FALSE, 
-  'Competition hinders collaboration'
-),
-(
-  (SELECT Id FROM Questions WHERE Content = 'The key to successful collaboration is building _______ among team members.' LIMIT 1),
-  'Laziness', 
-  FALSE, 
-  'Laziness is not a collaboration skill'
 );
 
 INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 

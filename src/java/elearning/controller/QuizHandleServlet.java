@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name="QuizHandleServlet", urlPatterns={"/quizhandle"})
-public class QuizHandleServlet1 extends HttpServlet {
+public class QuizHandleServlet extends HttpServlet {
     private QuizDAO quizDAO;
     private QuizResultDAO quizResultDAO;
     
@@ -38,10 +38,16 @@ public class QuizHandleServlet1 extends HttpServlet {
     throws ServletException, IOException {
         
         // Lấy parameters
-        int quizId = getIntParameter(request, "quizId", 1);
-        int userId = getIntParameter(request, "userId", 1);
+        int quizId = getIntParameter(request, "quizId", -1);
+        int userId = getIntParameter(request, "userId", -1);
         int questionIndex = getIntParameter(request, "questionIndex", 0);
         String action = request.getParameter("action");
+
+        // Validate required parameters
+        if (quizId == -1 || userId == -1) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters: quizId or userId");
+            return;
+        }
         
         HttpSession session = request.getSession();
         
@@ -53,15 +59,27 @@ public class QuizHandleServlet1 extends HttpServlet {
         
         // Lấy quiz từ session hoặc database
         Quiz quiz = (Quiz) session.getAttribute("currentQuiz");
-        if (quiz == null || quiz.getId() != quizId) {
+        Integer sessionUserId = (Integer) session.getAttribute("currentUserId");
+
+        // Reset session nếu quiz hoặc user khác
+        if (quiz == null || quiz.getId() != quizId || sessionUserId == null || sessionUserId != userId) {
             quiz = quizDAO.getQuizWithQuestions(quizId);
             if (quiz == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Quiz not found");
                 return;
             }
+
+            // Clear old session data
+            session.removeAttribute("userAnswers");
+
+            // Set new session data
             session.setAttribute("currentQuiz", quiz);
             session.setAttribute("currentUserId", userId);
             session.setAttribute("quizStartTime", System.currentTimeMillis());
+
+            // Initialize empty user answers
+            Map<Integer, String> userAnswers = new HashMap<>();
+            session.setAttribute("userAnswers", userAnswers);
         }
         
         // Validate question index
@@ -167,6 +185,8 @@ public class QuizHandleServlet1 extends HttpServlet {
         String direction = request.getParameter("direction");
 
         Quiz quiz = (Quiz) session.getAttribute("currentQuiz");
+        Integer userId = (Integer) session.getAttribute("currentUserId");
+        
         if (quiz == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");
             return;
@@ -182,7 +202,7 @@ public class QuizHandleServlet1 extends HttpServlet {
             targetIndex = currentIndex;
         }
 
-        response.sendRedirect("quizhandle?quizId=" + quiz.getId() + "&questionIndex=" + targetIndex);
+        response.sendRedirect("quizhandle?quizId=" + quiz.getId() + "&userId=" + userId + "&questionIndex=" + targetIndex);
     }
     
     private void submitQuiz(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
@@ -190,13 +210,38 @@ public class QuizHandleServlet1 extends HttpServlet {
         
         Quiz quiz = (Quiz) session.getAttribute("currentQuiz");
         Integer userId = (Integer) session.getAttribute("currentUserId");
-        
+
         @SuppressWarnings("unchecked")
         Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
-        
+
         if (quiz == null || userId == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");
             return;
+        }
+
+        // Validate user session
+        if (userAnswers == null) {
+            userAnswers = new HashMap<>();
+        }
+        
+        // LƯU CÂU TRA LỜI CUỐI CÙNG TRƯỚC KHI SUBMIT
+        String lastAnswer = request.getParameter("lastAnswer");
+        String lastTextAnswer = request.getParameter("lastTextAnswer");
+        String lastQuestionIndex = request.getParameter("lastQuestionIndex");
+
+        if (lastQuestionIndex != null) {
+            try {
+                int questionIndex = Integer.parseInt(lastQuestionIndex);
+                if (questionIndex >= 0 && questionIndex < quiz.getQuestions().size()) {
+                    String finalAnswer = lastTextAnswer != null && !lastTextAnswer.trim().isEmpty() 
+                        ? lastTextAnswer.trim() : lastAnswer;
+                    if (finalAnswer != null && !finalAnswer.isEmpty()) {
+                        userAnswers.put(questionIndex, finalAnswer);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Ignore invalid question index
+            }
         }
         
         // Tính điểm
@@ -208,15 +253,18 @@ public class QuizHandleServlet1 extends HttpServlet {
         result.setQuizId(quiz.getId());
         result.setScore(score);
         result.setSubmittedAt(LocalDateTime.now());
-        
+
         boolean saved = quizResultDAO.saveQuizResult(result);
-        
+
         if (saved) {
             // Clear session
             session.removeAttribute("currentQuiz");
             session.removeAttribute("userAnswers");
             session.removeAttribute("quizStartTime");
-            response.sendRedirect("home.jsp");
+            session.removeAttribute("currentUserId");
+
+            // Redirect về practice list với thông báo thành công
+            response.sendRedirect(request.getContextPath() + "/practicelist");
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to save quiz result");
         }
