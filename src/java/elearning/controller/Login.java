@@ -56,7 +56,11 @@ public class Login extends HttpServlet {
         if (userAuth != null) {
             if (userAuth.getRole().equals("mtk")) {
                 response.sendRedirect("mtk-dashboard");
-            } else {
+            }
+            else if (userAuth.getRole().equals("admin")) {
+                response.sendRedirect("userlist");
+            }
+            else {
                 response.sendRedirect("home");
             }
             return;
