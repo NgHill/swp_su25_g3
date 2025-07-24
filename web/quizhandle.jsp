@@ -340,12 +340,13 @@
                 </c:if>
             </div>
             <div class="right-buttons">
-                <!-- Previous Button -->
                 <c:if test="${currentQuestionIndex > 0}">
                     <form method="post" style="display: inline;" onsubmit="return submitWithCurrentAnswer(this, 'prev')">
                         <input type="hidden" name="action" value="navigate">
                         <input type="hidden" name="currentIndex" value="${currentQuestionIndex}">
                         <input type="hidden" name="direction" value="prev">
+                        <input type="hidden" name="quizId" value="${quiz.id}">
+                        <input type="hidden" name="userId" value="${sessionScope.currentUserId}">
                         <input type="hidden" name="answer" value="">
                         <input type="hidden" name="textAnswer" value="">
                         <button type="submit" class="btn btn-secondary">Previous</button>
@@ -358,6 +359,8 @@
                         <input type="hidden" name="action" value="navigate">
                         <input type="hidden" name="currentIndex" value="${currentQuestionIndex}">
                         <input type="hidden" name="direction" value="next">
+                        <input type="hidden" name="quizId" value="${quiz.id}">
+                        <input type="hidden" name="userId" value="${sessionScope.currentUserId}">
                         <input type="hidden" name="answer" value="">
                         <input type="hidden" name="textAnswer" value="">
                         <button type="submit" class="btn btn-primary">Next</button>
@@ -382,7 +385,7 @@
             <div class="modal-body">
                 <div class="question-grid">
                     <c:forEach var="i" begin="0" end="${totalQuestions - 1}">
-                        <a href="quizhandle?quizId=${quiz.id}&questionIndex=${i}" 
+                        <a href="quizhandle?quizId=${quiz.id}&userId=${sessionScope.currentUserId}&questionIndex=${i}" 
                            class="question-number 
                                   <c:if test="${i == currentQuestionIndex}">current</c:if>
                                   <c:if test="${not empty userAnswers[i]}">answered</c:if>">
@@ -502,7 +505,49 @@
         // Submit quiz
         function submitQuiz() {
             clearInterval(timerInterval);
-            window.location.href = 'quizhandle?action=submit&quizId=${quiz.id}';
+    
+            // Lấy câu trả lời hiện tại
+            let lastAnswer = '';
+            let lastTextAnswer = '';
+
+            const selectedRadio = document.querySelector('input[name="answer"]:checked');
+            if (selectedRadio) {
+                lastAnswer = selectedRadio.value;
+            }
+
+            const textInput = document.getElementById('textAnswer');
+            if (textInput && textInput.value.trim()) {
+                lastTextAnswer = textInput.value.trim();
+            }
+
+            // Tạo form để gửi câu trả lời cuối cùng cùng với submit
+            const form = document.createElement('form');
+            form.method = 'GET';
+            form.action = 'quizhandle';
+
+            // Các parameters cần thiết
+            const params = {
+                'action': 'submit',
+                'quizId': '${quiz.id}',
+                'userId': '${sessionScope.currentUserId}',
+                'lastQuestionIndex': '${currentQuestionIndex}',
+                'lastAnswer': lastAnswer,
+                'lastTextAnswer': lastTextAnswer
+            };
+
+            // Thêm các input hidden
+            for (const [key, value] of Object.entries(params)) {
+                if (value) { // Chỉ thêm nếu có giá trị
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value;
+                    form.appendChild(input);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
         }
 
         // Modal functions

@@ -103,11 +103,6 @@ public class QuizDAO {
                 answers.add(answer);
             }
             
-            // Nếu là multiple choice, shuffle các đáp án để random thứ tự
-            if ("multiple_choice".equals(questionType)) {
-                Collections.shuffle(answers);
-            }
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -171,8 +166,9 @@ public class QuizDAO {
         for (QuestionAnswer correctAnswer : correctAnswers) {
             String normalizedCorrectAnswer = normalizeText(correctAnswer.getContent());
 
-            // Kiểm tra exact match sau khi normalize
-            if (normalizedUserAnswer.equals(normalizedCorrectAnswer)) {
+            // Kiểm tra contains (nếu câu trả lời của user chứa đáp án đúng)
+            if (normalizedUserAnswer.contains(normalizedCorrectAnswer) || 
+                normalizedCorrectAnswer.contains(normalizedUserAnswer)) {
                 return true;
             }
         }
