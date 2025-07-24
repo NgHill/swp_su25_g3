@@ -57,24 +57,20 @@ CREATE TABLE Registrations (
     FOREIGN KEY (SubjectId) REFERENCES SubjectPackages(Id)
 );
 
-
 -- Bảng Posts
-CREATE TABLE IF NOT EXISTS Posts (
+CREATE TABLE Posts (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Title VARCHAR(255) NOT NULL,
+    Title VARCHAR(255),
     Image VARCHAR(1000),
     Content TEXT,
     Thumbnail VARCHAR(255),
-    Description TEXT,
-    Category VARCHAR(255),
+    Category VARCHAR(1000),
     AuthorId INT,
     ViewCount INT DEFAULT 0,
-    Status VARCHAR(50) DEFAULT 'Hiển thị',
+    Status VARCHAR(50) DEFAULT 'published',
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (AuthorId) REFERENCES Users(Id)
-    
 );
-
 
 -- Bảng Sliders (đã cập nhật)
 CREATE TABLE Sliders (
@@ -166,6 +162,7 @@ CREATE TABLE UserAnswer (
     AnswerId INT NULL, -- Cho multiple choice questions
     TextAnswer TEXT NULL, -- Cho text input questions
     IsCorrect BOOLEAN DEFAULT FALSE,
+    ImagePath VARCHAR(500) NULL,
     AnsweredAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (UserId) REFERENCES Users(Id),
     FOREIGN KEY (QuizId) REFERENCES Quizzes(Id),
@@ -822,3 +819,10 @@ INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
   (SELECT Id FROM Quizzes WHERE Title = 'Advanced Collaboration Quiz' LIMIT 1),
   (SELECT Id FROM Questions WHERE Content = 'Which strategy best improves team synergy?' LIMIT 1)
 );
+
+
+
+
+
+
+
