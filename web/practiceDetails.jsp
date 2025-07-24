@@ -313,7 +313,7 @@
                 <div class="avatar-wrapper">
                     <c:choose>
                         <c:when test="${not empty sessionScope.userAuth.avatar}">
-                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                            <img src="${pageContext.request.contextPath}/avatar/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
                         </c:when>
                         <c:otherwise>
                             <span class="avatar-icon">👤</span>
@@ -353,34 +353,34 @@
 
             <div class="new-practice">
                 <h2>New Practice</h2>
-                <form class="practice-form">
+                <form class="practice-form" method="get" action="<%= request.getContextPath() %>/practicedetails">
+                    <!-- Hidden field để giữ quizResultId -->
+                    <input type="hidden" name="quizResultId" value="${param.quizResultId}">
+
                     <label>
                         Subject:
-                        <select>
-                            <option>Subject</option>
+                        <select name="subjectId" onchange="this.form.submit()">
+                            <option value="">Select Subject</option>
+                            <c:forEach var="subject" items="${registeredSubjects}">
+                                <option value="${subject.id}" 
+                                        <c:if test="${subject.id == selectedSubjectId}">selected</c:if>>
+                                    ${subject.title}
+                                </option>
+                            </c:forEach>
                         </select>
                     </label>
+
                     <label>
-                        Number of question:
-                        <select>
-                            <option>20</option>
-                            <option>30</option>
-                            <option>50</option>
+                        Quizzes:
+                        <select name="quizId">
+                            <option value="">Select Quiz</option>
+                            <c:forEach var="quiz" items="${quizzes}">
+                                <option value="${quiz.id}">${quiz.title}</option>
+                            </c:forEach>
                         </select>
                     </label>
-                    <label>
-                        Date:
-                        <input type="date" placeholder="DD/MM/YYYY" />
-                    </label>
-                    <label>
-                        Time (minutes):
-                        <select>
-                            <option>30</option>
-                            <option>45</option>
-                            <option>60</option>
-                        </select>
-                    </label>
-                    <button type="submit">Start Practicing</button>
+
+                    <button type="button" onclick="startPractice()">Start Practicing</button>
                 </form>
             </div>
 
@@ -396,6 +396,30 @@
             document.getElementById("toggleSidebar").addEventListener("click", function (e) {
                 e.preventDefault(); // Ngăn trình duyệt nhảy lên đầu trang do href="#"
                 document.querySelector(".sidebar").classList.toggle("hidden"); // Toggle class 'hidden'
+            });
+            
+            function startPractice() {
+                const subjectId = document.querySelector('select[name="subjectId"]').value;
+                const quizId = document.querySelector('select[name="quizId"]').value;
+
+                if (!subjectId) {
+                    alert('Please select a subject');
+                    return;
+                }
+
+                if (!quizId) {
+                    alert('Please select a quiz');
+                    return;
+                }
+
+                // Redirect đến trang quiz với quizId và userId
+                window.location.href = '<%= request.getContextPath() %>/quizhandle?quizId=' + quizId + '&userId=${sessionScope.userAuth.id}&questionIndex=0';
+            }
+            
+            // Toggle sidebar functionality (giữ nguyên code cũ)
+            document.getElementById("toggleSidebar").addEventListener("click", function (e) {
+                e.preventDefault();
+                document.querySelector(".sidebar").classList.toggle("hidden");
             });
         </script>
     </body>

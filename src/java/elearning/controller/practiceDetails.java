@@ -6,7 +6,11 @@
 package elearning.controller;
 
 import elearning.BasicDAO.PracticeListDAO;
+import elearning.anotation.AccessRoles;
 import elearning.entities.PracticeDetail;
+import elearning.entities.Quiz;
+import elearning.entities.SubjectPackage;
+import elearning.entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -58,14 +62,34 @@ public class practiceDetails extends HttpServlet {
     private final PracticeListDAO practiceListDAO = new PracticeListDAO();
     
     @Override
+    @AccessRoles(roles = "customer")
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         int quizResultId = Integer.parseInt(request.getParameter("quizResultId"));
 
         List<PracticeDetail> practicedetail = practiceListDAO.getPracticeDetails(quizResultId);
-        
-        request.setAttribute("practiceDetail", practicedetail.get(0));  // vì chỉ có 1 bản ghi
-        
+        request.setAttribute("practiceDetail", practicedetail.get(0));
+
+        User userAuth = (User) request.getSession().getAttribute("userAuth");
+        if (userAuth == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        int userId = userAuth.getId();
+
+        // Lấy danh sách subjects đã đăng ký
+        List<SubjectPackage> registeredSubjects = practiceListDAO.getRegisteredSubjectsByUserId(userId);
+        request.setAttribute("registeredSubjects", registeredSubjects);
+
+        // Nếu có subjectId được gửi từ form (để load quizzes)
+        String subjectIdParam = request.getParameter("subjectId");
+        if (subjectIdParam != null) {
+            int subjectId = Integer.parseInt(subjectIdParam);
+            List<Quiz> quizzes = practiceListDAO.getQuizzesBySubjectId(subjectId);
+            request.setAttribute("quizzes", quizzes);
+            request.setAttribute("selectedSubjectId", subjectId);
+        }
+
         request.getRequestDispatcher("practiceDetails.jsp").forward(request, response);
     } 
 

@@ -6,6 +6,7 @@
 package elearning.controller;
 
 import elearning.BasicDAO.PracticeListDAO;
+import elearning.anotation.AccessRoles;
 import elearning.entities.PracticeList;
 import elearning.entities.User;
 import java.io.IOException;
@@ -60,6 +61,7 @@ public class practiceList extends HttpServlet {
     private final PracticeListDAO practiceListDAO = new PracticeListDAO();
     private static final int RECORDS_PER_PAGE = 10;
     @Override
+    @AccessRoles(roles = "customer")
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         // FIXED: Lấy userId từ session thay vì hardcode
@@ -113,7 +115,16 @@ public class practiceList extends HttpServlet {
                 practiceLists = practiceListDAO.getPracticeListFiltered(userId, scoreFilter);
             }
         }
-        
+
+        // THÊM CODE SẮP XẾP THEO THỜI GIAN SUBMIT (mới nhất lên đầu)
+        practiceLists.sort((p1, p2) -> {
+            // So sánh theo submittedAt, null values sẽ được đặt cuối
+            if (p1.getSubmittedAt() == null && p2.getSubmittedAt() == null) return 0;
+            if (p1.getSubmittedAt() == null) return 1;
+            if (p2.getSubmittedAt() == null) return -1;
+            return p2.getSubmittedAt().compareTo(p1.getSubmittedAt()); // Descending order
+        });
+
         // THÊM CODE TÍNH TOÁN PHÂN TRANG
         int totalRecords = practiceLists.size();
         int totalPages = (int) Math.ceil((double) totalRecords / RECORDS_PER_PAGE);

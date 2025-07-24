@@ -18,6 +18,12 @@
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
+                margin-left: 280px; /* Sidebar luôn hiện */
+            }
+
+            /* Thêm class khi sidebar đóng */
+            body.sidebar-closed {
+                margin-left: 0;
             }
 
             /* Header */
@@ -29,7 +35,6 @@
                 position: sticky;
                 top: 0;
                 z-index: 1000;
-                margin-left: 220px;
             }
 
             .header-content {
@@ -38,7 +43,6 @@
                 align-items: center;
                 max-width: 1200px;
                 margin: 0 auto;
-                margin-left:180px;
             }
 
             .logo {
@@ -46,23 +50,7 @@
                 font-weight: bold;
                 color: #667eea;
             }
-
-            .menu-toggle {
-                background: #667eea;
-                border: none;
-                padding: 10px 15px;
-                border-radius: 8px;
-                color: white;
-                cursor: pointer;
-                font-size: 1.2rem;
-                transition: all 0.3s ease;
-            }
-
-            .menu-toggle:hover {
-                background: #5a6fd8;
-                transform: scale(1.05);
-            }
-
+           
             .auth-buttons {
                 display: flex;
                 gap: 1rem;
@@ -95,44 +83,38 @@
                 background: #5a6fd8;
             }
 
-            /* Left Sidebar */
             .sidebar {
-                text-decoration: none;
                 position: fixed;
+                left: 0; /* Luôn hiện */
                 top: 0;
-                width: 220px;
+                width: 280px;
                 height: 100vh;
-                background: #2c3e50;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(15px);
                 box-shadow: 2px 0 20px rgba(0,0,0,0.1);
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1001;
                 overflow-y: auto;
             }
 
-
+            
+            .sidebar-nav {
+                padding: 2rem 0;
+            }
+            
             .sidebar-header {
                 padding: 2rem 1.5rem;
                 border-bottom: 1px solid rgba(0,0,0,0.1);
                 text-align: center;
-                text-decoration: none;
-            }
-
-            .sidebar-nav {
-                padding: auto;
-                padding-top:20px;
-                text-decoration: none;
             }
 
             .nav-item {
                 display: flex;
                 align-items: center;
                 padding: 1rem 1.5rem;
-                color: white;
+                color: #333;
                 text-decoration: none;
                 transition: all 0.3s ease;
                 border-left: 3px solid transparent;
-                text-decoration: none;
-
             }
 
             .nav-item:hover {
@@ -144,14 +126,12 @@
             .nav-icon {
                 margin-right: 12px;
                 font-size: 1.2rem;
-                text-decoration: none;
             }
 
             /* Main Content */
             .main-content {
                 max-width: 1200px;
                 margin: 0 auto;
-                margin-left: 220px;
                 padding: 2rem;
                 transition: margin-left 0.3s ease;
             }
@@ -408,26 +388,7 @@
             .contact-link:hover {
                 color: #667eea;
             }
-
-            /* Overlay */
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                z-index: 1000;
-            }
-
-            .overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
-
+        
             /* Responsive */
             @media (max-width: 768px) {
                 .content-grid {
@@ -486,7 +447,6 @@
                 display: grid;
                 grid-template-columns: 2fr 1fr 1fr;
                 gap: 3rem;
-                margin-left: 280px;
             }
 
             .footer-section h3 {
@@ -536,23 +496,6 @@
                     grid-template-columns: 1fr;
                     gap: 2rem;
                 }
-            }
-            /* === Sidebar container === */
-            .sidebar {
-                width: 220px;
-                background: #2c3e50;
-                color: white;
-                padding: 20px;
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100%;
-                transition: transform 0.3s;
-                z-index: 200;
-            }
-
-            .sidebar.hidden {
-                transform: translateX(-100%);
             }
 
             /* === Sidebar avatar === */
@@ -609,16 +552,31 @@
                 color: #ecf0f1;
             }
 
+            /* Responsive cho mobile */
+            @media (max-width: 768px) {
+                body {
+                    margin-left: 0 !important;
+                }
+
+                .sidebar {
+                    left: -280px;
+                    z-index: 1002;
+                }
+
+                .sidebar:not(.closed) {
+                    left: 0;
+                }
+             
         </style>
     </head>
     <body>
-        <!-- Left Sidebar -->
-        <nav class="sidebar">
+        <!-- Left Sidebar -->       
+        <div class="sidebar" id="sidebar">
             <a href="<%= request.getContextPath() %>/profile">
                 <div class="avatar-wrapper">
                     <c:choose>
                         <c:when test="${not empty sessionScope.userAuth.avatar}">
-                            <img src="<%= request.getContextPath() %>/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
+                            <img src="${pageContext.request.contextPath}/avatar/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
                         </c:when>
                         <c:otherwise>
                             <span class="avatar-icon">👤</span>
@@ -626,20 +584,34 @@
                     </c:choose>
                 </div>
             </a>
-            <ul>
-                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
-                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
-                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
-                <li><a href="#">Setting</a></li>
-            </ul>
-        </nav>
+            <nav class="sidebar-nav">
+                <a href="${pageContext.request.contextPath}/home" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/subject-list" class="nav-item">
+                    <span class="nav-icon">🧠</span>
+                    <span>Subject</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/my-registration" class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    <span>My registration</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/blog" class="nav-item">
+                    <span class="nav-icon">📰</span>
+                    <span>Blog list</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Setting</span>
+                </a>
+            </nav>
+        </div>
 
 
-        <!-- Header -->
+        <!-- Header --> 
         <header class="header">
-            <div class="header-content">
-
+            <div class="header-content">              
                 <div class="logo">
                     <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 90px; vertical-align: middle; margin-right: 8px;">
                     Quiz Practice for Soft Skills
@@ -698,7 +670,7 @@
                         </div>
                         <div class="post-grid">                           
                             <c:forEach var="post" items="${hotPosts}">
-                                <div class="post-card" onclick="window.open('${pageContext.request.contextPath}/post/${post.id}', '_blank')">
+                                <div class="post-card" onclick="window.location.href='${pageContext.request.contextPath}/blog-detail?id=${post.id}'">
                                     <div class="post-thumbnail" style="background-image: url('${post.thumbnail}')"></div>
                                     <div class="post-info">
                                         <h3>${post.title}</h3>
@@ -734,7 +706,7 @@
                     <div class="latest-posts">
                         <h3>📝 Latest Posts</h3>
                         <c:forEach var="latestPost" items="${latestPosts}">
-                            <div class="latest-post-item" onclick="window.open('${pageContext.request.contextPath}/post/${latestPost.id}', '_blank')">
+                            <div class="latest-post-item" onclick="window.location.href='${pageContext.request.contextPath}/blog-detail?id=${latestPost.id}'">
                                 <img src="${latestPost.thumbnail}" alt="${latestPost.title}" class="latest-post-icon">
                                 <div class="latest-post-content">
                                     <h4 class="latest-post-title">${latestPost.title}</h4>
@@ -798,7 +770,8 @@
         </footer>
 
 
-        <script>
+        <script>                  
+            
             // Hàm chuyển slider sang slide có chỉ số là index
             function goToSlide(index) {
                 var slider = document.getElementById('slider');        // Lấy phần tử slider chính
@@ -844,15 +817,7 @@
                     cards[i].style.transform = 'translateY(0)';        // Reset lại vị trí di chuyển về 0
                     cards[i].style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     // Áp dụng hiệu ứng mượt mà khi card hiện ra: mờ và dịch chuyển
-                }
-
-                // Lắng nghe phím ESC để ẩn sidebar
-                document.addEventListener('keydown', function (e) {
-                    if (e.keyCode === 27) {                            // 27 là mã ESC
-                        closeSidebar();                                // Gọi hàm đóng sidebar
-                    }
-                });
-            }
+                }              
 
             // Nếu trang chưa load xong, gắn sự kiện DOMContentLoaded
             if (document.readyState === 'loading') {
