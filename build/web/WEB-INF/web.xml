@@ -39,6 +39,10 @@
         <servlet-name>UpdateSubjectServlet</servlet-name>
         <servlet-class>elearning.controller.UpdateSubjectServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>mtk_dashboardController</servlet-name>
+        <servlet-class>elearning.controller.mtk_dashboardController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>BlogListServlet</servlet-name>
         <url-pattern>/blog</url-pattern>
@@ -74,6 +78,10 @@
     <servlet-mapping>
         <servlet-name>UpdateSubjectServlet</servlet-name>
         <url-pattern>/update-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>mtk_dashboardController</servlet-name>
+        <url-pattern>/mtk_dashboard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
