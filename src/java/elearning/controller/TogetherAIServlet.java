@@ -13,7 +13,7 @@ import java.net.URL;
 public class TogetherAIServlet extends HttpServlet {
 
     // Khóa API để xác thực với Together.ai (nên bảo mật, không public)
-    private static final String API_KEY = "184e918a08df60dffa16327a2ec540dd7a987056e227b7f3de3663123f4ad5c9";
+    private static final String API_KEY = "4a00b3367eeda93be5b08bff3ebe9b513f8268021558f52877d35ae38fbe1f04";
 
     // URL endpoint của API Together.ai
     private static final String API_URL = "https://api.together.xyz/v1/chat/completions";
@@ -64,7 +64,8 @@ public class TogetherAIServlet extends HttpServlet {
           "messages": [
             {
               "role": "system",
-              "content": "Bạn là trợ lý tư vấn khóa học. nội dung ngắn gọn dễ hiểu. Làm ngắn gọn nội dung lại"
+              "content": "Bạn là trợ lý tư vấn khóa học. Làm ngắn gọn nội dung lại. Chỉ trả nội dung bằng Tiếng Việt. "
+                             
             },
             {
               "role": "user",
