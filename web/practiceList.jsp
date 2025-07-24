@@ -364,7 +364,6 @@
                                 <button type="submit">Apply</button>
                             </form>
                         </div>
-                        <a href="${pageContext.request.contextPath}/quizhandle">Take a quiz</a>
                 </div>
 
 
