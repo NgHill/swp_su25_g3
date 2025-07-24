@@ -28,7 +28,11 @@ public class ProfileServlet extends HttpServlet {
 
     private final ProfileDAO profileDAO = new ProfileDAO();
 
-    private static final String UPLOAD_DIR = "uploads/avatars";
+    // Lưu ngoài webapp để không mất khi redeploy
+    private static final String UPLOAD_BASE_PATH = System.getProperty("user.home") + File.separator + "uploads";
+    private static final String UPLOAD_DIR = "avatars";
+    private static final String[] ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif"};
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -105,6 +109,16 @@ public class ProfileServlet extends HttpServlet {
                 return;
             }
 
+            // Xóa avatar cũ nếu có
+            List<Profile> oldProfiles = profileDAO.getProfileById(id);
+            if (!oldProfiles.isEmpty() && oldProfiles.get(0).getAvatar() != null) {
+                String oldAvatarPath = UPLOAD_BASE_PATH + File.separator + oldProfiles.get(0).getAvatar().replace("/", File.separator);
+                File oldFile = new File(oldAvatarPath);
+                if (oldFile.exists()) {
+                    oldFile.delete();
+                }
+            }
+
             // THÊM: Xử lý upload avatar
             String avatarPath = handleAvatarUpload(request);
             
@@ -123,7 +137,14 @@ public class ProfileServlet extends HttpServlet {
             
             boolean isUpdated = profileDAO.updateProfile(profile);
 
-            request.setAttribute("message", isUpdated ? "Cập nhật thành công" : "Cập nhật thất bại");
+            if (isUpdated) {
+                // Cập nhật avatar trong session
+                userAuth.setAvatar(profile.getAvatar());
+                request.getSession().setAttribute("userAuth", userAuth);
+                request.setAttribute("message", "Cập nhật thành công");
+            } else {
+                request.setAttribute("message", "Cập nhật thất bại");
+            }
 
 
             // Reload lại profile mới
@@ -145,19 +166,40 @@ public class ProfileServlet extends HttpServlet {
     private String handleAvatarUpload(HttpServletRequest request) throws IOException, ServletException {
         Part part = request.getPart("avatar");
         if (part == null || part.getSize() == 0) return null;
-        
+
         if (!part.getContentType().startsWith("image/")) {
             throw new ServletException("Chỉ cho phép ảnh!");
         }
-        
-        String fileName = System.currentTimeMillis() + "_" + getFileName(part);
-        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+
+        String originalFileName = getFileName(part);
+        String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+
+        // Kiểm tra extension
+        boolean isValidExtension = false;
+        for (String allowedExt : ALLOWED_EXTENSIONS) {
+            if (extension.equals(allowedExt)) {
+                isValidExtension = true;
+                break;
+            }
+        }
+        if (!isValidExtension) {
+            throw new ServletException("Định dạng file không được hỗ trợ!");
+        }
+
+        // Tạo đường dẫn theo năm/tháng
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        String yearMonth = String.format("%d/%02d", 
+            cal.get(java.util.Calendar.YEAR), cal.get(java.util.Calendar.MONTH) + 1);
+        String subDir = UPLOAD_DIR + "/" + yearMonth;
+        String uploadPath = UPLOAD_BASE_PATH + File.separator + UPLOAD_DIR + File.separator + yearMonth;
+
+        String fileName = System.currentTimeMillis() + "_" + java.util.UUID.randomUUID().toString() + extension;
         new File(uploadPath).mkdirs();
-        
+
         part.write(uploadPath + File.separator + fileName);
-        return UPLOAD_DIR + "/" + fileName;
+        return subDir + "/" + fileName; // VD: avatars/2024/07/filename.jpg
     }
-    
+
     // THÊM: Lấy tên file
     private String getFileName(Part part) {
         String header = part.getHeader("content-disposition");
