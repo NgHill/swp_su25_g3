@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="screen : mtk_dashborad" />
+    <list default="true" id="e25b5660-083a-4749-beb5-70fbe1520b78" name="Changes" comment="update UI Blog list &amp; Blog Detail" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753341013304</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update UI Blog list &amp; Blog Detail">
+      <option name="closed" value="true" />
+      <created>1753352966799</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1753352966799</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
