@@ -463,22 +463,9 @@
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            startTimer();  // Bắt đầu đếm ngược thời gian
-            loadExistingImage();  // Tải ảnh đã được người dùng tải lên trước đó (nếu có)
+            startTimer();  // Bắt đầu đếm ngược thời gian           
         });
-
-        // Function to load existing image when page loads
-        function loadExistingImage() {
-            const imagePath = document.getElementById('imagePath').value;  // Lấy đường dẫn ảnh từ hidden input
-            if (imagePath && imagePath.trim() !== '') {  // Nếu có ảnh đã được tải lên
-                const preview = document.getElementById('imagePreview');  // Phần tử để hiển thị ảnh
-                const img = document.getElementById('previewImg');  // Thẻ <img> hiển thị ảnh
-
-                img.src = 'quiz-images/' + imagePath;  // Gán đường dẫn ảnh vào thẻ img
-                preview.classList.remove('hidden');  // Hiển thị phần preview ảnh
-            }
-        }
-
+      
         // Timer functions: Functions to start and update the quiz timer
         function startTimer() {
             updateTimerDisplay();  // Cập nhật hiển thị đồng hồ ngay khi bắt đầu
@@ -596,24 +583,7 @@
                 }
             });
         }
-
-        // Copy current answer to form
-        function copyCurrentAnswer(formId) {
-            const form = document.getElementById(formId);
-
-            // Copy radio button answer
-            const selectedRadio = document.querySelector('input[name="answer"]:checked');
-            if (selectedRadio) {
-                form.querySelector('input[name="answer"]').value = selectedRadio.value;  // Gán giá trị radio vào form
-            }
-
-            // Copy text answer
-            const textInput = document.getElementById('textAnswer');
-            if (textInput) {
-                form.querySelector('input[name="textAnswer"]').value = textInput.value;  // Gán giá trị text vào form
-            }
-        }
-
+       
         // Submit with current answer (used for previous/next navigation)
         function submitWithCurrentAnswer(form, direction) {
             // Lấy đáp án multiple choice hiện tại
@@ -644,23 +614,17 @@
             return true;  // Cho phép form submit
         }
 
-        // Image Upload functions
+        // CODE MỚI (~8 dòng) - Đơn giản hóa
         function handleImageUpload(event) {
-            const file = event.target.files[0];  // Lấy tệp ảnh mà người dùng đã chọn từ trường input file
-            if (!file) return;  // Nếu không có tệp nào được chọn, thoát hàm
+            const file = event.target.files[0];
+            if (!file) return;
 
-            const reader = new FileReader();  // Tạo đối tượng FileReader để đọc tệp ảnh
+            // Preview ngay lập tức
+            const img = document.getElementById('previewImg');
+            img.src = URL.createObjectURL(file);
+            document.getElementById('imagePreview').classList.remove('hidden');
 
-            // Khi đọc xong, xử lý ảnh
-            reader.onload = function(e) {
-                const preview = document.getElementById('imagePreview');  // Lấy phần tử div hiển thị ảnh
-                const img = document.getElementById('previewImg');  // Thẻ <img> để hiển thị ảnh
-
-                img.src = e.target.result;  // Gán dữ liệu ảnh vào thẻ <img> dưới dạng base64
-                preview.classList.remove('hidden');  // Hiển thị ảnh
-            };
-
-            reader.readAsDataURL(file);  // Đọc tệp ảnh dưới dạng base64
+            uploadImageToServer(file);
         }
 
         // Upload file to server
@@ -679,6 +643,7 @@
             .then(data => {
                 if (data.success) {
                     document.getElementById('imagePath').value = data.filename;  // Lưu tên tệp vào input ẩn
+                    saveAnswer();
                 } else {
                     alert('Failed to upload image: ' + data.error);  // Hiển thị lỗi nếu upload không thành công
                 }
