@@ -26,7 +26,7 @@ public class mtk_dashboardDAO {
                 Post p = Post.builder()
                         .id(rs.getInt("Id"))
                         .title(rs.getString("Title"))
-                        .thumbnail(rs.getString("Thumbnail"))
+                        .content(rs.getString("Content"))
                         .createdAt(rs.getTimestamp("CreatedAt"))
                         .build();
                 list.add(p);
