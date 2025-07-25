@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="Fix Blog">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/elearning/BasicDAO/mtk_dashboardDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/BasicDAO/mtk_dashboardDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/mtk_dashboard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/mtk_dashboard.jsp" afterDir="false" />
-    </list>
+    <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="Fix Blog" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +43,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "manh",
+    "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)"
