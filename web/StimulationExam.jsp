@@ -476,7 +476,7 @@
                                     <input type="search" id="searchInput" name="search"
                                            placeholder="Search exam..." value="${param.search}" />
                                     <button type="submit" class="search-button">
-                                        <i class="fas fa-search"></i>
+                                        <i class="fas fa-search" ></i>
                                     </button>
                                 </div>
                                 <button type="button" class="filter-toggle" id="filterToggle">
@@ -540,105 +540,58 @@
 
 
         <script>
-            // Filter sidebar toggle functionality
-            const filterToggle = document.getElementById('filterToggle');
-            const filterSidebar = document.getElementById('filterSidebar');
+            // Chức năng toggle (hiển thị/ẩn) sidebar bộ lọc
+            const filterToggle = document.getElementById('filterToggle'); // Lấy phần tử nút toggle (hiển thị/ẩn sidebar bộ lọc)
+            const filterSidebar = document.getElementById('filterSidebar'); // Lấy phần tử sidebar bộ lọc
 
+            // Khi người dùng click vào nút toggle, thực hiện việc hiển thị/ẩn sidebar
             filterToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                filterSidebar.classList.toggle('show');
-                const icon = filterToggle.querySelector('i');
-                icon.classList.toggle('fa-filter');
-                icon.classList.toggle('fa-times');
+                filterSidebar.classList.toggle('show'); 
+               
             });
 
-            // Close filter sidebar when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!filterSidebar.contains(e.target) && !filterToggle.contains(e.target)) {
-                    filterSidebar.classList.remove('show');
-                    const icon = filterToggle.querySelector('i');
-                    icon.classList.add('fa-filter');
-                    icon.classList.remove('fa-times');
-                }
-            });
-
-            // Prevent closing when clicking inside the filter sidebar
-            filterSidebar.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
-            // Function to apply filters
+            // Hàm áp dụng bộ lọc (tìm kiếm và category)
             function applyFilters() {
-                const form = document.getElementById('searchForm');
+                const form = document.getElementById('searchForm'); // Lấy form chứa ô tìm kiếm và bộ lọc
 
-                // Remove current hidden inputs to prevent duplicates
+                // Xóa tất cả các input ẩn trong form để tránh việc tạo ra các input trùng lặp
                 form.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
 
-                // Add hidden inputs for selected checkboxes
-                document.querySelectorAll('#filterSidebar input[name="cat"]:checked').forEach(cb => {
-                    form.appendChild(newHiddenInput('cat', cb.value));
-                });
-
-                // Add search input as hidden if it has a value
-                const searchVal = document.getElementById('searchInput').value.trim();
-                if (searchVal) {
-                    form.appendChild(newHiddenInput('search', searchVal));
-                }
-
-                form.submit();
+                form.submit(); // Gửi form đi để áp dụng bộ lọc
             }
 
-            // Function to clear filters
+            // Hàm xóa bộ lọc (xóa tìm kiếm và bỏ chọn tất cả các category)
             function clearFilters() {
-                // Uncheck all checkboxes
+                // Bỏ chọn tất cả các checkbox trong sidebar bộ lọc
                 document.querySelectorAll('#filterSidebar input[type="checkbox"]').forEach(cb => cb.checked = false);
 
-                // Clear search input value
+                // Xóa giá trị trong ô tìm kiếm
                 document.getElementById('searchInput').value = '';
 
-                // Remove hidden inputs for filters and search
-                document.getElementById('searchForm').querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
-
-                // Submit the form to refresh with no filters/search
+                // Gửi form để làm mới và áp dụng bộ lọc với giá trị mặc định (không có bộ lọc)
                 document.getElementById('searchForm').submit();
             }
 
-            // Helper function to create hidden input
-            function newHiddenInput(name, value) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = name;
-                input.value = value;
-                return input;
-            }
-
-            // Initialize filter checkboxes based on current URL parameters
+            // Khởi tạo các checkbox bộ lọc theo các tham số URL hiện tại
             document.addEventListener('DOMContentLoaded', function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const categories = urlParams.getAll('cat');
-                const searchParam = urlParams.get('search');
+                const urlParams = new URLSearchParams(window.location.search); // Lấy các tham số URL hiện tại
+                const categories = urlParams.getAll('cat'); // Lấy tất cả giá trị của tham số 'cat' (category) từ URL
+                const searchParam = urlParams.get('search'); // Lấy giá trị tham số 'search' từ URL
 
-                // Mark appropriate checkboxes
+                // Đánh dấu (check) các checkbox tương ứng với các category đã chọn từ URL
                 categories.forEach(category => {
                     const checkbox = document.querySelector('#filterSidebar input[name="cat"][value="' + category + '"]');
                     if (checkbox) {
-                        checkbox.checked = true;
+                        checkbox.checked = true; // Đánh dấu checkbox nếu giá trị của category trùng với tham số URL
                     }
                 });
 
-                // Set search input value if present in URL
+                // Điền lại giá trị ô tìm kiếm nếu có giá trị trong tham số 'search' của URL
                 const searchInput = document.getElementById('searchInput');
                 if (searchParam) {
-                    searchInput.value = searchParam;
+                    searchInput.value = searchParam; // Đặt giá trị ô tìm kiếm bằng giá trị trong URL
                 }
             });
-
-            function registerStimulation(event, examId) {
-                event.stopPropagation(); // Prevent card click event from firing
-                console.log('Registering for exam ID:', examId);
-                alert('Starting exam ' + examId); // Placeholder action
-                window.location.href = '${pageContext.request.contextPath}/start-exam?id=' + examId;
-            }
         </script>
     </body>
 </html>
