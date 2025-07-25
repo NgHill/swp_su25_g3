@@ -186,41 +186,149 @@ CREATE TABLE Stimulations (
     FOREIGN KEY (SubjectId) REFERENCES SubjectPackages(Id)
 );
 
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (1, 'Lập trình hướng đối tượng với Java', 'it1.jpg', 'This is a post about lập trình hướng đối tượng với java.',
-'Lập trình hướng đối tượng với Java – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Lập trình hướng đối tượng với Java, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Lập trình hướng đối tượng với Java, đừng bỏ qua bài viết này.', 'IT', 2, 111, 'active', '2025-07-25 09:01:00');
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (2, 'Giới thiệu về Git và GitHub', 'it2.jpg', 'This is a post about giới thiệu về git và github.',
-'Giới thiệu về Git và GitHub – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Giới thiệu về Git và GitHub, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Giới thiệu về Git và GitHub, đừng bỏ qua bài viết này.', 'IT', 3, 69, 'active', '2025-07-25 09:02:00');
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (3, 'Bảo mật hệ thống mạng cho người mới', 'it3.jpg', 'This is a post about bảo mật hệ thống mạng cho người mới.',
-'Bảo mật hệ thống mạng cho người mới – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Bảo mật hệ thống mạng cho người mới, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Bảo mật hệ thống mạng cho người mới, đừng bỏ qua bài viết này.', 'IT', 2, 264, 'active', '2025-07-25 09:03:00');
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (4, 'Xây dựng API với Node.js', 'it4.jpg', 'This is a post about xây dựng api với node.js.',
-'Xây dựng API với Node.js – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Xây dựng API với Node.js, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Xây dựng API với Node.js, đừng bỏ qua bài viết này.', 'IT', 3, 74, 'active', '2025-07-25 09:04:00');
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (5, 'Tư duy thuật toán cho lập trình viên', 'it5.jpg', 'This is a post about tư duy thuật toán cho lập trình viên.',
-'Tư duy thuật toán cho lập trình viên – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Tư duy thuật toán cho lập trình viên, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Tư duy thuật toán cho lập trình viên, đừng bỏ qua bài viết này.', 'IT', 1, 226, 'active', '2025-07-25 09:05:00');
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (6, 'Chiến lược định giá sản phẩm', 'business1.jpg', 'This is a post about chiến lược định giá sản phẩm.',
-'Chiến lược định giá sản phẩm – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Chiến lược định giá sản phẩm, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Chiến lược định giá sản phẩm, đừng bỏ qua bài viết này.', 'Business', 1, 103, 'active', '2025-07-25 09:06:00');
-
-INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
-VALUES (7, 'Kỹ năng quản lý nhóm hiệu quả', 'business2.jpg', 'This is a post about kỹ năng quản lý nhóm hiệu quả.',
-'Kỹ năng quản lý nhóm hiệu quả – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Kỹ năng quản lý nhóm hiệu quả, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Kỹ năng quản lý nhóm hiệu quả, đừng bỏ qua bài viết này.', 'Business', 1, 193, 'active', '2025-07-25 09:07:00');
-
-
 INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status, Username, Bio, DateOfBirth) VALUES
 ('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
 ('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
 ('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
 ('Dat Phan','dat@gmail.com','0123456789', 'hash_password_4',1,'mkt','active','hoantudrill','Poor people','1999-03-12');
+
+INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
+(7, 'John Link Doe', 'john123.doe@example.com', '0912345678', 'hashed_password_1', 0, NULL, 'customer', 'active', NULL, '2025-07-23 13:47:44');
+
+INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
+(6, 'Jane Smith', 'cc.role@example.com', '0987654321', 'cc1234567@', 1, NULL, 'courseContent', 'active', NULL, '2025-07-23 13:47:44');
+
+INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
+(3, 'Marketing Staff', 'mtk.user@example.com', '0901122334', 'Mtk123456@', 0, NULL, 'mtk', 'active', NULL, '2025-07-23 13:47:44');
+
+INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
+(9, 'Huy Manh', 'manhmg24112001@gmail.com', '0385992411', 'A123Manh@', 1, NULL, 'customer', 'active', 'ztGNhGhCVR', '2025-07-23 00:30:27');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (1, 'Lập trình hướng đối tượng với Java', 'https://i.ytimg.com/vi/nh4jiEq1HHM/maxresdefault.jpg', 'This is a post about lập trình hướng đối tượng với java.',
+'Lập trình hướng đối tượng với Java – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Lập trình hướng đối tượng với Java, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Lập trình hướng đối tượng với Java, đừng bỏ qua bài viết này.', 'IT', 3, 111, 'active', '2025-07-25 09:01:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (2, 'Giới thiệu về Git và GitHub', 'https://310nae.com/wp-content/uploads/2018/11/github-718x472.png', 'This is a post about giới thiệu về git và github.',
+'Giới thiệu về Git và GitHub – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Giới thiệu về Git và GitHub, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Giới thiệu về Git và GitHub, đừng bỏ qua bài viết này.', 'IT', 3, 69, 'active', '2025-07-25 09:02:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (3, 'Bảo mật hệ thống mạng cho người mới', 'https://vdodata.vn/wp-content/uploads/2021/04/giai-phap-bao-mat-du-lieu-cho-doanh-nghiep-trong-thoi-ky-cong-nghe-so-1.jpg', 'This is a post about bảo mật hệ thống mạng cho người mới.',
+'Bảo mật hệ thống mạng cho người mới – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Bảo mật hệ thống mạng cho người mới, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Bảo mật hệ thống mạng cho người mới, đừng bỏ qua bài viết này.', 'IT', 3, 264, 'active', '2025-07-25 09:03:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (4, 'Xây dựng API với Node.js', 'https://th.bing.com/th/id/R.811ab9b30502101044ae7af7ff1d4152?rik=S34RaduyrsQkvw&pid=ImgRaw&r=0', 'This is a post about xây dựng api với node.js.',
+'Xây dựng API với Node.js – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Xây dựng API với Node.js, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Xây dựng API với Node.js, đừng bỏ qua bài viết này.', 'IT', 3, 74, 'active', '2025-07-25 09:04:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (5, 'Tư duy thuật toán cho lập trình viên', 'https://d3hi6wehcrq5by.cloudfront.net/itnavi-blog/2021/03/T%C6%B0-duy-l%E1%BA%ADp-tr%C3%ACnh-1.jpg', 'This is a post about tư duy thuật toán cho lập trình viên.',
+'Tư duy thuật toán cho lập trình viên – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Tư duy thuật toán cho lập trình viên, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Tư duy thuật toán cho lập trình viên, đừng bỏ qua bài viết này.', 'IT', 3, 226, 'active', '2025-07-25 09:05:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (6, 'Chiến lược định giá sản phẩm', 'https://storage.googleapis.com/stateless.navee.asia/2023/02/0eea9905-chien-luoc-gia-1.jpg',
+'This is a post about chiến lược định giá sản phẩm.',
+'Chiến lược định giá sản phẩm – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Chiến lược định giá sản phẩm, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập...', 
+'Business', 3, 103, 'active', '2025-07-25 09:06:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (7, 'Kỹ năng quản lý nhóm hiệu quả', 'https://hrchannels.com/uptalent/attachments/images/20231115/095752803_ky-nang-quan-ly-nhom.jpg',
+'This is a post about kỹ năng quản lý nhóm hiệu quả.',
+'Kỹ năng quản lý nhóm hiệu quả – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Kỹ năng quản lý nhóm hiệu quả...'
+, 'Business', 3, 193, 'active', '2025-07-25 09:07:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (8, 'Phân tích SWOT trong thực tiễn', 'https://72agency.vn/wp-content/uploads/2022/11/phan-tich-swot-2.jpg',
+'This is a post about phân tích swot trong thực tiễn.',
+'Phân tích SWOT trong thực tiễn – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business...'
+, 'Business', 3, 61, 'active', '2025-07-25 09:08:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (9, 'Tối ưu chi phí doanh nghiệp nhỏ', 'https://openend.vn/wp-content/uploads/2021/11/giam-chi-phi-lao-dong-1536x893.png',
+'This is a post about tối ưu chi phí doanh nghiệp nhỏ.',
+'Tối ưu chi phí doanh nghiệp nhỏ – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business...'
+, 'Business', 3, 233, 'active', '2025-07-25 09:09:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (10, 'Lập kế hoạch kinh doanh chuyên nghiệp', 'https://th.bing.com/th/id/R.91b7c03992c9bfdc94156e43245aa02a?rik=bHjUSMeqjn9sjg&pid=ImgRaw&r=0',
+'This is a post about lập kế hoạch kinh doanh chuyên nghiệp.',
+'Lập kế hoạch kinh doanh chuyên nghiệp – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business...'
+, 'Business', 3, 300, 'active', '2025-07-25 09:10:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (11, 'Thiết kế UI hiện đại cho ứng dụng di động', 'https://data.designervn.net/2018/03/3729_ad96b7ef2508ab86777fabf5039e312c.jpg',
+'This is a post about thiết kế ui hiện đại cho ứng dụng di động.',
+'Thiết kế UI hiện đại cho ứng dụng di động – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Design...'
+, 'Design', 3, 275, 'active', '2025-07-25 09:11:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (12, 'Tâm lý màu sắc trong thiết kế đồ họa', 'https://caodang.fpt.edu.vn/wp-content/uploads/image4-60-1536x713.png',
+'This is a post about tâm lý màu sắc trong thiết kế đồ họa.',
+'Tâm lý màu sắc trong thiết kế đồ họa – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Design...'
+, 'Design', 3, 196, 'active', '2025-07-25 09:12:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (13, 'Figma cơ bản đến nâng cao', 'https://i.ytimg.com/vi/M0JRk9LPOq4/maxresdefault.jpg',
+'This is a post about figma cơ bản đến nâng cao.',
+'Figma cơ bản đến nâng cao – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Design...'
+, 'Design', 3, 158, 'active', '2025-07-25 09:13:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (14, 'Thiết kế banner quảng cáo hiệu quả', 'https://quangcaothanhnien.com.vn/wp-content/uploads/2022/05/standee-gia-cuon-duc-kien-ad-scaled-1.jpg',
+'This is a post about thiết kế banner quảng cáo hiệu quả.',
+'Thiết kế banner quảng cáo hiệu quả – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Design...'
+, 'Design', 3, 227, 'active', '2025-07-25 09:14:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (15, 'Nguyên tắc thị giác trong thiết kế UX', 'https://data.designervn.net/2023/03/14621_28122586_7368256.jpg',
+'This is a post about nguyên tắc thị giác trong thiết kế ux.',
+'Nguyên tắc thị giác trong thiết kế UX – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Design...'
+, 'Design', 3, 92, 'active', '2025-07-25 09:15:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (16, 'IELTS Writing Task 2 – Chiến lược nâng band', 'https://tse1.mm.bing.net/th/id/OIP.B9ckv3Kv4kc1f4pwi4nh6gHaD4?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+'This is a post about ielts writing task 2 – chiến lược nâng band.',
+'IELTS Writing Task 2 – Chiến lược nâng band – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Language. Bạn sẽ được hướng dẫn chi tiết về IELTS Writing Task 2 – Chiến lược nâng band, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập...', 
+'Language', 3, 92, 'active', '2025-07-25 09:16:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (17, 'TOEIC Listening: Cách xử lý Part 3-4', 'https://media.zim.vn/64376be6a3ece377f1b8a242/xu-ly-bay-toeic-part-4-2.jpg?w=750&q=75',
+'This is a post about toeic listening: cách xử lý part 3-4.',
+'TOEIC Listening: Cách xử lý Part 3-4 – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Language. Bạn sẽ được hướng dẫn chi tiết về TOEIC Listening: Cách xử lý Part 3-4, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành...', 
+'Language', 3, 169, 'active', '2025-07-25 09:17:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (18, 'Phát âm tiếng Anh theo ngữ điệu Mỹ', 'https://media.zim.vn/66a2145375cbbb869247fb06/huong-dan-cach-luyen-phat-am-tieng-anh-chuan-giong-my-2.jpg',
+'This is a post about phát âm tiếng anh theo ngữ điệu mỹ.',
+'Phát âm tiếng Anh theo ngữ điệu Mỹ – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Language. Bạn sẽ được hướng dẫn chi tiết về Phát âm tiếng Anh theo ngữ điệu Mỹ, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành...', 
+'Language', 3, 215, 'active', '2025-07-25 09:18:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (19, 'Luyện nói tiếng Anh qua podcast', 'https://i.ytimg.com/vi/Z9Sl4MU4ilM/maxresdefault.jpg',
+'This is a post about luyện nói tiếng anh qua podcast.',
+'Luyện nói tiếng Anh qua podcast – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Language. Bạn sẽ được hướng dẫn chi tiết về Luyện nói tiếng Anh qua podcast, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành...', 
+'Language', 3, 141, 'active', '2025-07-25 09:19:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (20, 'Kỹ năng viết email chuyên nghiệp bằng tiếng Anh', 'https://tse2.mm.bing.net/th/id/OIP.VScu45CTrs7qf0LXQu43hAHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+'This is a post about kỹ năng viết email chuyên nghiệp bằng tiếng anh.',
+'Kỹ năng viết email chuyên nghiệp bằng tiếng Anh – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
+'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Language. Bạn sẽ được hướng dẫn chi tiết về Kỹ năng viết email chuyên nghiệp bằng tiếng Anh, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành...', 
+'Language', 3, 200, 'active', '2025-07-25 09:20:00');
+
 
 -- Insert SubjectPackages for Teamwork (8 subjects)
 INSERT INTO SubjectPackages (Title, Description, BriefInfo, Tagline, Thumbnail, LowestPrice, OriginalPrice, SalePrice, OwnerId, Category, Status) VALUES
