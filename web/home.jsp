@@ -423,10 +423,7 @@
                 background-color: transparent;
             }
 
-            .avatar-wrapper .avatar-icon {
-                font-size: 24px;
-                color: white;
-            }
+
 
             /* Footer */
             .footer {
@@ -626,17 +623,14 @@
                                  onclick="window.open('${pageContext.request.contextPath}/quiz/${slider.id}', '_blank')">
                                 <div class="slide-content">
                                     <h2 class="slide-title">${slider.title}</h2>
-                                    <p>${slider.description}</p>
                                 </div>
                             </div>
                         </c:forEach>           
                     </div>
                     <div class="slider-nav">
-                        <div class="slider-dot active" onclick="goToSlide(0)"></div>
-                        <div class="slider-dot" onclick="goToSlide(1)"></div>
-                        <div class="slider-dot" onclick="goToSlide(2)"></div>
-                        <div class="slider-dot" onclick="goToSlide(3)"></div>
-                        <div class="slider-dot" onclick="goToSlide(4)"></div>
+                        <c:forEach var="slider" items="${sliders}" varStatus="status">
+                            <div class="slider-dot ${status.index == 0 ? 'active' : ''}" onclick="goToSlide(${status.index})"></div>
+                        </c:forEach>
                     </div>
                 </div>
             </section>
@@ -645,6 +639,7 @@
             <div class="content-grid">
                 <div>
                     <!-- Hot Posts Section -->
+                    <!-- Hot Posts Section -->
                     <section class="posts-section">
                         <div class="section-header">
                             <h2>🔥 Hot Posts</h2>
@@ -652,7 +647,12 @@
                         <div class="post-grid">                           
                             <c:forEach var="post" items="${hotPosts}">
                                 <div class="post-card" onclick="window.location.href='${pageContext.request.contextPath}/blog-detail?id=${post.id}'">
-                                    <div class="post-thumbnail" style="background-image: url('${post.thumbnail}')"></div>
+                                    <c:set var="imgUrl" value="${post.image}" />
+                                    <c:if test="${not post.image.startsWith('http')}">
+                                        <c:set var="imgUrl" value="${'uploads/'}${post.image}" />
+                                    </c:if>
+                                    <div class="post-thumbnail" style="background-image: url('${imgUrl}')"></div>
+
                                     <div class="post-info">
                                         <h3>${post.title}</h3>
                                         <p class="post-date">
@@ -684,11 +684,17 @@
 
                 <!-- Right Sidebar -->
                 <aside class="right-sidebar">
+                    <!-- Right Sidebar - Latest Posts -->
                     <div class="latest-posts">
                         <h3>📝 Latest Posts</h3>
                         <c:forEach var="latestPost" items="${latestPosts}">
                             <div class="latest-post-item" onclick="window.location.href='${pageContext.request.contextPath}/blog-detail?id=${latestPost.id}'">
-                                <img src="${latestPost.thumbnail}" alt="${latestPost.title}" class="latest-post-icon">
+                                <c:set var="latestImgUrl" value="${latestPost.image}" />
+                                <c:if test="${not latestPost.image.startsWith('http')}">
+                                    <c:set var="latestImgUrl" value="${'uploads/'}${latestPost.image}" />
+                                </c:if>
+                                <img src="${latestImgUrl}" alt="${latestPost.title}" class="latest-post-icon">
+
                                 <div class="latest-post-content">
                                     <h4 class="latest-post-title">${latestPost.title}</h4>
                                     <p class="post-date">
@@ -697,7 +703,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-
                     </div>
 
                     <div class="contacts-section">
@@ -752,58 +757,68 @@
 
 
         <script>                  
-            
-            // Hàm chuyển slider sang slide có chỉ số là index
-            function goToSlide(index) {
-                var slider = document.getElementById('slider');        // Lấy phần tử slider chính
-                var dots = document.querySelectorAll('.slider-dot');   // Lấy tất cả các chấm đại diện cho slide
-                var slides = document.querySelectorAll('.slide');      // Lấy danh sách các slide hiện có
+        // Hàm chuyển slider sang slide có chỉ số là index
+        function goToSlide(index) {
+            console.log('goToSlide called with index:', index); // DEBUG
 
-                if (slider && dots.length > 0 && slides.length > 0) {  // Kiểm tra tất cả tồn tại
-                    // Kiểm soát index không vượt quá giới hạn
-                    if (index >= slides.length) {
-                        index = 0;                                     // Nếu index vượt quá, quay về slide đầu
-                    } else if (index < 0) {
-                        index = slides.length - 1;                     // Nếu index âm, chuyển đến slide cuối
-                    }
+            var slider = document.getElementById('slider');
+            var dots = document.querySelectorAll('.slider-dot');
+            var slides = document.querySelectorAll('.slide');
 
-                    currentSlide = index;                              // Cập nhật chỉ số slide hiện tại
-                    slider.style.transform = 'translateX(-' + (currentSlide * 100) + '%)'; // Di chuyển slider
+            console.log('Slides found:', slides.length, 'Dots found:', dots.length); // DEBUG
 
-                    for (var i = 0; i < dots.length; i++) {            // Duyệt qua các chấm (dots)
-                        if (i === currentSlide) {
-                            dots[i].classList.add('active');           // Gán class active cho chấm tương ứng
-                        } else {
-                            dots[i].classList.remove('active');        // Bỏ class active ở chấm khác
-                        }
+            if (slider && dots.length > 0 && slides.length > 0) {
+                if (index >= slides.length) {
+                    index = 0;
+                } else if (index < 0) {
+                    index = slides.length - 1;
+                }
+
+                currentSlide = index;
+                slider.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+
+                for (var i = 0; i < dots.length; i++) {
+                    if (i === currentSlide) {
+                        dots[i].classList.add('active');
+                    } else {
+                        dots[i].classList.remove('active');
                     }
                 }
             }
+        }
 
-            var currentSlide = 0; // Biến lưu chỉ số của slide hiện tại
+        var currentSlide = 0;
 
-            // Hàm chạy khi trang được khởi tạo hoặc load lại
-            function initializePage() {
-                var slides = document.querySelectorAll('.slide');      // Lấy tất cả slide
-                if (slides.length > 0) {
-                    setInterval(function () {                          // Thiết lập chuyển slide tự động
-                        currentSlide = (currentSlide + 1) % slides.length; // Tăng chỉ số slide và lặp lại
-                        goToSlide(currentSlide);                       // Gọi hàm chuyển slide
-                    }, 3000);                                          // Thời gian chuyển slide: 3 giây
-                }
+        function initializePage() {
+            var slides = document.querySelectorAll('.slide');
+            console.log('Initialize - slides found:', slides.length); // DEBUG
 
-                var cards = document.querySelectorAll('.post-card, .subject-card, .latest-post-item'); // Lấy tất cả thẻ hiển thị nội dung
-                for (var i = 0; i < cards.length; i++) {
-                    cards[i].style.opacity = '1';                      // Đặt opacity = 1 để hiện rõ
-                    cards[i].style.transform = 'translateY(0)';        // Reset lại vị trí di chuyển về 0
-                    cards[i].style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    // Áp dụng hiệu ứng mượt mà khi card hiện ra: mờ và dịch chuyển
-                }              
-
-            // Nếu trang chưa load xong, gắn sự kiện DOMContentLoaded
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initializePage);
+            if (slides.length > 0) {
+                setInterval(function () {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    goToSlide(currentSlide);
+                }, 3000);
             }
-        </script>
+
+            var cards = document.querySelectorAll('.post-card, .subject-card, .latest-post-item');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.opacity = '1';
+                cards[i].style.transform = 'translateY(0)';
+                cards[i].style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            }
+        }
+
+        // Khởi tạo khi DOM ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded fired'); // DEBUG
+            initializePage();
+        });
+
+        // Backup nếu DOM đã ready
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('DOM already ready, calling initializePage'); // DEBUG
+            initializePage();
+        }
+    </script>
     </body>
 </html>

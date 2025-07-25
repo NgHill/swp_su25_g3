@@ -14,7 +14,7 @@ public class HomePost {
     private int id;
     private String title;
     private String content;
-    private String thumbnail;
+    private String image;
     private String category;
     private int authorId;
     private String status;
@@ -23,11 +23,11 @@ public class HomePost {
     public HomePost() {
     }
 
-    public HomePost(int id, String title, String content, String thumbnail, String category, int authorId, String status, Timestamp createdAt) {
+    public HomePost(int id, String title, String content, String image, String category, int authorId, String status, Timestamp createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.thumbnail = thumbnail;
+        this.image = image;
         this.category = category;
         this.authorId = authorId;
         this.status = status;
@@ -58,12 +58,12 @@ public class HomePost {
         this.content = content;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getImage() {
+        return image;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getCategory() {
