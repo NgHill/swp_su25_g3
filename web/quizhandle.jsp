@@ -458,162 +458,163 @@
 
     <script>
         // Global variables
-        let timeLeft = ${timeLeft};
-        let timerInterval;
+        let timeLeft = ${timeLeft};  // Thời gian còn lại, lấy từ biến server-side
+        let timerInterval;  // Biến lưu trữ interval của đồng hồ
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            startTimer();
-        loadExistingImage(); // THÊM dòng này
+            startTimer();  // Bắt đầu đếm ngược thời gian
+            loadExistingImage();  // Tải ảnh đã được người dùng tải lên trước đó (nếu có)
         });
 
-        // THÊM function mới này
+        // Function to load existing image when page loads
         function loadExistingImage() {
-            const imagePath = document.getElementById('imagePath').value;
-            if (imagePath && imagePath.trim() !== '') {
-                const preview = document.getElementById('imagePreview');
-                const img = document.getElementById('previewImg');
+            const imagePath = document.getElementById('imagePath').value;  // Lấy đường dẫn ảnh từ hidden input
+            if (imagePath && imagePath.trim() !== '') {  // Nếu có ảnh đã được tải lên
+                const preview = document.getElementById('imagePreview');  // Phần tử để hiển thị ảnh
+                const img = document.getElementById('previewImg');  // Thẻ <img> hiển thị ảnh
 
-                img.src = 'quiz-images/' + imagePath;
-                preview.classList.remove('hidden');
+                img.src = 'quiz-images/' + imagePath;  // Gán đường dẫn ảnh vào thẻ img
+                preview.classList.remove('hidden');  // Hiển thị phần preview ảnh
             }
         }
-        // Timer functions
+
+        // Timer functions: Functions to start and update the quiz timer
         function startTimer() {
-            updateTimerDisplay();
-            timerInterval = setInterval(() => {
-                timeLeft--;
+            updateTimerDisplay();  // Cập nhật hiển thị đồng hồ ngay khi bắt đầu
+            timerInterval = setInterval(() => {  // Thiết lập hàm chạy mỗi giây
+                timeLeft--;  // Giảm thời gian còn lại mỗi giây
                 if (timeLeft <= 0) {
-                    alert('Time is up! Quiz will be submitted.');
-                    submitQuiz();
+                    alert('Time is up! Quiz will be submitted.');  // Thông báo khi hết thời gian
+                    submitQuiz();  // Nộp bài thi khi hết giờ
                     return;
                 }
-                updateTimerDisplay();
-            }, 1000);
+                updateTimerDisplay();  // Cập nhật lại đồng hồ
+            }, 1000);  // Chạy mỗi 1 giây
         }
 
+        // Update the display of the timer
         function updateTimerDisplay() {
-            const hours = Math.floor(timeLeft / 3600);
-            const minutes = Math.floor((timeLeft % 3600) / 60);
-            const seconds = timeLeft % 60;
+            const hours = Math.floor(timeLeft / 3600);  // Tính giờ
+            const minutes = Math.floor((timeLeft % 3600) / 60);  // Tính phút
+            const seconds = timeLeft % 60;  // Tính giây
 
             document.getElementById('timer').textContent = 
                 hours.toString().padStart(2, '0') + ':' +
                 minutes.toString().padStart(2, '0') + ':' +
-                seconds.toString().padStart(2, '0');
+                seconds.toString().padStart(2, '0');  // Hiển thị đồng hồ trên giao diện
         }
 
         // Save answer via AJAX
         function saveAnswer() {
-            const form = document.getElementById('answerForm');
-            const formData = new FormData(form);
+            const form = document.getElementById('answerForm');  // Lấy form chứa câu trả lời
+            const formData = new FormData(form);  // Lấy tất cả dữ liệu trong form
 
+            // Gửi dữ liệu lên server
             fetch('quizhandle', {
-                method: 'POST',
-                body: formData
+                method: 'POST',  // Sử dụng phương thức POST
+                body: formData   // Gửi dữ liệu form lên server
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Answer saved');
-                }
-            })
-            .catch(error => {
-                console.error('Error saving answer:', error);
-            });
         }
 
         // Submit quiz
         function submitQuiz() {
-            clearInterval(timerInterval);
-    
+            clearInterval(timerInterval);  // Dừng đồng hồ đếm ngược khi nộp bài, tránh đồng hồ tiếp tục chạy sau khi nộp quiz
+
             // Lấy câu trả lời hiện tại
-            let lastAnswer = '';
-            let lastTextAnswer = '';
+            let lastAnswer = '';  // Khởi tạo biến để lưu giá trị của đáp án dạng radio
+            let lastTextAnswer = '';  // Khởi tạo biến để lưu giá trị của câu trả lời dạng text
 
-            const selectedRadio = document.querySelector('input[name="answer"]:checked');
+            // Lấy đáp án radio đã chọn từ form
+            const selectedRadio = document.querySelector('input[name="answer"]:checked');  // Lấy phần tử radio được chọn (nếu có)
             if (selectedRadio) {
-                lastAnswer = selectedRadio.value;
+                lastAnswer = selectedRadio.value;  // Nếu có đáp án radio được chọn, lưu giá trị của nó vào lastAnswer
             }
 
-            const textInput = document.getElementById('textAnswer');
-            if (textInput && textInput.value.trim()) {
-                lastTextAnswer = textInput.value.trim();
+            // Lấy giá trị từ ô nhập liệu dạng text
+            const textInput = document.getElementById('textAnswer');  // Lấy phần tử input có id "textAnswer"
+            if (textInput && textInput.value.trim()) {  // Kiểm tra nếu có giá trị nhập vào ô text và không phải chuỗi trắng
+                lastTextAnswer = textInput.value.trim();  // Lưu câu trả lời text vào lastTextAnswer
             }
 
-            // Tạo form để gửi câu trả lời cuối cùng cùng với submit
-            const form = document.createElement('form');
-            form.method = 'GET';
-            form.action = 'quizhandle';
+            // Tạo form ẩn để gửi câu trả lời cuối cùng cùng với submit
+            const form = document.createElement('form');  // Tạo một form mới để gửi dữ liệu (sẽ không hiển thị trên trang)
+            form.method = 'GET';  // Đặt phương thức của form là GET
+            form.action = 'quizhandle';  // Địa chỉ URL nơi gửi dữ liệu (ở đây là 'quizhandle')
 
-            // Các parameters cần thiết
+            // Các parameters cần thiết để gửi
             const params = {
-                'action': 'submit',
-                'quizId': '${quiz.id}',
-                'userId': '${sessionScope.currentUserId}',
-                'lastQuestionIndex': '${currentQuestionIndex}',
-                'lastAnswer': lastAnswer,
-                'lastTextAnswer': lastTextAnswer
+                'action': 'submit',  // Tham số action để chỉ ra hành động submit
+                'quizId': '${quiz.id}',  // ID quiz từ server (được truyền từ JSP)
+                'userId': '${sessionScope.currentUserId}',  // ID người dùng từ session (được truyền từ JSP)
+                'lastQuestionIndex': '${currentQuestionIndex}',  // Chỉ số câu hỏi cuối cùng (được truyền từ JSP)
+                'lastAnswer': lastAnswer,  // Đáp án radio cuối cùng mà người dùng đã chọn
+                'lastTextAnswer': lastTextAnswer  // Câu trả lời text cuối cùng mà người dùng đã nhập
             };
 
-            // Thêm các input hidden
-            for (const [key, value] of Object.entries(params)) {
-                if (value) { // Chỉ thêm nếu có giá trị
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = value;
-                    form.appendChild(input);
+            // Thêm các input hidden vào form để gửi dữ liệu
+            for (const [key, value] of Object.entries(params)) {  // Duyệt qua các tham số cần gửi
+                if (value) {  // Chỉ thêm tham số nếu có giá trị (tránh trường hợp null hoặc empty string)
+                    const input = document.createElement('input');  // Tạo input hidden mới
+                    input.type = 'hidden';  // Đặt loại input là "hidden" để nó không hiển thị trên form
+                    input.name = key;  // Đặt tên input theo tên tham số
+                    input.value = value;  // Đặt giá trị của input là giá trị tham số
+                    form.appendChild(input);  // Thêm input vào form
                 }
             }
 
-            document.body.appendChild(form);
-            form.submit();
+            // Thêm form vào body của trang
+            document.body.appendChild(form);  // Thêm form vào phần tử body của trang, nhưng form sẽ không hiển thị
+            form.submit();  // Gửi form đi (kích hoạt submit của form, gửi tất cả dữ liệu đã thêm vào backend)
         }
+
 
         // Modal functions
         function showProgressModal() {
-            document.getElementById('progressModal').style.display = 'block';
+            document.getElementById('progressModal').style.display = 'block';  // Hiển thị modal tiến độ
         }
 
         function showSubmitModal() {
-            document.getElementById('submitModal').style.display = 'block';
+            document.getElementById('submitModal').style.display = 'block';  // Hiển thị modal xác nhận nộp bài
         }
 
         function showAnswerModal() {
-            document.getElementById('answerModal').style.display = 'block';
+            document.getElementById('answerModal').style.display = 'block';  // Hiển thị modal câu trả lời đúng
         }
 
+        // Close modal
         function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+            document.getElementById(modalId).style.display = 'none';  // Đóng modal
         }
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
+            const modals = document.querySelectorAll('.modal');  // Lấy tất cả modals
             modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
+                if (event.target === modal) {  // Nếu click vào phần nền
+                    modal.style.display = 'none';  // Đóng modal
                 }
             });
         }
 
+        // Copy current answer to form
         function copyCurrentAnswer(formId) {
             const form = document.getElementById(formId);
 
             // Copy radio button answer
             const selectedRadio = document.querySelector('input[name="answer"]:checked');
             if (selectedRadio) {
-                form.querySelector('input[name="answer"]').value = selectedRadio.value;
+                form.querySelector('input[name="answer"]').value = selectedRadio.value;  // Gán giá trị radio vào form
             }
 
             // Copy text answer
             const textInput = document.getElementById('textAnswer');
             if (textInput) {
-                form.querySelector('input[name="textAnswer"]').value = textInput.value;
+                form.querySelector('input[name="textAnswer"]').value = textInput.value;  // Gán giá trị text vào form
             }
         }
 
+        // Submit with current answer (used for previous/next navigation)
         function submitWithCurrentAnswer(form, direction) {
             // Lấy đáp án multiple choice hiện tại
             const selectedRadio = document.querySelector('input[name="answer"]:checked');
@@ -630,7 +631,6 @@
             // THÊM: Lưu imagePath hiện tại
             const imagePathInput = document.getElementById('imagePath');
             if (imagePathInput) {
-                // Thêm hidden input cho imagePath vào form
                 let imagePathHidden = form.querySelector('input[name="imagePath"]');
                 if (!imagePathHidden) {
                     imagePathHidden = document.createElement('input');
@@ -639,61 +639,63 @@
                     form.appendChild(imagePathHidden);
                 }
                 imagePathHidden.value = imagePathInput.value;
-                console.log("Submitting with imagePath: " + imagePathInput.value); // Debug log
             }
 
-            return true; // Cho phép form submit
+            return true;  // Cho phép form submit
         }
-        
+
         // Image Upload functions
         function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            const file = event.target.files[0];  // Lấy tệp ảnh mà người dùng đã chọn từ trường input file
+            if (!file) return;  // Nếu không có tệp nào được chọn, thoát hàm
 
-            const reader = new FileReader();
+            const reader = new FileReader();  // Tạo đối tượng FileReader để đọc tệp ảnh
+
+            // Khi đọc xong, xử lý ảnh
             reader.onload = function(e) {
-                const preview = document.getElementById('imagePreview');
-                const img = document.getElementById('previewImg');
+                const preview = document.getElementById('imagePreview');  // Lấy phần tử div hiển thị ảnh
+                const img = document.getElementById('previewImg');  // Thẻ <img> để hiển thị ảnh
 
-                img.src = e.target.result;
-                preview.classList.remove('hidden');
+                img.src = e.target.result;  // Gán dữ liệu ảnh vào thẻ <img> dưới dạng base64
+                preview.classList.remove('hidden');  // Hiển thị ảnh
             };
-            reader.readAsDataURL(file);
+
+            reader.readAsDataURL(file);  // Đọc tệp ảnh dưới dạng base64
+        }
 
         // Upload file to server
-        uploadImageToServer(file);
-}
-
         function uploadImageToServer(file) {
             const formData = new FormData();
-            formData.append('imageFile', file);
-            formData.append('action', 'uploadImage');
-            formData.append('questionIndex', document.querySelector('input[name="questionIndex"]').value);
+            formData.append('imageFile', file);  // Thêm tệp ảnh vào FormData
+            formData.append('action', 'uploadImage');  // Thêm action vào FormData
+            formData.append('questionIndex', document.querySelector('input[name="questionIndex"]').value);  // Thêm chỉ số câu hỏi
 
+            // Gửi tệp ảnh lên server
             fetch('quizhandle', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => response.json())  // Xử lý phản hồi JSON từ server
             .then(data => {
                 if (data.success) {
-                    document.getElementById('imagePath').value = data.filename;
-                    console.log('Image uploaded successfully: ' + data.filename);
+                    document.getElementById('imagePath').value = data.filename;  // Lưu tên tệp vào input ẩn
                 } else {
-                    alert('Failed to upload image: ' + data.error);
+                    alert('Failed to upload image: ' + data.error);  // Hiển thị lỗi nếu upload không thành công
                 }
             })
             .catch(error => {
-                console.error('Upload error:', error);
+                console.error('Upload error:', error);  // Ghi lỗi nếu có lỗi
                 alert('Failed to upload image');
             });
         }
 
+        // Remove uploaded image
         function removeImage() {
-            document.getElementById('imageUpload').value = '';
-            document.getElementById('imagePath').value = '';
-            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('imageUpload').value = '';  // Xóa giá trị tệp đã chọn
+            document.getElementById('imagePath').value = '';  // Xóa giá trị đường dẫn ảnh
+            document.getElementById('imagePreview').classList.add('hidden');  // Ẩn ảnh đã tải lên
         }
     </script>
+
 </body>
 </html>
