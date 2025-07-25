@@ -32,7 +32,7 @@ public class HomeDAO {
                         rs.getInt("Id"),
                         rs.getString("Title"),
                         rs.getString("Content"),
-                        rs.getString("Thumbnail"),
+                        rs.getString("Image"),
                         rs.getString("Category"),
                         rs.getInt("AuthorId"),
                         rs.getString("Status"),
@@ -61,7 +61,7 @@ public class HomeDAO {
                         rs.getInt("Id"),
                         rs.getString("Title"),
                         rs.getString("Content"),
-                        rs.getString("Thumbnail"),
+                        rs.getString("Image"),        // ← MỚI: Đổi từ "Thumbnail" thành "Image"
                         rs.getString("Category"),
                         rs.getInt("AuthorId"),
                         rs.getString("Status"),
@@ -79,7 +79,7 @@ public class HomeDAO {
         
             public List<HomeSlider> getHomepageSliders() {
                 List<HomeSlider> list = new ArrayList<>();
-                String sql = "SELECT * FROM sliders WHERE Type = 'promotion' ORDER BY OrderNumber LIMIT 5";
+                String sql = "SELECT * FROM sliders WHERE Type = 'Show' ORDER BY Id DESC LIMIT 5";
 
                 try (Connection conn = ServerConnectionInfo.getConnection();
                      PreparedStatement stmt = conn.prepareStatement(sql);

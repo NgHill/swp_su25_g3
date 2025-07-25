@@ -186,23 +186,14 @@ CREATE TABLE Stimulations (
     FOREIGN KEY (SubjectId) REFERENCES SubjectPackages(Id)
 );
 
-INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status, Username, Bio, DateOfBirth) VALUES
-('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
-('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
-('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
-('Dat Phan','dat@gmail.com','0123456789', 'hash_password_4',1,'mkt','active','hoantudrill','Poor people','1999-03-12');
-
-INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
-(7, 'John Link Doe', 'john123.doe@example.com', '0912345678', 'hashed_password_1', 0, NULL, 'customer', 'active', NULL, '2025-07-23 13:47:44');
-
-INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
-(6, 'Jane Smith', 'cc.role@example.com', '0987654321', 'cc1234567@', 1, NULL, 'courseContent', 'active', NULL, '2025-07-23 13:47:44');
-
-INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
-(3, 'Marketing Staff', 'mtk.user@example.com', '0901122334', 'Mtk123456@', 0, NULL, 'mtk', 'active', NULL, '2025-07-23 13:47:44');
-
-INSERT INTO users (Id, FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt) VALUES
-(9, 'Huy Manh', 'manhmg24112001@gmail.com', '0385992411', 'A123Manh@', 1, NULL, 'customer', 'active', 'ztGNhGhCVR', '2025-07-23 00:30:27');
+-- Insert các user khác trước để Marketing Staff sẽ có ID = 3
+INSERT INTO users (FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt, Username, Bio, DateOfBirth) VALUES
+('John Link Doe', 'john123.doe@example.com', '0912345678', 'hashed_password_1', 0, NULL, 'customer', 'active', NULL, '2025-07-23 13:47:44', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
+('Jane Smith', 'cc.role@example.com', '0987654321', 'cc1234567@', 1, NULL, 'courseContent', 'active', NULL, '2025-07-23 13:47:44', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
+('Marketing Staff', 'mtk.user@example.com', '0901122334', 'Mtk123456@', 0, NULL, 'mtk', 'active', NULL, '2025-07-23 13:47:44', 'mtkstaff', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
+('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, NULL, 'admin', 'active', NULL, '2025-07-23 13:47:44', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
+('Huy Manh', 'manhmg24112001@gmail.com', '0385992411', 'A123Manh@', 1, NULL, 'customer', 'active', 'ztGNhGhCVR', '2025-07-23 00:30:27', 'huymanh', NULL, NULL),
+('Dat Phan', 'dat@gmail.com', '0123456789', 'hash_password_4', 1, NULL, 'mkt', 'active', NULL, '2025-07-23 13:47:44', 'hoantudrill', 'Poor people', '1999-03-12');
 
 INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
 VALUES (1, 'Lập trình hướng đối tượng với Java', 'https://i.ytimg.com/vi/nh4jiEq1HHM/maxresdefault.jpg', 'This is a post about lập trình hướng đối tượng với java.',
@@ -328,6 +319,25 @@ VALUES (20, 'Kỹ năng viết email chuyên nghiệp bằng tiếng Anh', 'http
 'Kỹ năng viết email chuyên nghiệp bằng tiếng Anh – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.',
 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Language. Bạn sẽ được hướng dẫn chi tiết về Kỹ năng viết email chuyên nghiệp bằng tiếng Anh, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành...', 
 'Language', 3, 200, 'active', '2025-07-25 09:20:00');
+
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('1','https://tse3.mm.bing.net/th/id/OIP.AAXS553wGPiRSGvOfy83YQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3', 'Testing time','https://tse3.mm.bing.net/th/id/OIP.AAXS553wGPiRSGvOfy83YQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3', 'Show', '1');
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('2','https://vn.elsaspeak.com/wp-content/uploads/2023/11/viet-email-tieng-anh-min.png', 'Tiếng Anh chuyên nghiệp, đúng chuẩn cho mọi tình huống','https://vn.elsaspeak.com/wp-content/uploads/2023/11/viet-email-tieng-anh-min.png', 'Show', '2');
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('3','https://vn.elsaspeak.com/wp-content/uploads/2022/10/Banner-2a-2-1024x461.png', ' ELSA Speak','https://vn.elsaspeak.com/wp-content/uploads/2022/10/Banner-2a-2-1024x461.png', 'Show', '3');
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('4','https://anhtester.com/uploads/post/software-engineer.jpg', ' Tester chuyên nghiệp','https://anhtester.com/uploads/post/software-engineer.jpg', 'Hide', '4');
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('5','https://static.topcv.vn/cms/tester-la-gi-topcv-06791ed5b8811c.png', ' Tester is ?','https://static.topcv.vn/cms/tester-la-gi-topcv-06791ed5b8811c.png', 'Show', '5');
+
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('6','https://www.educatorstechnology.com/wp-content/uploads/2023/05/Quizlet-1024x683.png', ' Quizlet ADD','https://www.educatorstechnology.com/wp-content/uploads/2023/05/Quizlet-1024x683.png', 'Show', '6');
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('7','https://edumentors.co.uk/blog/wp-content/uploads/2023/03/Quizlet-Website-Homepage-2048x883.jpg', ' Quizlet ADD 2','https://edumentors.co.uk/blog/wp-content/uploads/2023/03/Quizlet-Website-Homepage-2048x883.jpg', 'Show', '7');
+
+INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('8','https://indiancybersecuritysolutions.com/checklist-for-penetration-testing-web-applications/assets/img/5651580e26897d2a8f348dc3978fb378.png', ' Checking test','https://indiancybersecuritysolutions.com/checklist-for-penetration-testing-web-applications/assets/img/5651580e26897d2a8f348dc3978fb378.png', 'Hide', '8');
+
 
 
 -- Insert SubjectPackages for Teamwork (8 subjects)
