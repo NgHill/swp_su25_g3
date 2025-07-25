@@ -423,10 +423,7 @@
                 background-color: transparent;
             }
 
-            .avatar-wrapper .avatar-icon {
-                font-size: 24px;
-                color: white;
-            }
+
 
             /* Footer */
             .footer {
