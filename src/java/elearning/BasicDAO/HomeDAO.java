@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 public class HomeDAO {
         public List<HomePost> getHotPosts() {
             List<HomePost> list = new ArrayList<>();
-            String sql = "SELECT * FROM posts WHERE Status = 'published' ORDER BY ViewCount DESC LIMIT 3";
+            String sql = "SELECT * FROM posts WHERE Status = 'active' ORDER BY ViewCount DESC LIMIT 3";
 
             try (Connection conn = ServerConnectionInfo.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql);
@@ -50,7 +50,7 @@ public class HomeDAO {
 
             public List<HomePost> getLatestPosts() {
             List<HomePost> list = new ArrayList<>();
-            String sql = "SELECT * FROM posts WHERE Status = 'published' ORDER BY CreatedAt DESC LIMIT 3";
+            String sql = "SELECT * FROM posts WHERE Status = 'active' ORDER BY CreatedAt DESC LIMIT 3";
 
             try (Connection conn = ServerConnectionInfo.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql);
