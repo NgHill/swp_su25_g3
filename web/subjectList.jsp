@@ -509,7 +509,7 @@
                         <h1>Subject List</h1>
                     </div>
                     <div class="header-right">
-                        <form method="GET" action="${pageContext.request.contextPath}/subject-list" id="searchForm" onsubmit="document.getElementById('searchPage').value = '1'">
+                        <form method="GET" action="${pageContext.request.contextPath}/subject-list"  onsubmit="document.getElementById('searchPage').value = '1'">
                             <div class="search-wrapper">
                                 <div class="search-box">
                                     <input type="search" id="searchInput" name="search" placeholder="Search subject..." value="${param.search}" />
@@ -563,7 +563,8 @@
                         <c:set var="showTagline" value="${empty paramValues.displayOptions}" />
                         <c:set var="showSale" value="${empty paramValues.displayOptions}" />
                         <c:set var="showOriginal" value="${empty paramValues.displayOptions}" />
-                        <c:forEach items="${paramValues.displayOptions}" var="opt">
+                        
+                        <c:forEach items="${paramValues.displayOptions}" var="opt"> 
                             <c:choose>
                                 <c:when test="${opt=='title'}"><c:set var="showTitle" value="true"/></c:when>
                                 <c:when test="${opt=='tagline'}"><c:set var="showTagline" value="true"/></c:when>
@@ -571,6 +572,7 @@
                                 <c:when test="${opt=='original-price'}"><c:set var="showOriginal" value="true"/></c:when>
                             </c:choose>
                         </c:forEach>
+                        
                         <div class="display-options">
                             <label><input type="checkbox" name="displayOptions" value="title" <c:if test="${showTitle}">checked</c:if> onchange="updateDisplayOptions()" /> Tittle</label>
                             <label><input type="checkbox" name="displayOptions" value="tagline" <c:if test="${showTagline}">checked</c:if> onchange="updateDisplayOptions()" /> Description</label>
@@ -585,9 +587,11 @@
                                         <i class="fas fa-chevron-left"></i>
                                     </a>
                             </c:if>
+                                
                             <c:if test="${currentPage<=1}">
                                 <span class="disabled"><i class="fas fa-chevron-left"></i></span>
                                 </c:if>
+                                
                                 <c:forEach begin="1" end="${totalPages}" var="i">
                                     <c:choose>
                                         <c:when test="${i==currentPage}">
@@ -598,11 +602,13 @@
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
+                                        
                             <c:if test="${currentPage<totalPages}">
                                 <a href="?page=${currentPage+1}&search=${param.search}&pageSize=${param.pageSize}&cat=${param.cat}<c:forEach items='${paramValues.displayOptions}' var='opt'>&displayOptions=${opt}</c:forEach>">
                                         <i class="fas fa-chevron-right"></i>
                                     </a>
                             </c:if>
+                                        
                             <c:if test="${currentPage>=totalPages}">
                                 <span class="disabled"><i class="fas fa-chevron-right"></i></span>
                                 </c:if>
@@ -653,26 +659,18 @@
         </main>
 
         <script>
+//----------------------------------Tương tác bật/tắt sidebar filter --------------------------------------------
             const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
+            
             ft.addEventListener('click', () => {
-                sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-                ft.querySelector('i').classList.toggle('fa-chevron-up');
-                ft.querySelector('i').classList.toggle('fa-chevron-down');
+                sb.style.display = sb.style.display === 'block' ? 'none' : 'block'; //Nếu sidebar đang dạng block thì thành none, và ngược lại
             });
-
-            document.addEventListener('click', e => {
-                if (!sb.contains(e.target) && !ft.contains(e.target)) {
-                    sb.style.display = 'none';
-                    ft.querySelector('i').classList.add('fa-chevron-down');
-                    ft.querySelector('i').classList.remove('fa-chevron-up');
-                }
-            });
-
+//---------------------------------Xử lí filter category------------------------------------------------
             // Event listener cho radio buttons
             document.querySelectorAll('input[name="cat"]').forEach(radio => {
-                radio.addEventListener('change', function () {
+                radio.addEventListener('change', function () {  
                     if (this.checked) {
-                        submitFilter(this.value);
+                        submitFilter(this.value); //Lấy giá trị của radio được click
                     }
                 });
             });
@@ -680,11 +678,11 @@
             // Function xử lý filter
             function submitFilter(categoryValue = '') {
                 let url = new URL(window.location.href);
-                url.searchParams.set('cat', categoryValue);
+                url.searchParams.set('cat', categoryValue); //Gắn giá trị đã lấy vào thuộc tính cat
                 url.searchParams.set('page', '1'); // Reset về trang 1
                 window.location.href = url;
             }
-
+//------------------------Điều chỉnh số bản ghi trên 1 trang---------------------------------------
             function updatePageSize() {
                 let s = parseInt(document.getElementById('pageSize').value) || 1;
                 s = Math.min(Math.max(s, 1), 100);
@@ -694,7 +692,7 @@
                 u.searchParams.set('page', '1');
                 window.location.href = u;
             }
-
+//------------------------Lựa chọn các trường thông tin hiển thị------------------------------
             function updateDisplayOptions() {
                 let u = new URL(window.location.href);
                 u.searchParams.delete('displayOptions');
@@ -703,19 +701,12 @@
                 );
                 window.location.href = u;
             }
-
+//-----------------------Xem môn học-----------------------------------------
             function goToSubject(subjectId) {
                 // Implement navigation to subject detail page
                 window.location.href = "${pageContext.request.contextPath}/subject-detail?id=" + subjectId;
             }
-
-            function registerSubject(event, subjectId) {
-                event.stopPropagation(); // Prevent card click event from firing
-                // Implement registration logic
-                alert("Đăng ký môn học ID: " + subjectId);
-                // You might want to redirect to a registration page or send an AJAX request
-            }
-
+//--------------------Xử lí input pagesize để đảm bảo là số nguyên khoảng (1,100)---------
 
             document.addEventListener('DOMContentLoaded', () => {
                 let i = document.getElementById('pageSize'), v = parseInt(i.value) || 1;

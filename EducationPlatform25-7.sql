@@ -64,6 +64,7 @@ CREATE TABLE Posts (
     Image VARCHAR(1000),
     Content TEXT,
     Thumbnail VARCHAR(255),
+	Description TEXT,
     Category VARCHAR(1000),
     AuthorId INT,
     ViewCount INT DEFAULT 0,
@@ -186,68 +187,40 @@ CREATE TABLE Stimulations (
 );
 
 
--- Insert 5 posts sample data (English and Soft Skills topics)
-INSERT INTO Posts (Title, Image, Content, Thumbnail, Category, AuthorId, ViewCount, Status, CreatedAt) VALUES
-(
-    'Essential Communication Skills for Career Success',
-    'https://example.com/images/communication-skills.jpg',
-    'Effective communication is the cornerstone of professional success. In today''s workplace, the ability to convey ideas clearly, listen actively, and engage with diverse teams is more valuable than ever. This article explores key communication strategies including active listening, nonverbal communication awareness, and adapting your message to different audiences. We''ll also discuss how to give constructive feedback, handle difficult conversations, and present ideas confidently. Whether you''re leading a team meeting or networking at industry events, strong communication skills will set you apart and accelerate your career growth.',
-    'https://example.com/thumbnails/communication-thumb.jpg',
-    'Soft Skills,Communication,Career Development',
-    1,
-    342,
-    'published',
-    '2024-01-15 09:30:00'
-),
-(
-    'Mastering Time Management: Productivity Tips for Professionals',
-    'https://example.com/images/time-management.jpg',
-    'Time management is a critical soft skill that directly impacts your productivity and work-life balance. This comprehensive guide covers proven techniques like the Eisenhower Matrix for prioritizing tasks, time-blocking for focused work sessions, and the two-minute rule for handling quick tasks immediately. We''ll explore how to identify and eliminate time wasters, set realistic deadlines, and create daily routines that maximize efficiency. Learn how successful professionals structure their days, manage interruptions, and maintain focus in our increasingly distracted world.',
-    'https://example.com/thumbnails/time-management-thumb.jpg',
-    'Soft Skills,Productivity,Time Management',
-    2,
-    287,
-    'published',
-    '2024-01-18 11:15:00'
-),
-(
-    'Building Emotional Intelligence in the Modern Workplace',
-    'https://example.com/images/emotional-intelligence.jpg',
-    'Emotional intelligence (EI) has become one of the most sought-after soft skills in professional environments. This article delves into the four core components of EI: self-awareness, self-regulation, empathy, and social skills. We''ll provide practical exercises to help you recognize your emotional triggers, manage stress effectively, and understand others'' perspectives. Learn how emotionally intelligent leaders inspire their teams, resolve conflicts constructively, and create positive work cultures. With real-world examples and actionable strategies, you''ll discover how to leverage emotional intelligence for career advancement.',
-    'https://example.com/thumbnails/emotional-intelligence-thumb.jpg',
-    'Soft Skills,Leadership,Emotional Intelligence',
-    1,
-    198,
-    'published',
-    '2024-01-22 16:20:00'
-),
-(
-    'Critical Thinking and Problem-Solving in Business',
-    'https://example.com/images/critical-thinking.jpg',
-    'In an era of rapid change and complex challenges, critical thinking and problem-solving skills are invaluable assets. This post explores systematic approaches to analyzing problems, evaluating solutions, and making informed decisions. We''ll cover techniques like root cause analysis, brainstorming methodologies, and decision-making frameworks. Learn how to ask the right questions, challenge assumptions, and consider multiple perspectives before reaching conclusions. Through case studies and practical exercises, you''ll develop the analytical mindset needed to tackle complex business challenges and drive innovative solutions.',
-    'https://example.com/thumbnails/critical-thinking-thumb.jpg',
-    'Soft Skills,Problem Solving,Business Strategy',
-    3,
-    156,
-    'published',
-    '2024-01-25 13:45:00'
-),
-(
-    'Leadership and Team Collaboration: Building High-Performance Teams',
-    'https://example.com/images/team-leadership.jpg',
-    'Effective leadership and team collaboration are essential for organizational success. This comprehensive guide explores different leadership styles, from transformational to servant leadership, and when to apply each approach. We''ll discuss how to build trust within teams, facilitate productive meetings, and navigate team dynamics. Learn strategies for motivating diverse team members, delegating effectively, and fostering a culture of innovation and accountability. Whether you''re a new manager or an experienced leader, these insights will help you create high-performing teams that achieve exceptional results together.',
-    'https://example.com/thumbnails/team-leadership-thumb.jpg',
-    'Soft Skills,Leadership,Team Management',
-    2,
-    421,
-    'published',
-    '2024-01-28 10:00:00'
-);
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (1, 'Lập trình hướng đối tượng với Java', 'it1.jpg', 'This is a post about lập trình hướng đối tượng với java.',
+'Lập trình hướng đối tượng với Java – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Lập trình hướng đối tượng với Java, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Lập trình hướng đối tượng với Java, đừng bỏ qua bài viết này.', 'IT', 2, 111, 'active', '2025-07-25 09:01:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (2, 'Giới thiệu về Git và GitHub', 'it2.jpg', 'This is a post about giới thiệu về git và github.',
+'Giới thiệu về Git và GitHub – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Giới thiệu về Git và GitHub, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Giới thiệu về Git và GitHub, đừng bỏ qua bài viết này.', 'IT', 3, 69, 'active', '2025-07-25 09:02:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (3, 'Bảo mật hệ thống mạng cho người mới', 'it3.jpg', 'This is a post about bảo mật hệ thống mạng cho người mới.',
+'Bảo mật hệ thống mạng cho người mới – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Bảo mật hệ thống mạng cho người mới, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Bảo mật hệ thống mạng cho người mới, đừng bỏ qua bài viết này.', 'IT', 2, 264, 'active', '2025-07-25 09:03:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (4, 'Xây dựng API với Node.js', 'it4.jpg', 'This is a post about xây dựng api với node.js.',
+'Xây dựng API với Node.js – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Xây dựng API với Node.js, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Xây dựng API với Node.js, đừng bỏ qua bài viết này.', 'IT', 3, 74, 'active', '2025-07-25 09:04:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (5, 'Tư duy thuật toán cho lập trình viên', 'it5.jpg', 'This is a post about tư duy thuật toán cho lập trình viên.',
+'Tư duy thuật toán cho lập trình viên – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực IT. Bạn sẽ được hướng dẫn chi tiết về Tư duy thuật toán cho lập trình viên, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Tư duy thuật toán cho lập trình viên, đừng bỏ qua bài viết này.', 'IT', 1, 226, 'active', '2025-07-25 09:05:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (6, 'Chiến lược định giá sản phẩm', 'business1.jpg', 'This is a post about chiến lược định giá sản phẩm.',
+'Chiến lược định giá sản phẩm – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Chiến lược định giá sản phẩm, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Chiến lược định giá sản phẩm, đừng bỏ qua bài viết này.', 'Business', 1, 103, 'active', '2025-07-25 09:06:00');
+
+INSERT INTO posts (Id, Title, Image, Content, Thumbnail, Description, Category, AuthorId, ViewCount, Status, CreatedAt)
+VALUES (7, 'Kỹ năng quản lý nhóm hiệu quả', 'business2.jpg', 'This is a post about kỹ năng quản lý nhóm hiệu quả.',
+'Kỹ năng quản lý nhóm hiệu quả – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Kỹ năng quản lý nhóm hiệu quả, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Kỹ năng quản lý nhóm hiệu quả, đừng bỏ qua bài viết này.', 'Business', 1, 193, 'active', '2025-07-25 09:07:00');
+
 
 INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status, Username, Bio, DateOfBirth) VALUES
 ('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
 ('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
-('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08');
+('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
+('Dat Phan','dat@gmail.com','0123456789', 'hash_password_4',1,'mkt','active','hoantudrill','Poor people','1999-03-12');
 
 -- Insert SubjectPackages for Teamwork (8 subjects)
 INSERT INTO SubjectPackages (Title, Description, BriefInfo, Tagline, Thumbnail, LowestPrice, OriginalPrice, SalePrice, OwnerId, Category, Status) VALUES
@@ -820,9 +793,589 @@ INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
   (SELECT Id FROM Questions WHERE Content = 'Which strategy best improves team synergy?' LIMIT 1)
 );
 
+-- =====================================================
+-- QUESTION ANSWERS cho Building Strong Teams - Team Building Quiz
+-- =====================================================
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Strong teams are built on mutual _______ and respect.' LIMIT 1),
+  'Trust', 
+  TRUE, 
+  'Trust is the foundation for building strong teams.'
+);
 
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Team diversity brings different _______ to problem-solving.' LIMIT 1),
+  'Perspectives', 
+  TRUE, 
+  'Diverse perspectives enhance problem-solving capabilities.'
+);
 
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the foundation of a strong team?' LIMIT 1),
+  'Trust and mutual respect', 
+  TRUE, 
+  'Trust and mutual respect form the foundation of strong teams.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the foundation of a strong team?' LIMIT 1),
+  'Individual brilliance', 
+  FALSE, 
+  'Individual brilliance alone does not build strong teams.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the foundation of a strong team?' LIMIT 1),
+  'Competition among members', 
+  FALSE, 
+  'Competition can weaken team cohesion.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the foundation of a strong team?' LIMIT 1),
+  'Strict hierarchy', 
+  FALSE, 
+  'Overly strict hierarchy can hinder team collaboration.'
+);
 
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which element is crucial for team cohesion?' LIMIT 1),
+  'Shared goals and values', 
+  TRUE, 
+  'Shared goals and values create unity and cohesion in teams.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which element is crucial for team cohesion?' LIMIT 1),
+  'Similar backgrounds', 
+  FALSE, 
+  'Diversity of backgrounds can strengthen teams when managed well.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which element is crucial for team cohesion?' LIMIT 1),
+  'Avoiding difficult conversations', 
+  FALSE, 
+  'Avoiding difficult conversations can weaken team bonds.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which element is crucial for team cohesion?' LIMIT 1),
+  'Working in isolation', 
+  FALSE, 
+  'Isolation prevents team cohesion and collaboration.'
+);
 
+-- =====================================================
+-- QUESTION ANSWERS cho Building Strong Teams - Team Leadership Quiz
+-- =====================================================
 
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Effective team leaders must demonstrate strong _______ skills.' LIMIT 1),
+  'Communication', 
+  TRUE, 
+  'Communication skills are essential for effective team leadership.'
+);
 
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Team resilience is built through overcoming _______ together.' LIMIT 1),
+  'Challenges', 
+  TRUE, 
+  'Overcoming challenges together builds team resilience and bonds.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'What leadership style works best for team building?' LIMIT 1),
+  'Collaborative leadership', 
+  TRUE, 
+  'Collaborative leadership encourages participation and builds strong teams.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What leadership style works best for team building?' LIMIT 1),
+  'Authoritarian leadership', 
+  FALSE, 
+  'Authoritarian leadership can stifle team creativity and collaboration.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What leadership style works best for team building?' LIMIT 1),
+  'Laissez-faire leadership', 
+  FALSE, 
+  'Complete hands-off approach may lack necessary guidance for team building.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What leadership style works best for team building?' LIMIT 1),
+  'Micromanagement', 
+  FALSE, 
+  'Micromanagement undermines trust and team autonomy.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle team conflicts?' LIMIT 1),
+  'Address conflicts early and fairly', 
+  TRUE, 
+  'Early and fair intervention prevents conflicts from escalating.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle team conflicts?' LIMIT 1),
+  'Ignore conflicts and hope they resolve', 
+  FALSE, 
+  'Ignoring conflicts often makes them worse and damages team dynamics.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle team conflicts?' LIMIT 1),
+  'Take sides immediately', 
+  FALSE, 
+  'Taking sides without understanding can worsen conflicts.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle team conflicts?' LIMIT 1),
+  'Punish all parties involved', 
+  FALSE, 
+  'Blanket punishment does not address the root cause of conflicts.'
+);
+
+-- =====================================================
+-- QUIZ QUESTIONS cho Building Strong Teams - Team Building Quiz
+-- =====================================================
+
+INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Building Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Strong teams are built on mutual _______ and respect.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Building Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Team diversity brings different _______ to problem-solving.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Building Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'What is the foundation of a strong team?' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Building Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Which element is crucial for team cohesion?' LIMIT 1)
+);
+
+-- =====================================================
+-- QUIZ QUESTIONS cho Building Strong Teams - Team Leadership Quiz
+-- =====================================================
+
+INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Effective team leaders must demonstrate strong _______ skills.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Team resilience is built through overcoming _______ together.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'What leadership style works best for team building?' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Team Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle team conflicts?' LIMIT 1)
+);
+
+-- =====================================================
+-- QUESTION ANSWERS cho Resolving Team Conflicts - Conflict Resolution Quiz
+-- =====================================================
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Most team conflicts arise from poor _______ between members.' LIMIT 1),
+  'Communication', 
+  TRUE, 
+  'Poor communication is the root cause of most team conflicts.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Active _______ is essential for resolving misunderstandings.' LIMIT 1),
+  'Listening', 
+  TRUE, 
+  'Active listening helps understand different perspectives and resolve conflicts.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the first step in conflict resolution?' LIMIT 1),
+  'Identify the root cause', 
+  TRUE, 
+  'Understanding the root cause is essential for effective conflict resolution.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the first step in conflict resolution?' LIMIT 1),
+  'Assign blame to parties', 
+  FALSE, 
+  'Assigning blame escalates conflicts rather than resolving them.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the first step in conflict resolution?' LIMIT 1),
+  'Avoid the conflicting parties', 
+  FALSE, 
+  'Avoidance does not resolve conflicts and may make them worse.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What is the first step in conflict resolution?' LIMIT 1),
+  'Impose a quick solution', 
+  FALSE, 
+  'Quick solutions without understanding may not address the real issues.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which approach is most effective for team conflicts?' LIMIT 1),
+  'Collaborative problem-solving', 
+  TRUE, 
+  'Collaborative approach engages all parties in finding mutually acceptable solutions.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which approach is most effective for team conflicts?' LIMIT 1),
+  'Winner-takes-all approach', 
+  FALSE, 
+  'Winner-takes-all approach creates resentment and doesn\'t resolve underlying issues.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which approach is most effective for team conflicts?' LIMIT 1),
+  'Suppressing disagreements', 
+  FALSE, 
+  'Suppressing disagreements leads to unresolved tensions.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'Which approach is most effective for team conflicts?' LIMIT 1),
+  'Separating conflicting parties', 
+  FALSE, 
+  'Separation alone doesn\'t address the underlying conflict causes.'
+);
+
+-- =====================================================
+-- QUESTION ANSWERS cho Resolving Team Conflicts - Conflict Management Quiz
+-- =====================================================
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Complex conflicts require skilled _______ to find solutions.' LIMIT 1),
+  'Mediation', 
+  TRUE, 
+  'Skilled mediation is essential for resolving complex conflicts.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Preventing future conflicts requires establishing clear _______.' LIMIT 1),
+  'Boundaries', 
+  TRUE, 
+  'Clear boundaries help prevent misunderstandings and conflicts.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'What technique helps de-escalate heated conflicts?' LIMIT 1),
+  'Active listening and empathy', 
+  TRUE, 
+  'Active listening and empathy help calm tensions and promote understanding.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What technique helps de-escalate heated conflicts?' LIMIT 1),
+  'Raising voice to be heard', 
+  FALSE, 
+  'Raising voice escalates rather than de-escalates conflicts.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What technique helps de-escalate heated conflicts?' LIMIT 1),
+  'Interrupting frequently', 
+  FALSE, 
+  'Interrupting prevents effective communication and worsens conflicts.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What technique helps de-escalate heated conflicts?' LIMIT 1),
+  'Making demands immediately', 
+  FALSE, 
+  'Making immediate demands can increase tension and resistance.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'When should external mediation be considered?' LIMIT 1),
+  'When internal efforts have failed', 
+  TRUE, 
+  'External mediation should be considered when internal resolution attempts have been unsuccessful.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'When should external mediation be considered?' LIMIT 1),
+  'At the first sign of disagreement', 
+  FALSE, 
+  'External mediation is not needed for minor disagreements that can be resolved internally.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'When should external mediation be considered?' LIMIT 1),
+  'Only after relationships are damaged', 
+  FALSE, 
+  'Waiting until relationships are severely damaged makes resolution more difficult.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'When should external mediation be considered?' LIMIT 1),
+  'Never, teams should handle everything', 
+  FALSE, 
+  'Some conflicts require external expertise to resolve effectively.'
+);
+
+-- =====================================================
+-- QUIZ QUESTIONS cho Resolving Team Conflicts - Conflict Resolution Quiz
+-- =====================================================
+
+INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Resolution Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Most team conflicts arise from poor _______ between members.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Resolution Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Active _______ is essential for resolving misunderstandings.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Resolution Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'What is the first step in conflict resolution?' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Resolution Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Which approach is most effective for team conflicts?' LIMIT 1)
+);
+
+-- =====================================================
+-- QUIZ QUESTIONS cho Resolving Team Conflicts - Conflict Management Quiz
+-- =====================================================
+
+INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Management Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Complex conflicts require skilled _______ to find solutions.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Management Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Preventing future conflicts requires establishing clear _______.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Management Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'What technique helps de-escalate heated conflicts?' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Conflict Management Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'When should external mediation be considered?' LIMIT 1)
+);
+
+-- =====================================================
+-- QUESTION ANSWERS cho Goal-Oriented Team Leadership - Effective Leadership Quiz
+-- =====================================================
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Effective leaders inspire their teams through clear _______.' LIMIT 1),
+  'Vision', 
+  TRUE, 
+  'Clear vision provides direction and inspiration for teams.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Goal-oriented leadership requires strong _______ abilities.' LIMIT 1),
+  'Planning', 
+  TRUE, 
+  'Strong planning abilities are essential for achieving goals effectively.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'What quality defines a goal-oriented leader?' LIMIT 1),
+  'Focus and determination', 
+  TRUE, 
+  'Focus and determination are key qualities that define goal-oriented leaders.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What quality defines a goal-oriented leader?' LIMIT 1),
+  'Flexibility without direction', 
+  FALSE, 
+  'Being flexible without clear direction can lead to confusion and poor results.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What quality defines a goal-oriented leader?' LIMIT 1),
+  'Avoiding difficult decisions', 
+  FALSE, 
+  'Goal-oriented leaders must be willing to make difficult decisions.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What quality defines a goal-oriented leader?' LIMIT 1),
+  'Working in isolation', 
+  FALSE, 
+  'Effective leaders work with their teams, not in isolation.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders communicate team objectives?' LIMIT 1),
+  'Clearly and frequently', 
+  TRUE, 
+  'Clear and frequent communication ensures everyone understands the objectives.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders communicate team objectives?' LIMIT 1),
+  'Once and never repeat', 
+  FALSE, 
+  'Objectives need to be reinforced regularly for effective implementation.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders communicate team objectives?' LIMIT 1),
+  'Only to senior team members', 
+  FALSE, 
+  'All team members need to understand the objectives to contribute effectively.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders communicate team objectives?' LIMIT 1),
+  'Using complex technical language', 
+  FALSE, 
+  'Objectives should be communicated in clear, understandable language.'
+);
+
+-- =====================================================
+-- QUESTION ANSWERS cho Goal-Oriented Team Leadership - Goal-Oriented Leadership Quiz
+-- =====================================================
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Strategic leaders align team efforts with organizational _______.' LIMIT 1),
+  'Objectives', 
+  TRUE, 
+  'Aligning team efforts with organizational objectives ensures strategic coherence.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'Successful goal achievement requires consistent _______ and evaluation.' LIMIT 1),
+  'Monitoring', 
+  TRUE, 
+  'Consistent monitoring and evaluation are crucial for successful goal achievement.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'What framework helps teams achieve complex goals?' LIMIT 1),
+  'SMART goals framework', 
+  TRUE, 
+  'SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) provide clear structure for complex goals.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What framework helps teams achieve complex goals?' LIMIT 1),
+  'Vague aspirational statements', 
+  FALSE, 
+  'Vague statements don\'t provide the clarity needed for complex goal achievement.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What framework helps teams achieve complex goals?' LIMIT 1),
+  'Wishful thinking approach', 
+  FALSE, 
+  'Wishful thinking lacks the structure and rigor needed for complex goals.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'What framework helps teams achieve complex goals?' LIMIT 1),
+  'No framework needed', 
+  FALSE, 
+  'Complex goals require structured frameworks to manage effectively.'
+);
+
+INSERT INTO QuestionAnswers (QuestionId, Content, IsCorrect, Explanation) 
+VALUES 
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1),
+  'Communicate changes transparently', 
+  TRUE, 
+  'Transparent communication about goal adjustments maintains trust and understanding.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1),
+  'Make changes without explanation', 
+  FALSE, 
+  'Unexplained changes can confuse team members and reduce commitment.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1),
+  'Avoid adjustments at all costs', 
+  FALSE, 
+  'Some adjustments may be necessary due to changing circumstances.'
+),
+(
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1),
+  'Change goals frequently without reason', 
+  FALSE, 
+  'Frequent unnecessary changes can undermine team confidence and focus.'
+);
+
+-- =====================================================
+-- QUIZ QUESTIONS cho Goal-Oriented Team Leadership - Effective Leadership Quiz
+-- =====================================================
+
+INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Effective Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Effective leaders inspire their teams through clear _______.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Effective Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Goal-oriented leadership requires strong _______ abilities.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Effective Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'What quality defines a goal-oriented leader?' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Effective Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders communicate team objectives?' LIMIT 1)
+);
+
+-- =====================================================
+-- QUIZ QUESTIONS cho Goal-Oriented Team Leadership - Goal-Oriented Leadership Quiz
+-- =====================================================
+
+INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Goal-Oriented Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Strategic leaders align team efforts with organizational _______.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Goal-Oriented Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'Successful goal achievement requires consistent _______ and evaluation.' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Goal-Oriented Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'What framework helps teams achieve complex goals?' LIMIT 1)
+),
+(
+  (SELECT Id FROM Quizzes WHERE Title = 'Goal-Oriented Leadership Quiz' LIMIT 1),
+  (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1)
+);

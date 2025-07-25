@@ -650,7 +650,7 @@
                         <ul id="ai-prompts">
                             <li onclick="sendPromptToAI('Tôi đang là sinh viên, khoá học này sẽ giúp gì cho tôi?')">📚 Tôi là sinh viên, khoá học này giúp gì?</li>
                             <li onclick="sendPromptToAI('Khoá học này có phù hợp cho người đi làm không?')">💼 Khoá học này phù hợp với người đi làm không?</li>
-                            <li onclick="sendPromptToAI('Khoá học này có yêu cầu kiến thức nền tảng gì không?')">❓ Có cần kiến thức nền không?</li>
+                            <li onclick="sendPromptToAI('Sau khoá học này thì nên học kĩ năng gì tiếp theo?')">❓Sau khoá học này thì nên học kĩ năng gì tiếp theo?</li>
                             <div style="display: flex; gap: 8px; margin-top: 10px;">
                                 <input type="text" id="customQuestion" placeholder="Nhập câu hỏi của bạn..." style="flex:1;">
                                 <button onclick="submitCustomQuestion()">Gửi</button>
@@ -668,77 +668,78 @@
                 </button>
 
             </div>
-        </div>
-        <script>
-            const subjectInfo = `
-        Tên khoá học: ${subject.title}
-        Mô tả: ${subject.description}
-        Tag line: ${subject.tagLine}
-        Thông tin ngắn: ${subject.briefInfo}
-        Giá gốc: ${subject.originalPrice}
-        Giá giảm: ${subject.salePrice}
-                `.trim();
-            function toggleAIChat() {
-                const chatbox = document.getElementById('ai-chatbox');
-                if (chatbox.style.display === 'none') {
-                    chatbox.style.display = 'block';
-                } else {
-                    chatbox.style.display = 'none';
-                }
-            }
-
-            function closeAIChat() {
-                document.getElementById('ai-chatbox').style.display = 'none';
-            }
-
-            function submitRegisterForm() {
-                if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
-                    document.getElementById('registerForm').submit(); // submit đúng POST
-                }
-            }
-
-            function sendPromptToAI(message) {
-                const customQuestion = document.getElementById('customQuestion').value;
-                const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
-
-                fetch('${pageContext.request.contextPath}/together-ai', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: 'message=' + encodeURIComponent(fullMessage)
-                })
-                        .then(response => response.json())
-                        .then(data => {
-                            const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
-                            document.getElementById('ai-response').innerText = content.trim();
-                        })
-                        .catch(error => {
-                            console.error('Lỗi khi gửi yêu cầu:', error);
-                            document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
-                        });
-            }
-
-            function submitCustomQuestion() {
-                const input = document.getElementById('customQuestion');
-                const question = input.value.trim();
-                if (question !== '') {
-                    sendPromptToAI(question);
-                    input.value = '';
-                }
-            }
-            // Gửi câu hỏi khi nhấn Enter trong ô nhập
-            document.getElementById('customQuestion').addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault(); // Ngăn form submit nếu có
-                    const question = this.value.trim();
-                    if (question !== '') {
-                        sendPromptToAI(question);
-                        this.value = ''; // Xóa ô sau khi gửi
+            <script>
+                // Tạo chuỗi thông tin môn học
+                const subjectInfo = `
+            Tên khoá học: ${subject.title}
+            Mô tả: ${subject.description}
+            Tag line: ${subject.tagLine}
+            Thông tin ngắn: ${subject.briefInfo}
+            Giá gốc: ${subject.originalPrice}
+            Giá giảm: ${subject.salePrice}
+                    `.trim();
+                //Bật tắt AI chat
+                function toggleAIChat() {
+                    const chatbox = document.getElementById('ai-chatbox');
+                    if (chatbox.style.display === 'none') {
+                        chatbox.style.display = 'block';
+                    } else {
+                        chatbox.style.display = 'none';
                     }
                 }
-            });
 
-        </script>
-</body>
+                function closeAIChat() {
+                    document.getElementById('ai-chatbox').style.display = 'none';
+                }
+                //Xử lí form đăng kí
+                function submitRegisterForm() {
+                    if (confirm('Bạn có chắc muốn đăng ký môn học này?')) {
+                        document.getElementById('registerForm').submit(); // submit đúng POST
+                    }
+                }
+                //Gửi prompt đến AI
+                function sendPromptToAI(message) {
+                    // Lấy câu hỏi tùy chỉnh từ ô nhập liệu
+                    const customQuestion = document.getElementById('customQuestion').value;
+
+                    // Tạo thông điệp đầy đủ (bao gồm thông tin khóa học nếu có, và câu hỏi tùy chỉnh hoặc thông điệp mặc định)
+                    const fullMessage = (typeof subjectInfo !== 'undefined' ? subjectInfo + "\n\n" : "") + (customQuestion || message);
+
+                    // Gửi yêu cầu POST đến API AI để nhận phản hồi
+                    fetch('${pageContext.request.contextPath}/together-ai', {
+                        method: 'POST', // Phương thức POST để gửi dữ liệu đến server
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded' // Đặt kiểu dữ liệu là x-www-form-urlencoded
+                        },
+                        // Dữ liệu được gửi đi dưới dạng 'message' (dưới dạng chuỗi đã được mã hóa)
+                        body: 'message=' + encodeURIComponent(fullMessage)
+                    })
+                            // Xử lý phản hồi khi server trả về dữ liệu
+                            .then(response => response.json()) // Chuyển đổi dữ liệu phản hồi từ JSON thành đối tượng JavaScript
+                            .then(data => {
+                                // Lấy nội dung phản hồi từ server hoặc trả về 'Không có phản hồi' nếu không có nội dung
+                                const content = data.choices?.[0]?.message?.content || 'Không có phản hồi.';
+                                // Hiển thị nội dung phản hồi lên trang web
+                                document.getElementById('ai-response').innerText = content.trim();
+                            })
+                            // Xử lý lỗi nếu có sự cố khi gửi yêu cầu hoặc nhận phản hồi
+                            .catch(error => {
+                                // Hiển thị lỗi trong console để phát hiện vấn đề
+                                console.error('Lỗi khi gửi yêu cầu:', error);
+                                // Hiển thị thông báo lỗi trên giao diện người dùng
+                                document.getElementById('ai-response').innerText = 'Đã xảy ra lỗi khi kết nối AI.';
+                            });
+                }
+
+                function submitCustomQuestion() {
+                    const input = document.getElementById('customQuestion');
+                    const question = input.value.trim();
+                    if (question !== '') {
+                        sendPromptToAI(question);
+                        input.value = '';
+                    }
+                }
+
+            </script>
+    </body>
 </html>
