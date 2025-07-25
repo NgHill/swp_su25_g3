@@ -216,6 +216,7 @@ VALUES (7, 'Kỹ năng quản lý nhóm hiệu quả', 'business2.jpg', 'This is
 'Kỹ năng quản lý nhóm hiệu quả – Khơi nguồn cảm hứng và ứng dụng vào thực tế công việc hằng ngày.', 'Bài viết này phân tích sâu sắc chủ đề quan trọng trong lĩnh vực Business. Bạn sẽ được hướng dẫn chi tiết về Kỹ năng quản lý nhóm hiệu quả, từ khái niệm cơ bản đến những chiến lược nâng cao. Nội dung bao gồm ví dụ thực tế, lỗi thường gặp và cách khắc phục, cùng với kinh nghiệm từ người trong ngành. Dù bạn là người mới bắt đầu hay đã có nền tảng, bài viết sẽ giúp bạn mở rộng kiến thức và nâng cao kỹ năng. Đặc biệt, chúng tôi cung cấp các tình huống thực tiễn giúp bạn áp dụng lý thuyết vào công việc hoặc học tập. Từng phần đều được trình bày rõ ràng, súc tích, dễ tiếp cận và có giá trị ứng dụng cao. Nếu bạn đang tìm kiếm tài liệu chuẩn chỉnh để học chuyên sâu về Kỹ năng quản lý nhóm hiệu quả, đừng bỏ qua bài viết này.', 'Business', 1, 193, 'active', '2025-07-25 09:07:00');
 
 
+
 INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status, Username, Bio, DateOfBirth) VALUES
 ('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
 ('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),

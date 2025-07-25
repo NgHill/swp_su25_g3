@@ -55,14 +55,15 @@ public class Login extends HttpServlet {
         User userAuth = (User) request.getSession().getAttribute("userAuth");
         
         if (userAuth != null) {
-            if (userAuth.getRole().equals("mtk")) {
-                response.sendRedirect("mtk-dashboard");
-            }
-            else if (userAuth.getRole().equals("admin")) {
-                response.sendRedirect("userlist");
-            }
-            else {
-                response.sendRedirect("home");
+            switch (userAuth.getRole()) {
+                case "mtk" ->
+                    response.sendRedirect("mtk-dashboard");
+                case "admin" ->
+                    response.sendRedirect("userlist");
+                case "courseContent" ->
+                    response.sendRedirect("subject-list2");
+                default ->
+                    response.sendRedirect("home");
             }
             return;
         }
@@ -90,13 +91,15 @@ public class Login extends HttpServlet {
                     // Lưu user vào session
                     request.getSession().setAttribute("userAuth", userAuth);
 
-                    // Kiểm tra role để chuyển hướng
-                    if ("admin".equals(userAuth.getRole())) {
-                        // Nếu là admin, chuyển đến user list
-                        response.sendRedirect("userlist");
-                    } else {
-                        // Nếu không phải admin, chuyển về trang home
-                        response.sendRedirect("home");
+                    switch (userAuth.getRole()) {
+                        case "mtk" ->
+                            response.sendRedirect("mtk-dashboard");
+                        case "admin" ->
+                            response.sendRedirect("userlist");
+                        case "courseContent" ->
+                            response.sendRedirect("subject-list2");
+                        default ->
+                            response.sendRedirect("home");
                     }
                     return;
                 }
