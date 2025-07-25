@@ -33,8 +33,8 @@
             }
 
             .header-content {
-                display: flex;
-                justify-content: space-between;
+                display: grid; /* THAY ĐỔI từ flex */
+                grid-template-columns: 0.8fr auto 1.2fr; /* THÊM MỚI */
                 align-items: center;
                 max-width: 1200px;
                 margin: 0 auto;
@@ -44,11 +44,15 @@
                 font-size: 1.8rem;
                 font-weight: bold;
                 color: #667eea;
+                grid-column: 2; /* THÊM MỚI - Đặt ở cột giữa */
+                text-align: center; /* THÊM MỚI */
             }
-           
+
             .auth-buttons {
                 display: flex;
                 gap: 1rem;
+                grid-column: 3; /* THÊM MỚI - Đặt ở cột cuối */
+                justify-self: end; /* THÊM MỚI - Căn về bên phải */
             }
 
             .auth-btn {
