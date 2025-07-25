@@ -18,12 +18,7 @@
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
-                margin-left: 280px; /* Sidebar luôn hiện */
-            }
-
-            /* Thêm class khi sidebar đóng */
-            body.sidebar-closed {
-                margin-left: 0;
+                margin-left: 220px; /* Thay đổi từ 280px thành 220px */
             }
 
             /* Header */
@@ -85,20 +80,21 @@
 
             .sidebar {
                 position: fixed;
-                left: 0; /* Luôn hiện */
                 top: 0;
-                width: 280px;
-                height: 100vh;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(15px);
+                left: 0;
+                width: 220px;
+                height: 100%;
+                background: #2c3e50;
+                color: white;
+                padding: 20px;
                 box-shadow: 2px 0 20px rgba(0,0,0,0.1);
-                z-index: 1001;
+                transition: transform 0.3s ease, left 0.3s ease;
+                z-index: 200;
                 overflow-y: auto;
             }
 
-            
-            .sidebar-nav {
-                padding: 2rem 0;
+            .sidebar.hidden {
+                transform: translateX(-100%);
             }
             
             .sidebar-header {
@@ -110,22 +106,18 @@
             .nav-item {
                 display: flex;
                 align-items: center;
-                padding: 1rem 1.5rem;
-                color: #333;
+                padding: 10px;
+                color: white;
                 text-decoration: none;
-                transition: all 0.3s ease;
-                border-left: 3px solid transparent;
+                border-radius: 5px;
+                transition: background 0.3s, transform 0.2s;
+                margin: 15px 0;
             }
 
             .nav-item:hover {
-                background: rgba(102, 126, 234, 0.1);
-                border-left-color: #667eea;
+                background-color: rgba(255, 255, 255, 0.05);
                 transform: translateX(5px);
-            }
-
-            .nav-icon {
-                margin-right: 12px;
-                font-size: 1.2rem;
+                color: #ecf0f1;
             }
 
             /* Main Content */
@@ -545,9 +537,9 @@
                 transition: background 0.3s, transform 0.2s;
             }
 
-            /* === Hover effect (không tím) === */
+            /* === Hover effect === */
             .sidebar ul li a:hover {
-                background-color: rgba(255, 255, 255, 0.05); /* nhẹ nhàng hiện đại */
+                background-color: rgba(255, 255, 255, 0.05);
                 transform: translateX(5px);
                 color: #ecf0f1;
             }
@@ -584,28 +576,13 @@
                     </c:choose>
                 </div>
             </a>
-            <nav class="sidebar-nav">
-                <a href="${pageContext.request.contextPath}/home" class="nav-item">
-                    <span class="nav-icon">🏠</span>
-                    <span>Home</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/subject-list" class="nav-item">
-                    <span class="nav-icon">🧠</span>
-                    <span>Subject</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/my-registration" class="nav-item">
-                    <span class="nav-icon">📝</span>
-                    <span>My registration</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/blog" class="nav-item">
-                    <span class="nav-icon">📰</span>
-                    <span>Blog list</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">⚙️</span>
-                    <span>Setting</span>
-                </a>
-            </nav>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
+                <li><a href="${pageContext.request.contextPath}/my-registration">My registration</a></li>
+                <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
+                <li><a href="#">Setting</a></li>
+            </ul>
         </div>
 
 
