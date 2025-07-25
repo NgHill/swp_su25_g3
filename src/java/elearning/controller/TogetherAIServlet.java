@@ -2,7 +2,6 @@ package elearning.controller;
 
 // Import các thư viện Servlet cần thiết
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.*;
@@ -19,8 +18,8 @@ public class TogetherAIServlet extends HttpServlet {
     private static final String API_URL = "https://api.together.xyz/v1/chat/completions";
 
     /**
-     * Xử lý request POST từ client (trình duyệt web)
-     * Nhận message từ người dùng, gửi đến AI, rồi trả phản hồi về dưới dạng JSON
+     * Xử lý request POST từ client (trình duyệt web) Nhận message từ người
+     * dùng, gửi đến AI, rồi trả phản hồi về dưới dạng JSON
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -77,6 +76,7 @@ public class TogetherAIServlet extends HttpServlet {
         """.formatted(escapeJson(userMessage)); // escape dữ liệu để tránh lỗi ký tự
 
         // Gửi nội dung JSON vào luồng output của HTTP connection
+        //OutputStream là một luồng cho phép ghi dữ liệu vào kết nối HTTP, tức là gửi dữ liệu tới máy chủ
         try (OutputStream os = conn.getOutputStream()) {
             byte[] input = requestBody.getBytes("utf-8"); // chuyển thành byte
             os.write(input, 0, input.length);             // ghi toàn bộ dữ liệu vào request
@@ -91,21 +91,25 @@ public class TogetherAIServlet extends HttpServlet {
                 ? conn.getInputStream()
                 : conn.getErrorStream();
 
-        // Đọc dữ liệu phản hồi từng dòng, ghép thành chuỗi
+        // Chuyển đổi InputStream (dữ liệu nhị phân) thành một luồng ký tự (Reader) sử dụng bộ mã hóa UTF-8
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"));
+
+        // Tạo đối tượng StringBuilder để lưu trữ dữ liệu phản hồi từ máy chủ
         StringBuilder responseStr = new StringBuilder();
+
+        // Khai báo biến để lưu từng dòng dữ liệu đọc được từ BufferedReader
         String line;
+
+           // Đọc dữ liệu từ BufferedReader theo từng dòng
         while ((line = reader.readLine()) != null) {
+            // Nối mỗi dòng vào StringBuilder để tạo thành một chuỗi hoàn chỉnh
             responseStr.append(line);
         }
 
         // Trả chuỗi phản hồi JSON về cho servlet gọi
         return responseStr.toString();
     }
-    //note: Sau khi gửi POST request,nhận lại InputStream từ phản hồi.
-    //dùng InputStreamReader với UTF-8 để đảm bảo đọc đúng tiếng Việt, rồi bọc nó bằng BufferedReader để đọc từng dòng. 
-    //Mỗi dòng được nối lại vào StringBuilder, cuối cùng thu được chuỗi JSON trả về từ Together.ai.
-    
+
     /*
       Hàm hỗ trợ để xử lý các ký tự đặc biệt trong chuỗi JSON
       Tránh lỗi khi người dùng nhập dấu " hoặc xuống dòng
@@ -114,10 +118,10 @@ public class TogetherAIServlet extends HttpServlet {
         if (text == null) {
             return "";
         }
-        return text.replace("\\", "\\\\")   // escape dấu \
-                   .replace("\"", "\\\"")   // escape dấu "
-                   .replace("\n", "\\n")    // xuống dòng
-                   .replace("\r", "\\r")    // xuống dòng hệ điều hành cũ
-                   .replace("\t", "\\t");   // tab
+        return text.replace("\\", "\\\\") // escape dấu \
+                .replace("\"", "\\\"") // escape dấu "
+                .replace("\n", "\\n") // xuống dòng
+                .replace("\r", "\\r") // xuống dòng hệ điều hành cũ
+                .replace("\t", "\\t");   // tab
     }
 }
