@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz: ${quiz.title}</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -298,16 +297,24 @@
                                    class="text-input"
                                    onchange="saveAnswer()">
 
-                            <!-- Image Upload for OCR -->
-                            <p style="margin-bottom: 10px; color: #6c757d;">Or upload an image:</p>
-                            <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
-                            <button type="button" class="upload-button" onclick="document.getElementById('imageUpload').click()">
-                                📷 Choose Image
-                            </button>
-                            
-                            <div id="imagePreview" class="hidden">
-                                <img id="previewImg" class="image-preview" src="" alt="Preview">
-                                <button type="button" onclick="removeImage()">Remove</button>
+                            <!-- Image Upload for illustration -->
+                            <div class="image-section" style="border: 2px dashed #dee2e6; border-radius: 8px; padding: 20px; margin-top: 15px; background-color: #f8f9fa;">
+                                <p style="margin-bottom: 10px; color: #6c757d;">Upload an image to illustrate your answer (optional):</p>
+                                <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                                <button type="button" class="upload-button" onclick="document.getElementById('imageUpload').click()">
+                                    📷 Add Illustration
+                                </button>
+
+                                <div id="imagePreview" class="<c:if test='${empty userImages[currentQuestionIndex]}'>hidden</c:if>">
+                                    <img id="previewImg" class="image-preview" 
+                                         src="<c:if test='${not empty userImages[currentQuestionIndex]}'>quiz-images/${userImages[currentQuestionIndex]}</c:if>" 
+                                         alt="Preview" 
+                                         style="max-width: 300px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; margin: 10px auto; display: block;">
+                                    <button type="button" class="remove-image-btn" onclick="removeImage()" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Remove Image</button>
+                                </div>
+
+                                <!-- Hidden input để lưu tên file ảnh -->
+                                <input type="hidden" name="imagePath" id="imagePath" value="${userImages[currentQuestionIndex]}">
                             </div>
                         </c:when>
                         <c:otherwise>
@@ -349,6 +356,7 @@
                         <input type="hidden" name="userId" value="${sessionScope.currentUserId}">
                         <input type="hidden" name="answer" value="">
                         <input type="hidden" name="textAnswer" value="">
+                        <input type="hidden" name="imagePath" value="">
                         <button type="submit" class="btn btn-secondary">Previous</button>
                     </form>
                 </c:if>
@@ -363,6 +371,7 @@
                         <input type="hidden" name="userId" value="${sessionScope.currentUserId}">
                         <input type="hidden" name="answer" value="">
                         <input type="hidden" name="textAnswer" value="">
+                        <input type="hidden" name="imagePath" value="">
                         <button type="submit" class="btn btn-primary">Next</button>
                     </form>
                 </c:if>
@@ -455,8 +464,20 @@
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             startTimer();
+        loadExistingImage(); // THÊM dòng này
         });
 
+        // THÊM function mới này
+        function loadExistingImage() {
+            const imagePath = document.getElementById('imagePath').value;
+            if (imagePath && imagePath.trim() !== '') {
+                const preview = document.getElementById('imagePreview');
+                const img = document.getElementById('previewImg');
+
+                img.src = 'quiz-images/' + imagePath;
+                preview.classList.remove('hidden');
+            }
+        }
         // Timer functions
         function startTimer() {
             updateTimerDisplay();
@@ -606,10 +627,25 @@
                 form.querySelector('input[name="textAnswer"]').value = textInput.value.trim();
             }
 
+            // THÊM: Lưu imagePath hiện tại
+            const imagePathInput = document.getElementById('imagePath');
+            if (imagePathInput) {
+                // Thêm hidden input cho imagePath vào form
+                let imagePathHidden = form.querySelector('input[name="imagePath"]');
+                if (!imagePathHidden) {
+                    imagePathHidden = document.createElement('input');
+                    imagePathHidden.type = 'hidden';
+                    imagePathHidden.name = 'imagePath';
+                    form.appendChild(imagePathHidden);
+                }
+                imagePathHidden.value = imagePathInput.value;
+                console.log("Submitting with imagePath: " + imagePathInput.value); // Debug log
+            }
+
             return true; // Cho phép form submit
         }
         
-        // OCR functions
+        // Image Upload functions
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -621,26 +657,41 @@
 
                 img.src = e.target.result;
                 preview.classList.remove('hidden');
-
-                // Perform OCR
-                Tesseract.recognize(e.target.result, 'eng')
-                .then(({ data: { text } }) => {
-                    const textInput = document.getElementById('textAnswer');
-                    if (textInput) {
-                        textInput.value = text.trim();
-                        saveAnswer(); // Auto save after OCR
-                    }
-                    removeImage();
-                })
-                .catch(err => {
-                    console.error('OCR Error:', err);
-                });
             };
             reader.readAsDataURL(file);
+
+        // Upload file to server
+        uploadImageToServer(file);
+}
+
+        function uploadImageToServer(file) {
+            const formData = new FormData();
+            formData.append('imageFile', file);
+            formData.append('action', 'uploadImage');
+            formData.append('questionIndex', document.querySelector('input[name="questionIndex"]').value);
+
+            fetch('quizhandle', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('imagePath').value = data.filename;
+                    console.log('Image uploaded successfully: ' + data.filename);
+                } else {
+                    alert('Failed to upload image: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                alert('Failed to upload image');
+            });
         }
 
         function removeImage() {
             document.getElementById('imageUpload').value = '';
+            document.getElementById('imagePath').value = '';
             document.getElementById('imagePreview').classList.add('hidden');
         }
     </script>

@@ -34,14 +34,11 @@
             top: 0;
             transition: transform 0.3s ease-in-out;
         }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
        
         .sidebar ul {
             list-style: none;
             padding: 0;
+            margin-top: 100px;
         }
 
         .sidebar ul li {
@@ -60,23 +57,11 @@
             color: #bdc3c7;
         }
 
-        /* Khi sidebar ẩn, dịch nội dung chính sang trái */
-        .sidebar.hidden + main {
-            margin-left: 0;
-        }
-
-        /* Khi sidebar ẩn, dịch nội dung chính sang trái */
-        .sidebar.hidden + main {
-            margin-left: 0;
-        }
-
-
         /* Nội dung chính */
         main {
             flex-grow: 1;
             padding: 20px;
             margin-left: 240px;
-            transition: margin-left 0.3s ease-in-out;
         }
 
         .add-btn {
@@ -93,11 +78,6 @@
             background-color: #2ecc71;
         }
 
-        /* Khi sidebar ẩn, dịch nội dung chính sang trái */
-        .sidebar.hidden + main {
-            margin-left: 0;
-        }
-
         /* Header */
         header {
             display: flex;
@@ -108,22 +88,6 @@
             color: white;
             background-color: #277AB0;
 
-        }
-
-        /* Nút Toggle Sidebar */
-        #toggleSidebar {
-            background-color: #34495e;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-right: 15px;
-        }
-
-        #toggleSidebar:hover {
-            background-color: #2c3e50;
         }
 
         /* Khu vực chứa hai nút xanh */
@@ -491,6 +455,35 @@
             margin-top: 5px;
             display: block;
         }
+        
+        .logo {
+                font-size: 1.8rem;
+                font-weight: bold;
+                color: white;
+            }
+            
+        /* Logout button styling */
+        .logout-container {
+            position: absolute;
+            bottom: 70px;
+            width: calc(100% - 40px);
+        }
+
+        .logout-btn {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            background-color: #e74c3c;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
     </style>
     </head>
         <body>
@@ -498,18 +491,25 @@
         <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                <li><a href="${pageContext.request.contextPath}/subject">Subject</a></li>
-                <li><a href="${pageContext.request.contextPath}/myRegistration">My Registrations</a></li>
-                <li><a href="${pageContext.request.contextPath}/settings">Setting</a></li>
+                <li><a href="${pageContext.request.contextPath}/userlist">User List</a></li>
+                <li><a href="${pageContext.request.contextPath}/settinglist">Setting</a></li>
             </ul>
+
+            <!-- Logout button at the bottom -->
+            <div class="logout-container">
+                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
+                    🔓 Logout
+                </a>
+            </div>
         </nav>
 
         <main>
             <!-- Header -->
             <header>
-                <a href="#" id="toggleSidebar">☰ Toggle Sidebar</a>
-                <h1>User List</h1>
+                <div class="logo">
+                    <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 90px; vertical-align: middle; margin-right: 8px;">
+                    User List
+                </div>
                 <div class="search-container">
                     <form method="get" action="${pageContext.request.contextPath}/userlist" class="search-box">
                         <input type="search" name="search" placeholder="Search name, email or mobile..." value="${search}">
@@ -823,12 +823,7 @@
                                 content.style.display = 'none';                     // Thì ẩn dropdown đó đi
                             }
                         });
-                    });
-
-                    document.getElementById("toggleSidebar").addEventListener("click", function (e) { // Khi click vào nút Toggle Sidebar
-                        e.preventDefault();                                         // Ngăn hành vi mặc định (chuyển hướng trang)
-                        document.querySelector(".sidebar").classList.toggle("hidden"); // Bật/tắt class 'hidden' để ẩn/hiện sidebar
-                    });
+                    });                  
 
                     document.querySelectorAll('input[type="checkbox"][data-col]').forEach(cb => { // Duyệt qua tất cả checkbox lọc cột
                         cb.addEventListener('change', () => {                     // Khi người dùng tick/untick checkbox
