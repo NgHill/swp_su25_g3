@@ -1497,3 +1497,8 @@ INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
   (SELECT Id FROM Quizzes WHERE Title = 'Goal-Oriented Leadership Quiz' LIMIT 1),
   (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1)
 );
+
+INSERT INTO QuizResults (UserId, QuizId, Score, SubmittedAt)
+VALUES
+(1, 1, 8, '2025-07-25 10:30:00');
+
