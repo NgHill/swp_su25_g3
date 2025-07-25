@@ -147,10 +147,10 @@
         <form method="post" action="add-subject" enctype="multipart/form-data">
 
             <!-- Nút quay lại danh sách -->
-            <button type="button" onclick="window.location.href = 'subject-list.jsp'">Back</button>
+            <button type="button" onclick="window.location.href = 'subject-list2'">Back</button>
 
             <h1>Add New Subject</h1>
-
+k
             <div class="row">
                 <!-- Cột trái: Upload thumbnail -->
                 <div class="left-col">
