@@ -125,6 +125,7 @@ public class QuizHandleServlet extends HttpServlet {
         request.setAttribute("currentQuestionIndex", questionIndex);
         request.setAttribute("totalQuestions", quiz.getQuestions().size());
         request.setAttribute("userAnswers", userAnswers);
+        request.setAttribute("userImages", userImages);
         request.setAttribute("timeLeft", timeLeft);
         request.setAttribute("isPracticeMode", true);
         

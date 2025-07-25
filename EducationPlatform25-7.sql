@@ -188,7 +188,7 @@ CREATE TABLE Stimulations (
 
 -- Insert các user khác trước để Marketing Staff sẽ có ID = 3
 INSERT INTO users (FullName, Email, Mobile, Password, Gender, Avatar, Role, Status, ActiveCode, CreatedAt, Username, Bio, DateOfBirth) VALUES
-('John Link Doe', 'john123.doe@example.com', '0912345678', 'hashed_password_1', 0, NULL, 'customer', 'active', NULL, '2025-07-23 13:47:44', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
+('John Link Doe', 'john123.doe@example.com', '0912345678', 'hashed_password_1users', 0, NULL, 'customer', 'active', NULL, '2025-07-23 13:47:44', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
 ('Jane Smith', 'cc.role@example.com', '0987654321', 'cc1234567@', 1, NULL, 'courseContent', 'active', NULL, '2025-07-23 13:47:44', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
 ('Marketing Staff', 'mtk.user@example.com', '0901122334', 'Mtk123456@', 0, NULL, 'mtk', 'active', NULL, '2025-07-23 13:47:44', 'mtkstaff', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
 ('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, NULL, 'admin', 'active', NULL, '2025-07-23 13:47:44', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
