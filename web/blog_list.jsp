@@ -184,10 +184,14 @@
                 </div>
 
                 <!-- Blog Posts -->
-                <div class="col-md-9">
-                    <c:forEach var="post" items="${posts}">
+                <div class="col-md-9">                   
+                    <c:forEach var="post" items="${posts}">                       
                         <div class="post-item d-flex">
-                            <img src="uploads/${post.thumbnail}" class="blog-image me-3" alt="Post image" />
+                             <c:set var="imgUrl" value="${post.image}" />
+                            <c:if test="${not post.image.startsWith('http')}">
+                                <c:set var="imgUrl" value="${'uploads/'}${post.image}" />
+                            </c:if>
+                            <img src="${imgUrl}" class="blog-image me-3" alt="Post image" />
                             <div>
                                 <h5>${post.title}</h5>
                                 <p class="mb-1">
