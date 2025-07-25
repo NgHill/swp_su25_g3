@@ -152,36 +152,42 @@ public class QuizHandleServlet extends HttpServlet {
     
     private void handleImageUpload(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-
         try {
-            Part filePart = request.getPart("imageFile");
+            // Lấy phần tệp ảnh từ yêu cầu (request)
+            Part filePart = request.getPart("imageFile");  // `getPart("imageFile")` lấy phần tệp ảnh từ form gửi lên
 
-            if (filePart != null && filePart.getSize() > 0) {
-                String filename = System.currentTimeMillis() + "_" + filePart.getSubmittedFileName();
+            if (filePart != null && filePart.getSize() > 0) {  
 
-                // Sử dụng đường dẫn tuyệt đối
-                String uploadPath = UPLOAD_DIR;
-                Path uploadDir = Paths.get(uploadPath);
-                if (!Files.exists(uploadDir)) {
-                    Files.createDirectories(uploadDir);
+                // Tạo tên tệp với thời gian hiện tại + tên gốc của tệp để tránh trùng lặp
+                String filename = System.currentTimeMillis() + "_" + filePart.getSubmittedFileName();  // Tạo tên tệp mới
+                
+                String uploadPath = UPLOAD_DIR;  
+                Path uploadDir = Paths.get(uploadPath);  // Chuyển đổi đường dẫn thành đối tượng Path (để thao tác với thư mục)
+
+                // Kiểm tra nếu thư mục chưa tồn tại, thì tạo thư mục
+                if (!Files.exists(uploadDir)) {  
+                    Files.createDirectories(uploadDir);  // Nếu chưa tồn tại, tạo thư mục
                 }
+              
+                Path filePath = uploadDir.resolve(filename);  // Kết hợp thư mục và tên tệp để tạo đường dẫn đầy đủ cho tệp ảnh
 
-                // Lưu file
-                Path filePath = uploadDir.resolve(filename);
-                Files.copy(filePart.getInputStream(), filePath);
+                Files.copy(filePart.getInputStream(), filePath);  // Sao chép tệp từ InputStream vào thư mục đích trên server
 
-                response.setContentType("application/json");
-                response.getWriter().write("{\"success\": true, \"filename\": \"" + filename + "\"}");
+                // Gửi phản hồi thành công với thông tin tên tệp đã lưu
+                response.setContentType("application/json");  // Đặt loại nội dung phản hồi là JSON
+                response.getWriter().write("{\"success\": true, \"filename\": \"" + filename + "\"}");  // Gửi JSON chứa tên tệp
             } else {
-                response.setContentType("application/json");
-                response.getWriter().write("{\"success\": false, \"error\": \"No file uploaded\"}");
+                // Nếu không có tệp được tải lên, trả về thông báo lỗi
+                response.setContentType("application/json");  // Đặt loại nội dung phản hồi là JSON
+                response.getWriter().write("{\"success\": false, \"error\": \"No file uploaded\"}");  // Gửi phản hồi lỗi
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setContentType("application/json");
-            response.getWriter().write("{\"success\": false, \"error\": \"Upload failed: " + e.getMessage() + "\"}");
+        } catch (Exception e) {  // Bắt lỗi nếu có lỗi trong quá trình xử lý
+            e.printStackTrace();  // In ra thông báo lỗi
+            response.setContentType("application/json");  // Đặt loại nội dung phản hồi là JSON
+            response.getWriter().write("{\"success\": false, \"error\": \"Upload failed: " + e.getMessage() + "\"}");  // Gửi phản hồi lỗi
         }
     }
+
     
     private void saveAnswer(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
     throws ServletException, IOException {
@@ -216,13 +222,7 @@ public class QuizHandleServlet extends HttpServlet {
             if (imagePath != null && !imagePath.trim().isEmpty()) {
                 userImages.put(questionIndex, imagePath.trim());
             }
-
-            response.setContentType("application/json");
-            response.getWriter().write("{\"success\": true}");
-        } else {
-            response.setContentType("application/json");
-            response.getWriter().write("{\"success\": false}");
-        }
+    }
     }
     
     private void navigateQuestion(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
@@ -296,73 +296,81 @@ public class QuizHandleServlet extends HttpServlet {
     private void submitQuiz(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
     throws ServletException, IOException {
         
-        Quiz quiz = (Quiz) session.getAttribute("currentQuiz");
-        Integer userId = (Integer) session.getAttribute("currentUserId");
+        // Lấy thông tin quiz và user từ session
+        Quiz quiz = (Quiz) session.getAttribute("currentQuiz");  // Lấy đối tượng quiz hiện tại từ session
+        Integer userId = (Integer) session.getAttribute("currentUserId");  // Lấy ID người dùng từ session
 
-        @SuppressWarnings("unchecked")
-        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
-
+        // Kiểm tra xem quiz và userId có hợp lệ không
         if (quiz == null || userId == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");  // Nếu không có thông tin quiz hoặc user, trả về lỗi 400
             return;
         }
 
-        // Validate user session
+        // Lấy câu trả lời của người dùng từ session
+        @SuppressWarnings("unchecked")
+        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");  // Lấy các câu trả lời của người dùng từ session
+
+        // Nếu không có câu trả lời nào, khởi tạo một Map mới để tránh lỗi
         if (userAnswers == null) {
             userAnswers = new HashMap<>();
         }
-        
-        // LƯU CÂU TRA LỜI CUỐI CÙNG TRƯỚC KHI SUBMIT
-        String lastAnswer = request.getParameter("lastAnswer");
-        String lastTextAnswer = request.getParameter("lastTextAnswer");
-        String lastQuestionIndex = request.getParameter("lastQuestionIndex");
 
+        // Lưu câu trả lời cuối cùng trước khi submit
+        String lastAnswer = request.getParameter("lastAnswer");  // Lấy câu trả lời cuối cùng
+        String lastTextAnswer = request.getParameter("lastTextAnswer");  // Lấy câu trả lời dạng text cuối cùng
+        String lastQuestionIndex = request.getParameter("lastQuestionIndex");  // Lấy chỉ số câu hỏi cuối cùng
+
+        // Kiểm tra nếu có lastQuestionIndex, lưu câu trả lời cuối cùng vào Map
         if (lastQuestionIndex != null) {
             try {
-                int questionIndex = Integer.parseInt(lastQuestionIndex);
-                if (questionIndex >= 0 && questionIndex < quiz.getQuestions().size()) {
+                int questionIndex = Integer.parseInt(lastQuestionIndex);  // Chuyển lastQuestionIndex sang kiểu int
+                if (questionIndex >= 0 && questionIndex < quiz.getQuestions().size()) {  // Kiểm tra chỉ số câu hỏi hợp lệ
+                    // Kiểm tra nếu có câu trả lời text thì sử dụng nó, nếu không dùng đáp án radio
                     String finalAnswer = lastTextAnswer != null && !lastTextAnswer.trim().isEmpty() 
                         ? lastTextAnswer.trim() : lastAnswer;
+                    // Nếu có câu trả lời hợp lệ, lưu vào Map
                     if (finalAnswer != null && !finalAnswer.isEmpty()) {
-                        userAnswers.put(questionIndex, finalAnswer);
+                        userAnswers.put(questionIndex, finalAnswer);  // Lưu câu trả lời vào Map
                     }
                 }
             } catch (NumberFormatException e) {
-                // Ignore invalid question index
+                // Nếu chỉ số câu hỏi không hợp lệ, bỏ qua lỗi
             }
         }
-        
-        // Tính điểm
-        double score = calculateScore(quiz, userAnswers);
-        
-        // Lưu từng câu trả lời vào UserAnswer
-        @SuppressWarnings("unchecked")
-        Map<Integer, String> userImages = (Map<Integer, String>) session.getAttribute("userImages");
-        saveUserAnswers(userId, quiz, userAnswers, userImages);
-        
-        // Lưu kết quả
-        QuizResult result = new QuizResult();
-        result.setUserId(userId);
-        result.setQuizId(quiz.getId());
-        result.setScore(score);
-        result.setSubmittedAt(LocalDateTime.now());
 
-        boolean saved = quizResultDAO.saveQuizResult(result);
+        // Tính điểm dựa trên các câu trả lời đã lưu
+        double score = calculateScore(quiz, userAnswers);  // Tính điểm bằng cách gọi hàm calculateScore
+
+        // Lưu câu trả lời và hình ảnh vào cơ sở dữ liệu
+        @SuppressWarnings("unchecked")
+        Map<Integer, String> userImages = (Map<Integer, String>) session.getAttribute("userImages");  // Lấy đường dẫn ảnh từ session
+        saveUserAnswers(userId, quiz, userAnswers, userImages);  // Lưu các câu trả lời và ảnh vào cơ sở dữ liệu
+
+        // Tạo đối tượng QuizResult để lưu kết quả bài thi
+        QuizResult result = new QuizResult();
+        result.setUserId(userId);  // Set ID người dùng
+        result.setQuizId(quiz.getId());  // Set ID quiz
+        result.setScore(score);  // Set điểm thi
+        result.setSubmittedAt(LocalDateTime.now());  // Set thời gian nộp bài
+
+        // Lưu kết quả bài thi vào cơ sở dữ liệu
+        boolean saved = quizResultDAO.saveQuizResult(result);  // Gọi hàm để lưu kết quả thi vào cơ sở dữ liệu
 
         if (saved) {
-            // Clear session
+            // Nếu lưu thành công, xóa tất cả dữ liệu liên quan đến bài thi trong session
             session.removeAttribute("currentQuiz");
             session.removeAttribute("userAnswers");
             session.removeAttribute("userImages");
             session.removeAttribute("quizStartTime");
             session.removeAttribute("currentUserId");
 
-            // Redirect về practice list với thông báo thành công
+            // Điều hướng người dùng về trang practice list với thông báo thành công
             response.sendRedirect(request.getContextPath() + "/practicelist");
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to save quiz result");
         }
     }
+
     
     private void saveUserAnswers(int userId, Quiz quiz, Map<Integer, String> userAnswers, Map<Integer, String> userImages) {
         UserAnswerDAO userAnswerDAO = new UserAnswerDAO();

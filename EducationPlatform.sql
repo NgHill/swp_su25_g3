@@ -244,10 +244,12 @@ INSERT INTO Posts (Title, Image, Content, Thumbnail, Category, AuthorId, ViewCou
     '2024-01-28 10:00:00'
 );
 
+
 INSERT INTO Users (FullName, Email, Mobile, Password, Gender, Role, Status, Username, Bio, DateOfBirth) VALUES
 ('John Doe', 'john.doe@example.com', '0912345678', 'hashed_password_1', 0, 'customer', 'active', 'johndoe', 'Passionate software developer with 5 years of experience in web development. Love coding and learning new technologies.', '1990-05-15'),
 ('Jane Smith', 'jane.smith@example.com', '0987654321', 'hashed_password_2', 1, 'customer', 'active', 'janesmith', 'Digital marketing specialist and content creator. Enthusiastic about social media trends and brand building.', '1988-11-22'),
-('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08');
+('Admin User', 'admin.user@example.com', '0901122334', 'hashed_password_3', 0, 'admin', 'active', 'adminuser', 'System administrator with extensive experience in database management and server maintenance.', '1985-03-08'),
+('Dat Phan','dat@gmail.com','0123456789', 'hash_password_4',1,'mkt','active','hoantudrill','Poor people','1999-03-12');
 
 -- Insert SubjectPackages for Teamwork (8 subjects)
 INSERT INTO SubjectPackages (Title, Description, BriefInfo, Tagline, Thumbnail, LowestPrice, OriginalPrice, SalePrice, OwnerId, Category, Status) VALUES
