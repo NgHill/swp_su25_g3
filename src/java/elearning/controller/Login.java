@@ -58,13 +58,14 @@ public class Login extends HttpServlet {
                 case "mtk" ->
                     response.sendRedirect("mtk-dashboard");
                 case "admin" ->
-                response.sendRedirect("userlist");
-                case "courseContent" -> response.sendRedirect("subject-list2");
+                    response.sendRedirect("userlist");
+                case "courseContent" ->
+                    response.sendRedirect("subject-list2");
                 default ->
                     response.sendRedirect("home");
-                }
-                return;
             }
+            return;
+        }
 
         // Nếu chưa đăng nhập, thì hiển thị form đăng nhập
         request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -93,10 +94,11 @@ public class Login extends HttpServlet {
                         case "mtk" ->
                             response.sendRedirect("mtk-dashboard");
                         case "admin" ->
-                        response.sendRedirect("userlist");
-                       case "courseContent" -> response.sendRedirect("subject-list2");
+                            response.sendRedirect("userlist");
+                        case "courseContent" ->
+                            response.sendRedirect("subject-list2");
                         default ->
-                        response.sendRedirect("home");
+                            response.sendRedirect("home");
                     }
                     return;
                 }

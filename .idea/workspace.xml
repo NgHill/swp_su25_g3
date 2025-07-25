@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="Fix Blog">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/elearning/constant/ServerConnectionInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/constant/ServerConnectionInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/elearning/controller/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/controller/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/addnew_subject.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/addnew_subject.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/subject_detail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/subject_detail.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
