@@ -17,7 +17,7 @@ public class mtk_dashboardDAO {
 
     public List<Post> getPagedPosts(int page, int pageSize) {
         List<Post> list = new ArrayList<>();
-        String sql = "SELECT * FROM Posts ORDER BY CreatedAt DESC LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM posts ORDER BY CreatedAt DESC LIMIT ? OFFSET ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, pageSize);
             ps.setInt(2, (page - 1) * pageSize);
@@ -26,7 +26,7 @@ public class mtk_dashboardDAO {
                 Post p = Post.builder()
                         .id(rs.getInt("Id"))
                         .title(rs.getString("Title"))
-                        .description(rs.getString("Description"))
+                        .content(rs.getString("Content"))
                         .createdAt(rs.getTimestamp("CreatedAt"))
                         .build();
                 list.add(p);
