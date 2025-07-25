@@ -54,20 +54,17 @@ public class Login extends HttpServlet {
         // Nếu đã đăng nhập rồi thì chuyển hướng sang trang home
         User userAuth = (User) request.getSession().getAttribute("userAuth");
         if (userAuth != null) {
-            if (userAuth.getStatus().equals("active")) {
-                // Lưu user vào session*********
-                request.getSession().setAttribute("userAuth", userAuth);
-                // Chuyển hướng về trang home
-                if (userAuth.getRole().equals("mtk")) {
+            switch (userAuth.getRole()) {
+                case "mtk" ->
                     response.sendRedirect("mtk-dashboard");
-                } else if (userAuth.getRole().equals("courseContent")) {
-                    response.sendRedirect("subject-list2");
-                } else {
+                case "admin" ->
+                response.sendRedirect("userlist");
+                case "courseContent" -> response.sendRedirect("subject-list2");
+                default ->
                     response.sendRedirect("home");
                 }
                 return;
             }
-        }
 
         // Nếu chưa đăng nhập, thì hiển thị form đăng nhập
         request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -89,19 +86,20 @@ public class Login extends HttpServlet {
             if (userAuth != null) {
                 // Nếu tài khoản tồn tại và đã kích hoạt
                 if (userAuth.getStatus().equals("active")) {
-                    // Lưu user vào session*********
+                    // Lưu user vào session
                     request.getSession().setAttribute("userAuth", userAuth);
-                    // Chuyển hướng về trang home
-                    if (userAuth.getRole().equals("mtk")) {
-                        response.sendRedirect("mtk-dashboard");
-                    } else if (userAuth.getRole().equals("courseContent")) {
-                        response.sendRedirect("subject-list2");
-                    } else {
+
+                    switch (userAuth.getRole()) {
+                        case "mtk" ->
+                            response.sendRedirect("mtk-dashboard");
+                        case "admin" ->
+                        response.sendRedirect("userlist");
+                       case "courseContent" -> response.sendRedirect("subject-list2");
+                        default ->
                         response.sendRedirect("home");
                     }
                     return;
                 }
-
             } else {
                 // Không tìm thấy user → sai tài khoản/mật khẩu
                 request.setAttribute("error", "Thông tin đăng nhập sai");

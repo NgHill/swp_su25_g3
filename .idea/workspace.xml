@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="Fix Blog" />
+    <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="Fix Blog">
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="origin/manh" />
+    <option name="BRANCH" value="main" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -43,7 +45,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "manh",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)"
@@ -80,8 +82,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="screen : mtk_dashborad" />
-    <MESSAGE value="Phân role" />
     <MESSAGE value="Fix Blog" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Blog" />
+    <MESSAGE value="Phân role" />
+    <option name="LAST_COMMIT_MESSAGE" value="Phân role" />
   </component>
 </project>
