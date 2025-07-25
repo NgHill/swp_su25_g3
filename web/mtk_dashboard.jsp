@@ -145,7 +145,7 @@
                     <th>ID</th>
                     <th>Title</th>
                     <th>Created</th>
-                    <th>Thumbnail</th>
+                    <th>Content</th>
                     <th>Status</th>
                 </tr>
                 <%
@@ -156,7 +156,7 @@
                     <td><%= p.getId() %></td>
                     <td><%= p.getTitle() %></td>
                     <td><%= p.getCreatedAt() %></td>
-                    <td><%= p.getThumbnail() %></td>
+                    <td><%= p.getContent() %></td>
                     <td><a href="post_detail.jsp?id=<%= p.getId() %>">&#128065;</a></td>
                 </tr>
                 <% } %>
