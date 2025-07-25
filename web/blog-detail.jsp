@@ -195,7 +195,9 @@
                     <hr>
 
                     <!-- Nội dung bài viết (có thể chứa HTML, ảnh, video) -->
-                    <p>${post.content}</p>
+                    <p>${post.getContent()}</p>
+                    <p>${post.getThumbnail()}</p>
+                    <p>${post.getDescription()}</p>
                 </div>
             </div>
         </div>

@@ -155,6 +155,7 @@ public class PostBasicDAO {
                 .title(rs.getString("Title"))
                 .image(rs.getString("Image"))
                 .content(rs.getString("Content"))
+                .description(rs.getString("Description"))
                 .thumbnail(rs.getString("Thumbnail"))
                 .category(rs.getString("Category"))
                 .authorId(rs.getInt("AuthorId"))

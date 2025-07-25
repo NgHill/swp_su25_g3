@@ -84,7 +84,7 @@ public class PostDetailServlet extends HttpServlet {
         }
 
         // Lấy file thumbnail từ form
-        Part filePart = req.getPart("thumbnail");
+        Part filePart = req.getPart("image");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         String savedFileName = System.currentTimeMillis() + "_" + fileName; // Đổi tên file để tránh trùng
 
@@ -99,7 +99,7 @@ public class PostDetailServlet extends HttpServlet {
         String category = req.getParameter("category");
 //        String author = req.getParameter("author");
         String content = req.getParameter("content");
-        String description = req.getParameter("briefInfo");
+        String description = req.getParameter("description");
         String status = req.getParameter("status");
         String date = req.getParameter("date");
 
@@ -116,7 +116,8 @@ public class PostDetailServlet extends HttpServlet {
         post.setDescription(description);
         post.setStatus(status);
         post.setCreatedAt(createdAt);
-        post.setThumbnail(savedFileName); // Lưu tên file ảnh đã upload
+//        post.setThumbnail(savedFileName); // Lưu tên file ảnh đã upload
+        post.setImage(savedFileName);
 
         // Lưu bài viết vào DB
         new PostBasicDAO().insert(post);

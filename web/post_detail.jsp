@@ -76,7 +76,7 @@
                 <div class="flex-shrink-0" style="width: 150px;">
                     <label>Thumbnail</label>
                     <div class="thumbnail-box">Upload Image</div>
-                    <input type="file" name="thumbnail" class="form-control mb-1" accept=".jpg,.jpeg,.png,.svg">
+                    <input type="file" name="image" class="form-control mb-1" accept=".jpg,.jpeg,.png,.svg">
                     <small class="text-danger">JPEG / PNG / SVG only.</small>
                 </div>
 
@@ -123,13 +123,13 @@
             <!-- Mô tả ngắn gọn -->
             <div class="form-section">
                 <label>Brief Information</label>
-                <textarea name="briefInfo" class="form-control" rows="2"></textarea>
+                <textarea name="content" class="form-control" rows="2"></textarea>
             </div>
 
             <!-- Mô tả chi tiết -->
             <div class="form-section">
                 <label>Description</label>
-                <textarea id="editor" name="content"></textarea>
+                <textarea id="editor" name="description"></textarea>
             </div>
 
             <!-- Footer của form: trạng thái, nổi bật, nút lưu/hủy -->
