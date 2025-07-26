@@ -577,29 +577,37 @@
                     <button class="close-btn" onclick="closeNewPracticePopup()">&times;</button>
                 </div>
 
-                <form class="popup-form" id="newPracticeForm">
-                    <label>
-                        Subject:
-                        <select name="subjectId" id="subjectSelect">
-                            <option value="">Select Subject</option>
-                            <c:forEach var="subject" items="${registeredSubjects}">
-                                <option value="${subject.id}">${subject.title}</option>
-                            </c:forEach>
-                        </select>
-                    </label>
+                <form class="popup-form" id="newPracticeForm" method="get" action="${pageContext.request.contextPath}/practicelist">
+                <!-- Giữ các parameter hiện tại -->
+                <input type="hidden" name="page" value="${currentPage}">
+                <input type="hidden" name="scoreFilter" value="${scoreFilter}">
+                <input type="hidden" name="search" value="${param.search}">
 
-                    <label>
-                        Quiz:
-                        <select name="quizId" id="quizSelect">
-                            <option value="">Select Quiz</option>
-                            <c:forEach var="quiz" items="${allQuizzes}">
-                                <option value="${quiz.id}">${quiz.title}</option>
-                            </c:forEach>
-                        </select>
-                    </label>
+                <label>
+                    Subject:
+                    <select name="subjectId" id="subjectSelect" onchange="this.form.submit()">
+                        <option value="">Select Subject</option>
+                        <c:forEach var="subject" items="${registeredSubjects}">
+                            <option value="${subject.id}" 
+                                    <c:if test="${subject.id == selectedSubjectId}">selected</c:if>>
+                                ${subject.title}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </label>
 
-                    <button type="button" onclick="startPractice()">Start Practicing</button>
-                </form>
+                <label>
+                    Quiz:
+                    <select name="quizId" id="quizSelect">
+                        <option value="">Select Quiz</option>
+                        <c:forEach var="quiz" items="${quizzes}">
+                            <option value="${quiz.id}">${quiz.title}</option>
+                        </c:forEach>
+                    </select>
+                </label>
+
+                <button type="button" onclick="startPractice()">Start Practicing</button>
+            </form>
             </div>
         </div>
 
@@ -634,16 +642,21 @@
             }
 
             function startPractice() {
-                const subjectId = document.getElementById('subjectSelect').value;
-                const quizId = document.getElementById('quizSelect').value;
+            const subjectId = document.getElementById('subjectSelect').value;
+            const quizId = document.getElementById('quizSelect').value;
 
-                if (!subjectId || !quizId) {
-                    alert('Please select both subject and quiz');
-                    return;
-                }
-
-                window.location.href = `${pageContext.request.contextPath}/quizhandle?quizId=${quizId}&userId=${sessionScope.userAuth.id}&questionIndex=0`;
+            if (!subjectId) {
+                alert('Please select a subject');
+                return;
             }
+
+            if (!quizId) {
+                alert('Please select a quiz');
+                return;
+            }
+
+            window.location.href = `${pageContext.request.contextPath}/quizhandle?quizId=${quizId}&userId=${sessionScope.userAuth.id}&questionIndex=0`;
+        }
         </script>
 
     </body>
