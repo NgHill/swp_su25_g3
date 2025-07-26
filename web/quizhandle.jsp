@@ -614,15 +614,14 @@
             return true;  // Cho phép form submit
         }
 
-        // CODE MỚI (~8 dòng) - Đơn giản hóa
         function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            const file = event.target.files[0];  // Lấy file đầu tiên được chọn
+            if (!file) return;                   // Nếu không có file thì thoát
 
-            // Preview ngay lập tức
+            // Hiển thị preview ngay lập tức (không cần đợi upload)
             const img = document.getElementById('previewImg');
-            img.src = URL.createObjectURL(file);
-            document.getElementById('imagePreview').classList.remove('hidden');
+            img.src = URL.createObjectURL(file);  // Tạo URL tạm thời từ file để hiển thị
+            document.getElementById('imagePreview').classList.remove('hidden');  // Hiện preview
 
             uploadImageToServer(file);
         }

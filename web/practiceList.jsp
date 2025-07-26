@@ -311,6 +311,132 @@
                 display: inline-block;
                 transition: background-color 0.3s ease;
             }
+            
+            /* Popup Styles */
+            .popup-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+
+            .popup-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                border-radius: 15px;
+                padding: 30px;
+                max-width: 600px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            }
+
+            .popup-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+                border-bottom: 2px solid #f0f0f0;
+            }
+
+            .popup-header h2 {
+                color: #277AB0;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .close-btn {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #999;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: all 0.2s ease;
+            }
+
+            .close-btn:hover {
+                background-color: #f0f0f0;
+                color: #333;
+            }
+
+            .popup-form {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .popup-form label {
+                display: flex;
+                flex-direction: column;
+                font-size: 16px;
+                font-weight: 500;
+                color: #333;
+            }
+
+            .popup-form select,
+            .popup-form input {
+                padding: 12px;
+                font-size: 14px;
+                margin-top: 8px;
+                border-radius: 8px;
+                border: 2px solid #e0e0e0;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                background-color: #fafafa;
+            }
+
+            .popup-form select:focus,
+            .popup-form input:focus {
+                outline: none;
+                border-color: #277AB0;
+                box-shadow: 0 0 0 3px rgba(39, 122, 176, 0.1);
+                background-color: white;
+            }
+
+            .popup-form button {
+                margin-top: 20px;
+                padding: 15px 30px;
+                background: linear-gradient(135deg, #277AB0 0%, #1e5a8a 100%);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                justify-self: center;
+            }
+
+            .popup-form button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(39, 122, 176, 0.3);
+            }
+
+            .popup-form button:active {
+                transform: translateY(0);
+            }
+
+            @media (max-width: 768px) {
+                .popup-content {
+                    width: 95%;
+                    padding: 20px;
+                    max-height: 90vh;
+                }
+            }
         </style>
     </head>
     <body>
@@ -341,6 +467,18 @@
             <div class="content-wrapper">
                 <header>
                     <h1>Practice List</h1>
+                    <button onclick="openNewPracticePopup()" style="
+                        padding: 10px 20px; 
+                        background: linear-gradient(135deg, #27ae60 0%, #229954 100%); 
+                        color: white; 
+                        border: none; 
+                        border-radius: 8px; 
+                        cursor: pointer; 
+                        font-weight: bold;
+                        transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(39, 174, 96, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        <i class="fas fa-plus"></i> New Practice
+                    </button>
                     <div class="search-container">
                         <form method="get" action="${pageContext.request.contextPath}/practicelist" class="search-box">
                             <input type="search" name="search" placeholder="Search..." value="${search}">
@@ -430,6 +568,40 @@
                 </c:if>
             </div>
         </div>
+                                    
+        <!-- New Practice Popup -->
+        <div class="popup-overlay" id="newPracticePopup">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h2>New Practice</h2>
+                    <button class="close-btn" onclick="closeNewPracticePopup()">&times;</button>
+                </div>
+
+                <form class="popup-form" id="newPracticeForm">
+                    <label>
+                        Subject:
+                        <select name="subjectId" id="subjectSelect">
+                            <option value="">Select Subject</option>
+                            <c:forEach var="subject" items="${registeredSubjects}">
+                                <option value="${subject.id}">${subject.title}</option>
+                            </c:forEach>
+                        </select>
+                    </label>
+
+                    <label>
+                        Quiz:
+                        <select name="quizId" id="quizSelect">
+                            <option value="">Select Quiz</option>
+                            <c:forEach var="quiz" items="${allQuizzes}">
+                                <option value="${quiz.id}">${quiz.title}</option>
+                            </c:forEach>
+                        </select>
+                    </label>
+
+                    <button type="button" onclick="startPractice()">Start Practicing</button>
+                </form>
+            </div>
+        </div>
 
         <script>
             function toggleFilter() {
@@ -445,6 +617,33 @@
                 }
             });
 
+
+            // Popup functionality
+            function openNewPracticePopup() {
+                document.getElementById('newPracticePopup').style.display = 'block';
+            }
+
+            function closeNewPracticePopup() {
+                document.getElementById('newPracticePopup').style.display = 'none';
+                document.getElementById('newPracticeForm').reset();
+            }
+
+            // Close popup when clicking outside
+            document.getElementById('newPracticePopup').onclick = function(e) {
+                if (e.target === this) closeNewPracticePopup();
+            }
+
+            function startPractice() {
+                const subjectId = document.getElementById('subjectSelect').value;
+                const quizId = document.getElementById('quizSelect').value;
+
+                if (!subjectId || !quizId) {
+                    alert('Please select both subject and quiz');
+                    return;
+                }
+
+                window.location.href = `${pageContext.request.contextPath}/quizhandle?quizId=${quizId}&userId=${sessionScope.userAuth.id}&questionIndex=0`;
+            }
         </script>
 
     </body>
