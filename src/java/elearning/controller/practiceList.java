@@ -8,6 +8,7 @@ package elearning.controller;
 import elearning.BasicDAO.PracticeListDAO;
 import elearning.anotation.AccessRoles;
 import elearning.entities.PracticeList;
+import elearning.entities.SubjectPackage;
 import elearning.entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -141,6 +142,9 @@ public class practiceList extends HttpServlet {
         if (offset < totalRecords) {
             pagedList = practiceLists.subList(offset, endIndex);
         }
+        
+        List<SubjectPackage> registeredSubjects = practiceListDAO.getRegisteredSubjectsByUserId(userId);
+        request.setAttribute("registeredSubjects", registeredSubjects);
         
         request.setAttribute("userId", userId);
         request.setAttribute("practiceLists", pagedList); // Thay đổi từ practiceLists thành pagedList
