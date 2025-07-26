@@ -1,0 +1,39 @@
+[33m00ec261[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdat[m[33m)[m HEAD@{0}: pull origin main: Merge made by the 'ort' strategy.
+[33m98e2596[m HEAD@{1}: commit: update
+[33me2ed27b[m[33m ([m[1;31morigin/dat[m[33m)[m HEAD@{2}: commit: update practicelist
+[33m783632f[m HEAD@{3}: checkout: moving from main to dat
+[33mc7569c8[m[33m ([m[1;32mmain[m[33m)[m HEAD@{4}: merge dat: Merge made by the 'ort' strategy.
+[33m1dadb0c[m HEAD@{5}: checkout: moving from dat to main
+[33m783632f[m HEAD@{6}: commit: update quizhandle
+[33md59e75e[m HEAD@{7}: checkout: moving from main to dat
+[33m1dadb0c[m HEAD@{8}: merge dat: Merge made by the 'ort' strategy.
+[33mba992ce[m HEAD@{9}: checkout: moving from dat to main
+[33md59e75e[m HEAD@{10}: commit: surely completed
+[33m460af8b[m HEAD@{11}: checkout: moving from main to dat
+[33mba992ce[m HEAD@{12}: commit: Giải quyết xung đột trong EducationPlatform25-7.sql
+[33m2167c9f[m HEAD@{13}: commit (merge): Completed
+[33m525f31a[m HEAD@{14}: pull origin main: Merge made by the 'ort' strategy.
+[33m0152147[m HEAD@{15}: checkout: moving from dat to main
+[33m460af8b[m HEAD@{16}: commit: complete DB and system
+[33md956332[m HEAD@{17}: merge main: Merge made by the 'ort' strategy.
+[33me0b8708[m HEAD@{18}: checkout: moving from main to dat
+[33m0152147[m HEAD@{19}: commit: Save current changes before switching branches
+[33m6b96b15[m HEAD@{20}: checkout: moving from dat to main
+[33me0b8708[m HEAD@{21}: checkout: moving from main to dat
+[33m6b96b15[m HEAD@{22}: checkout: moving from dat to main
+[33me0b8708[m HEAD@{23}: commit: updat
+[33m500e574[m HEAD@{24}: checkout: moving from main to dat
+[33m6b96b15[m HEAD@{25}: pull origin main: Fast-forward
+[33mfbd97e6[m HEAD@{26}: checkout: moving from dat to main
+[33m500e574[m HEAD@{27}: commit: Update
+[33m4879ecd[m HEAD@{28}: commit: fix sidebar home
+[33m376c6cb[m HEAD@{29}: checkout: moving from main to dat
+[33mfbd97e6[m HEAD@{30}: pull origin main: Fast-forward
+[33m177d215[m HEAD@{31}: checkout: moving from dat to main
+[33m376c6cb[m HEAD@{32}: commit: Fix sidebar home page
+[33m55a5c1e[m HEAD@{33}: checkout: moving from main to dat
+[33m177d215[m HEAD@{34}: merge dat: Merge made by the 'ort' strategy.
+[33mae8d7af[m HEAD@{35}: checkout: moving from dat to main
+[33m55a5c1e[m HEAD@{36}: commit: Update Admin dashboard
+[33m724046e[m HEAD@{37}: checkout: moving from main to dat
+[33mae8d7af[m HEAD@{38}: clone: from https://github.com/NgHill/swp_su25_g3
