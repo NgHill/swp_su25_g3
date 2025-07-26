@@ -337,6 +337,7 @@ INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`
 INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('7','https://edumentors.co.uk/blog/wp-content/uploads/2023/03/Quizlet-Website-Homepage-2048x883.jpg', ' Quizlet ADD 2','https://edumentors.co.uk/blog/wp-content/uploads/2023/03/Quizlet-Website-Homepage-2048x883.jpg', 'Show', '7');
 
 INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('8','https://indiancybersecuritysolutions.com/checklist-for-penetration-testing-web-applications/assets/img/5651580e26897d2a8f348dc3978fb378.png', ' Checking test','https://indiancybersecuritysolutions.com/checklist-for-penetration-testing-web-applications/assets/img/5651580e26897d2a8f348dc3978fb378.png', 'Hide', '8');
+>>>>>>> dat:EducationPlatform.sql
 
 
 

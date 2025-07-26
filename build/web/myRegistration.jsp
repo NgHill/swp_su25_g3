@@ -494,18 +494,22 @@
     <body>
         <!-- Sidebar -->
         <nav class="sidebar">
+         
             <a href="<%= request.getContextPath() %>/profile">
                 <div class="avatar-wrapper">
                     <c:choose>
+                       
                         <c:when test="${not empty sessionScope.userAuth.avatar}">
                             <img src="${pageContext.request.contextPath}/avatar/${sessionScope.userAuth.avatar}" alt="Avatar" class="avatar-img">
                         </c:when>
+                     
                         <c:otherwise>
                             <span class="avatar-icon">👤</span>
                         </c:otherwise>
                     </c:choose>
                 </div>
             </a>
+            <!-- Danh sách các mục trong sidebar -->
             <ul>
                 <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
                 <li><a href="${pageContext.request.contextPath}/subject-list">Subject</a></li>
@@ -515,32 +519,36 @@
             </ul>
         </nav>
 
-
         <main>
             <header>
                 <h1>My Registrations List</h1>
                 <div class="controls">
+                    <!-- Các liên kết giúp người dùng điều hướng đến các trang khác -->
                     <a href="${pageContext.request.contextPath}/practicelist">My Practice</a>
                     <a href="${pageContext.request.contextPath}/stimulation-exam">Stimulation Exam</a>
                 </div>
             </header>
-            <!-- Search and Filter UI -->
+
+            <!-- Phần tìm kiếm và lọc -->
             <div class="search-container" style="margin: 20px 0; display: flex; justify-content: flex-end;">
                 <form id="searchForm" method="get" action="my-registration" style="display: flex; align-items: center;">
+                    <!-- Ô tìm kiếm -->
                     <div class="search-box">
                         <input type="search" id="searchInput" name="search" placeholder="Search subject..."
                                value="${param.search != null ? param.search : ''}"/>
                         <button type="button" class="search-button" onclick="applyFilters()">Search</button>
                     </div>
+                    <!-- Nút lọc với dropdown menu -->
                     <button type="button" class="dropdown-toggle" onclick="toggleDropdown(this)">
                         Filter ▼
                     </button>
 
-
+                    <!-- Menu lọc -->
                     <div class="dropdown-menu" id="filterSidebar">
                         <div class="filter-section">
                             <div class="filter-title">Category</div>
                             <div class="filter-options">
+                                <!-- Hiển thị danh sách các category có sẵn từ server -->
                                 <c:forEach items="${allCategories}" var="category">
                                     <div class="filter-item">
                                         <label>
@@ -552,6 +560,7 @@
                                 </c:forEach>
                             </div>
                         </div>
+                        <!-- Các hành động của bộ lọc: Clear và Apply -->
                         <div class="filter-actions">
                             <button type="button" class="btn-clear" onclick="clearFilters()">Clear</button>
                             <button type="button" class="btn-apply" onclick="applyFilters()">Apply</button>
@@ -559,6 +568,8 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Bảng hiển thị danh sách đăng ký -->
             <table>
                 <thead>
                     <tr>
@@ -575,13 +586,16 @@
                 </thead>
                 <tbody>
                     <c:choose>
+                        
                         <c:when test="${not empty registrations}">
                             <c:forEach var="r" items="${registrations}">
                                 <tr>
+                                   
                                     <td>${r.id}</td>
                                     <td>${r.subjectPackage.title}</td>
                                     <td><fmt:formatDate value="${r.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
                                     <td>
+                                      
                                         <c:choose>
                                             <c:when test="${r.status == 'active'}">
                                                 <span style="background:#27ae60; color:white; padding:4px 8px; border-radius:4px;">Active</span>
@@ -602,6 +616,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${r.totalCost}" type="currency" currencySymbol="₫"/></td>
                                     <td>
+                                      
                                         <div>
                                             <strong>${r.packageMonths} tháng</strong><br/>
                                             <small style="color: gray">${r.subjectPackage.category}</small><br/>
@@ -625,6 +640,7 @@
                                     <td><fmt:formatDate value="${r.validFrom}" pattern="dd/MM/yyyy"/></td>
                                     <td><fmt:formatDate value="${r.validTo}" pattern="dd/MM/yyyy"/></td>
                                     <td>
+                                        
                                         <form action="registrationDetails" method="get">
                                             <input type="hidden" name="id" value="${r.id}" />
                                             <button class="action">View Details</button>
@@ -639,6 +655,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
+                            
                             <tr>
                                 <td colspan="9">No registration can be found.</td>
                             </tr>
@@ -649,37 +666,44 @@
         </main>
     </body>
 </html>
+
 <script>
+    // Mở hoặc đóng menu filter
     function toggleDropdown(button) {
         const dropdown = document.getElementById('filterSidebar');
         dropdown.classList.toggle('visible');
         button.classList.toggle('has-filters');
     }
 
+    // Áp dụng bộ lọc tìm kiếm và gửi form
     function applyFilters() {
         const form = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
 
-        // Gán lại giá trị cho input search nếu cần
+        // Gán lại giá trị cho input ẩn "search" nếu cần
         let searchHiddenInput = form.querySelector('input[name="search"]');
         if (searchHiddenInput) {
             searchHiddenInput.value = searchInput.value;
         }
 
+        // Gửi form
         form.submit();
     }
 
+    // Xóa bộ lọc và tìm kiếm
     function clearFilters() {
         const form = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
         const checkboxes = document.querySelectorAll('#filterSidebar input[name="cat"]');
 
+        // Bỏ chọn tất cả checkbox lọc và xóa nội dung ô tìm kiếm
         checkboxes.forEach(cb => cb.checked = false);
         searchInput.value = '';
 
         // Xóa các input ẩn (nếu có)
         form.querySelectorAll('input[name="cat"][type="hidden"], input[name="search"][type="hidden"]').forEach(input => input.remove());
 
+        // Gửi form
         form.submit();
     }
 </script>

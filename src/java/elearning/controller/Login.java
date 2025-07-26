@@ -53,6 +53,7 @@ public class Login extends HttpServlet {
 
         // Nếu đã đăng nhập rồi thì chuyển hướng sang trang home
         User userAuth = (User) request.getSession().getAttribute("userAuth");
+        
         if (userAuth != null) {
             switch (userAuth.getRole()) {
                 case "mtk" ->
