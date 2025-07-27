@@ -53,7 +53,7 @@ public class Login extends HttpServlet {
 
         // Nếu đã đăng nhập rồi thì chuyển hướng sang trang home
         User userAuth = (User) request.getSession().getAttribute("userAuth");
-        
+
         if (userAuth != null) {
             switch (userAuth.getRole()) {
                 case "mtk" ->
@@ -86,26 +86,32 @@ public class Login extends HttpServlet {
             User userAuth = userDAO.login(username, password);
 
             if (userAuth != null) {
-                // Nếu tài khoản tồn tại và đã kích hoạt
-                if (userAuth.getStatus().equals("active")) {
-                    // Lưu user vào session
-                    request.getSession().setAttribute("userAuth", userAuth);
-
-                    switch (userAuth.getRole()) {
-                        case "mtk" ->
-                            response.sendRedirect("mtk-dashboard");
-                        case "admin" ->
-                            response.sendRedirect("userlist");
-                        case "courseContent" ->
-                            response.sendRedirect("subject-list2");
-                        default ->
-                            response.sendRedirect("home");
-                    }
+                // Nếu tài khoản bị khóa
+                if ("inactive".equalsIgnoreCase(userAuth.getStatus())) {
+                    request.setAttribute("error", "Your account has been INACTIVE by the Admin!");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                     return;
                 }
+
+                // Tài khoản hợp lệ và đang hoạt động
+                request.getSession().setAttribute("userAuth", userAuth);
+
+                switch (userAuth.getRole()) {
+                    case "mtk" ->
+                        response.sendRedirect("mtk-dashboard");
+                    case "admin" ->
+                        response.sendRedirect("userlist");
+                    case "courseContent" ->
+                        response.sendRedirect("subject-list2");
+                    default ->
+                        response.sendRedirect("home");
+                }
+                return;
+
             } else {
-                // Không tìm thấy user → sai tài khoản/mật khẩu
-                request.setAttribute("error", "Thông tin đăng nhập sai");
+                // Không tìm thấy tài khoản
+                request.setAttribute("error", "Thông tin đăng nhập sai.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
 
         } catch (SQLException ex) {

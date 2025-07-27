@@ -353,6 +353,7 @@
                     <button type="button" class="filter-btn" onclick="toggleFilter()">Filter ▼</button>
                     <div class="controls">
                 </div>
+       
                     <div class="filter-content" id="filterContent" style="display:none;">
                         <form method="get" action="${pageContext.request.contextPath}/practicelist">
                             <label>

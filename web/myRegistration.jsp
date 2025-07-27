@@ -618,7 +618,7 @@
                                     <td>
                                       
                                         <div>
-                                            <strong>${r.packageMonths} tháng</strong><br/>
+                                            <strong>${r.packageMonths} month</strong><br/>
                                             <small style="color: gray">${r.subjectPackage.category}</small><br/>
                                             <c:choose>
                                                 <c:when test="${r.subjectPackage.salePrice lt r.subjectPackage.originalPrice}">

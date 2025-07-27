@@ -517,19 +517,19 @@
 
 
                                 <div class="form-group">
-                                    <h3>Thông tin người dùng:</h3>
+                                    <h3>User information:</h3>
 
                                     <c:choose>
                                         <c:when test="${sessionScope.userAuth != null}">
                                             <%-- Nếu đã đăng nhập --%>
-                                            <p><strong>Họ và tên:</strong> ${sessionScope.userAuth.fullName}</p>
+                                            <p><strong>Full name:</strong> ${sessionScope.userAuth.fullName}</p>
                                             <p><strong>Email:</strong> ${sessionScope.userAuth.email}</p>
-                                            <p><strong>Số điện thoại:</strong> ${sessionScope.userAuth.mobile}</p>
-                                            <p><strong>Giới tính:</strong> 
+                                            <p><strong>Phone number:</strong> ${sessionScope.userAuth.mobile}</p>
+                                            <p><strong>Gender:</strong> 
                                                 <c:choose>
-                                                    <c:when test="${sessionScope.userAuth.gender == true}">Nam</c:when>
-                                                    <c:when test="${sessionScope.userAuth.gender == false}">Nữ</c:when>
-                                                    <c:otherwise>Khác</c:otherwise>
+                                                    <c:when test="${sessionScope.userAuth.gender == true}">Male</c:when>
+                                                    <c:when test="${sessionScope.userAuth.gender == false}">Female</c:when>
+                                                    <c:otherwise>Other</c:otherwise>
                                                 </c:choose>
                                             </p>
                                             <form method="post" action="${pageContext.request.contextPath}/subject-register">
@@ -538,15 +538,15 @@
                                                 <input type="hidden" name="confirm" value="true" />
 
                                                 <div class="form-group">
-                                                    <label for="packageSelect"><strong>Chọn gói học:</strong></label><br>
+                                                    <label for="packageSelect"><strong>Choose package:</strong></label><br>
                                                     <select id="packageSelect" name="packageMonths" style="margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-                                                        <option value="1">1 tháng</option>
-                                                        <option value="3">3 tháng</option>
-                                                        <option value="6">6 tháng</option>
+                                                        <option value="1">1 month</option>
+                                                        <option value="3">3 months</option>
+                                                        <option value="6">6 months</option>
                                                     </select>
                                                 </div>
                                                 <hr style="margin: 20px 0;">
-                                                <button type="submit" class="register-btn">Xác nhận đăng kí</button>
+                                                <button type="submit" class="register-btn">Confirm</button>
                                             </form>
                                         </c:when>
 
@@ -558,26 +558,26 @@
                                                 <input type="hidden" name="confirm" value="true" />
 
                                                 <div class="form-group">
-                                                    <label for="packageSelect"><strong>Chọn gói học:</strong></label><br>
+                                                    <label for="packageSelect"><strong>Choose package:</strong></label><br>
                                                     <select id="packageSelect" name="packageMonths" style="margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-                                                        <option value="1">1 tháng</option>
-                                                        <option value="3">3 tháng</option>
-                                                        <option value="6">6 tháng</option>
+                                                        <option value="1">1 month</option>
+                                                        <option value="3">3 months</option>
+                                                        <option value="6">6 months</option>
                                                     </select>
                                                 </div>
 
-                                                <input type="text" name="fullName" placeholder="Họ và tên" required pattern="[^\d]+" title="Họ và tên không được chứa số">
+                                                <input type="text" name="fullName" placeholder="Full name" required pattern="[^\d]+" title="Họ và tên không được chứa số">
 
                                                 <input type="email" name="email" placeholder="Email" required>
 
-                                                <input type="text" name="mobile" placeholder="Số điện thoại" required pattern="[0-9]+" title="Số điện thoại chỉ được chứa số">
+                                                <input type="text" name="mobile" placeholder="Phone number:" required pattern="[0-9]+" title="Số điện thoại chỉ được chứa số">
 
                                                 <select name="gender" required>
-                                                    <option value="true">Nam</option>
-                                                    <option value="false">Nữ</option>
+                                                    <option value="true">Male</option>
+                                                    <option value="false">Female</option>
                                                 </select>
 
-                                                <button type="submit" class="register-btn" onclick="return confirm('Bạn có chắc muốn đăng ký môn học này?')">Xác nhận đăng ký</button>
+                                                <button type="submit" class="register-btn" onclick="return confirm('Bạn có chắc muốn đăng ký môn học này?')">Confirm</button>
                                             </form>
 
                                         </c:otherwise>

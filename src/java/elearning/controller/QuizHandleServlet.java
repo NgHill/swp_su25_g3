@@ -294,84 +294,98 @@ public class QuizHandleServlet extends HttpServlet {
         response.sendRedirect("quizhandle?quizId=" + quiz.getId() + "&userId=" + userId + "&questionIndex=" + targetIndex);
     }
     
-    private void submitQuiz(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
-    throws ServletException, IOException {
-        
+    // Thay thế phương thức submitQuiz trong QuizHandleServlet
+private void submitQuiz(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
+throws ServletException, IOException {
+    
+    try {
         // Lấy thông tin quiz và user từ session
-        Quiz quiz = (Quiz) session.getAttribute("currentQuiz");  // Lấy đối tượng quiz hiện tại từ session
-        Integer userId = (Integer) session.getAttribute("currentUserId");  // Lấy ID người dùng từ session
+        Quiz quiz = (Quiz) session.getAttribute("currentQuiz");
+        Integer userId = (Integer) session.getAttribute("currentUserId");
 
-        // Kiểm tra xem quiz và userId có hợp lệ không
         if (quiz == null || userId == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");  // Nếu không có thông tin quiz hoặc user, trả về lỗi 400
+            System.out.println("DEBUG: Quiz or userId is null - quiz: " + quiz + ", userId: " + userId);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz session not found");
             return;
         }
 
+        System.out.println("DEBUG: Submitting quiz - QuizId: " + quiz.getId() + ", UserId: " + userId);
+
         // Lấy câu trả lời của người dùng từ session
         @SuppressWarnings("unchecked")
-        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");  // Lấy các câu trả lời của người dùng từ session
-
-        // Nếu không có câu trả lời nào, khởi tạo một Map mới để tránh lỗi
+        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
         if (userAnswers == null) {
             userAnswers = new HashMap<>();
         }
 
         // Lưu câu trả lời cuối cùng trước khi submit
-        String lastAnswer = request.getParameter("lastAnswer");  // Lấy câu trả lời cuối cùng
-        String lastTextAnswer = request.getParameter("lastTextAnswer");  // Lấy câu trả lời dạng text cuối cùng
-        String lastQuestionIndex = request.getParameter("lastQuestionIndex");  // Lấy chỉ số câu hỏi cuối cùng
+        String lastAnswer = request.getParameter("lastAnswer");
+        String lastTextAnswer = request.getParameter("lastTextAnswer");
+        String lastQuestionIndex = request.getParameter("lastQuestionIndex");
 
-        // Kiểm tra nếu có lastQuestionIndex, lưu câu trả lời cuối cùng vào Map
         if (lastQuestionIndex != null) {
             try {
-                int questionIndex = Integer.parseInt(lastQuestionIndex);  // Chuyển lastQuestionIndex sang kiểu int
-                if (questionIndex >= 0 && questionIndex < quiz.getQuestions().size()) {  // Kiểm tra chỉ số câu hỏi hợp lệ
-                    // Kiểm tra nếu có câu trả lời text thì sử dụng nó, nếu không dùng đáp án radio
+                int questionIndex = Integer.parseInt(lastQuestionIndex);
+                if (questionIndex >= 0 && questionIndex < quiz.getQuestions().size()) {
                     String finalAnswer = lastTextAnswer != null && !lastTextAnswer.trim().isEmpty() 
                         ? lastTextAnswer.trim() : lastAnswer;
-                    // Nếu có câu trả lời hợp lệ, lưu vào Map
                     if (finalAnswer != null && !finalAnswer.isEmpty()) {
-                        userAnswers.put(questionIndex, finalAnswer);  // Lưu câu trả lời vào Map
+                        userAnswers.put(questionIndex, finalAnswer);
                     }
                 }
             } catch (NumberFormatException e) {
-                // Nếu chỉ số câu hỏi không hợp lệ, bỏ qua lỗi
+                System.out.println("DEBUG: Invalid question index: " + lastQuestionIndex);
             }
         }
 
         // Tính điểm dựa trên các câu trả lời đã lưu
-        double score = calculateScore(quiz, userAnswers);  // Tính điểm bằng cách gọi hàm calculateScore
+        double score = calculateScore(quiz, userAnswers);
+        System.out.println("DEBUG: Calculated score: " + score);
 
         // Lưu câu trả lời và hình ảnh vào cơ sở dữ liệu
         @SuppressWarnings("unchecked")
-        Map<Integer, String> userImages = (Map<Integer, String>) session.getAttribute("userImages");  // Lấy đường dẫn ảnh từ session
-        saveUserAnswers(userId, quiz, userAnswers, userImages);  // Lưu các câu trả lời và ảnh vào cơ sở dữ liệu
+        Map<Integer, String> userImages = (Map<Integer, String>) session.getAttribute("userImages");
+        saveUserAnswers(userId, quiz, userAnswers, userImages);
 
         // Tạo đối tượng QuizResult để lưu kết quả bài thi
         QuizResult result = new QuizResult();
-        result.setUserId(userId);  // Set ID người dùng
-        result.setQuizId(quiz.getId());  // Set ID quiz
-        result.setScore(score);  // Set điểm thi
-        result.setSubmittedAt(LocalDateTime.now());  // Set thời gian nộp bài
+        result.setUserId(userId);
+        result.setQuizId(quiz.getId());
+        result.setScore(score);
+        result.setSubmittedAt(LocalDateTime.now());
 
         // Lưu kết quả bài thi vào cơ sở dữ liệu
-        boolean saved = quizResultDAO.saveQuizResult(result);  // Gọi hàm để lưu kết quả thi vào cơ sở dữ liệu
+        boolean saved = quizResultDAO.saveQuizResult(result);
+        System.out.println("DEBUG: Quiz result saved: " + saved);
 
-        if (saved) {
-            // Nếu lưu thành công, xóa tất cả dữ liệu liên quan đến bài thi trong session
-            session.removeAttribute("currentQuiz");
-            session.removeAttribute("userAnswers");
-            session.removeAttribute("userImages");
-            session.removeAttribute("quizStartTime");
-            session.removeAttribute("currentUserId");
+        // Sau khi lưu thành công:
+if (saved) {
+    // Xóa session...
+    session.removeAttribute("currentQuiz");
+    session.removeAttribute("userAnswers");
+    session.removeAttribute("userImages");
+    session.removeAttribute("quizStartTime");
+    session.removeAttribute("currentUserId");
 
-            // Điều hướng người dùng về trang practice list với thông báo thành công
-            response.sendRedirect(request.getContextPath() + "/practicelist");
-        } else {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to save quiz result");
-        }
+    // Chuẩn bị URL review với quizId và userId
+    String reviewUrl = request.getContextPath()
+        + "/quizreview?quizId=" + quiz.getId()
+        + "&userId=" + userId;
+
+    System.out.println("DEBUG: Redirecting to: " + reviewUrl);
+
+    response.sendRedirect(reviewUrl);
+} else {
+    // Xử lý khi lưu thất bại
+    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to save quiz result");
+}
+        
+    } catch (Exception e) {
+        System.out.println("DEBUG: Exception in submitQuiz: " + e.getMessage());
+        e.printStackTrace();
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error submitting quiz: " + e.getMessage());
     }
-
+}
     
     private void saveUserAnswers(int userId, Quiz quiz, Map<Integer, String> userAnswers, Map<Integer, String> userImages) {
         UserAnswerDAO userAnswerDAO = new UserAnswerDAO();

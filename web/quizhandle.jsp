@@ -318,21 +318,22 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <!-- Multiple Choice Question -->
-                            <c:forEach var="answer" items="${currentQuestion.answers}" varStatus="status">
-                                <div class="option">
-                                    <input type="radio" 
-                                    name="answer" 
-                                    value="${answer.id}" 
-                                    id="option${status.index}"
-                                    onchange="saveAnswer()"
-                                    <c:if test="${userAnswers[currentQuestionIndex] eq answer.id.toString()}">checked</c:if>>
-                                    <label for="option${status.index}" class="option-text">
-                                        ${answer.content}
-                                    </label>
-                                </div>
-                            </c:forEach>
-                        </c:otherwise>
+<!-- Thay thế toàn bộ đoạn Multiple Choice Question -->
+    <!-- Multiple Choice Question -->
+    <c:forEach var="answer" items="${currentQuestion.answers}" varStatus="status">
+        <div class="option">
+            <input type="radio" 
+                   name="answer" 
+                   value="${answer.id}" 
+                   id="option${status.index}"
+                   onchange="saveAnswer()"
+                   <c:if test="${userAnswers[currentQuestionIndex] eq answer.id}">checked</c:if>>
+            <label for="option${status.index}" class="option-text">
+                ${answer.content}
+            </label>
+        </div>
+    </c:forEach>
+</c:otherwise>
                     </c:choose>
                 </div>
             </form>
@@ -504,56 +505,58 @@
             })
         }
 
-        // Submit quiz
-        function submitQuiz() {
-            clearInterval(timerInterval);  // Dừng đồng hồ đếm ngược khi nộp bài, tránh đồng hồ tiếp tục chạy sau khi nộp quiz
+ // Submit quiz
+function submitQuiz() {
+    clearInterval(timerInterval);  // Dừng đồng hồ đếm ngược
 
-            // Lấy câu trả lời hiện tại
-            let lastAnswer = '';  // Khởi tạo biến để lưu giá trị của đáp án dạng radio
-            let lastTextAnswer = '';  // Khởi tạo biến để lưu giá trị của câu trả lời dạng text
+    // Lấy câu trả lời hiện tại
+    let lastAnswer = '';
+    let lastTextAnswer = '';
 
-            // Lấy đáp án radio đã chọn từ form
-            const selectedRadio = document.querySelector('input[name="answer"]:checked');  // Lấy phần tử radio được chọn (nếu có)
-            if (selectedRadio) {
-                lastAnswer = selectedRadio.value;  // Nếu có đáp án radio được chọn, lưu giá trị của nó vào lastAnswer
-            }
+    // Lấy đáp án radio đã chọn
+    const selectedRadio = document.querySelector('input[name="answer"]:checked');
+    if (selectedRadio) {
+        lastAnswer = selectedRadio.value;
+    }
 
-            // Lấy giá trị từ ô nhập liệu dạng text
-            const textInput = document.getElementById('textAnswer');  // Lấy phần tử input có id "textAnswer"
-            if (textInput && textInput.value.trim()) {  // Kiểm tra nếu có giá trị nhập vào ô text và không phải chuỗi trắng
-                lastTextAnswer = textInput.value.trim();  // Lưu câu trả lời text vào lastTextAnswer
-            }
+    // Lấy giá trị từ ô text input
+    const textInput = document.getElementById('textAnswer');
+    if (textInput && textInput.value.trim()) {
+        lastTextAnswer = textInput.value.trim();
+    }
 
-            // Tạo form ẩn để gửi câu trả lời cuối cùng cùng với submit
-            const form = document.createElement('form');  // Tạo một form mới để gửi dữ liệu (sẽ không hiển thị trên trang)
-            form.method = 'GET';  // Đặt phương thức của form là GET
-            form.action = 'quizhandle';  // Địa chỉ URL nơi gửi dữ liệu (ở đây là 'quizhandle')
+    // Tạo form để submit
+    const form = document.createElement('form');
+    form.method = 'GET';
+    form.action = 'quizhandle';
 
-            // Các parameters cần thiết để gửi
-            const params = {
-                'action': 'submit',  // Tham số action để chỉ ra hành động submit
-                'quizId': '${quiz.id}',  // ID quiz từ server (được truyền từ JSP)
-                'userId': '${sessionScope.currentUserId}',  // ID người dùng từ session (được truyền từ JSP)
-                'lastQuestionIndex': '${currentQuestionIndex}',  // Chỉ số câu hỏi cuối cùng (được truyền từ JSP)
-                'lastAnswer': lastAnswer,  // Đáp án radio cuối cùng mà người dùng đã chọn
-                'lastTextAnswer': lastTextAnswer  // Câu trả lời text cuối cùng mà người dùng đã nhập
-            };
+    const params = {
+        'action': 'submit',
+        'quizId': '${quiz.id}',
+        'userId': '${sessionScope.currentUserId}',
+        'lastQuestionIndex': '${currentQuestionIndex}',
+        'lastAnswer': lastAnswer,
+        'lastTextAnswer': lastTextAnswer
+    };
 
-            // Thêm các input hidden vào form để gửi dữ liệu
-            for (const [key, value] of Object.entries(params)) {  // Duyệt qua các tham số cần gửi
-                if (value) {  // Chỉ thêm tham số nếu có giá trị (tránh trường hợp null hoặc empty string)
-                    const input = document.createElement('input');  // Tạo input hidden mới
-                    input.type = 'hidden';  // Đặt loại input là "hidden" để nó không hiển thị trên form
-                    input.name = key;  // Đặt tên input theo tên tham số
-                    input.value = value;  // Đặt giá trị của input là giá trị tham số
-                    form.appendChild(input);  // Thêm input vào form
-                }
-            }
-
-            // Thêm form vào body của trang
-            document.body.appendChild(form);  // Thêm form vào phần tử body của trang, nhưng form sẽ không hiển thị
-            form.submit();  // Gửi form đi (kích hoạt submit của form, gửi tất cả dữ liệu đã thêm vào backend)
+    // Thêm các input hidden vào form
+    for (const [key, value] of Object.entries(params)) {
+        if (value !== null && value !== '') {  // Cho phép cả giá trị rỗng
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = value;
+            form.appendChild(input);
         }
+    }
+
+    // Submit form
+    document.body.appendChild(form);
+    form.submit();
+
+    // Đóng modal nếu đang mở
+    closeModal('submitModal');
+}
 
 
         // Modal functions

@@ -22,11 +22,7 @@
                 min-height:100vh;
                 color:#333;
             }
-            .container {
-                display:flex;
-                background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-                min-height:100vh;
-            }
+
             /* === Sidebar container (UPDATED) === */
             .sidebar {
                 position: fixed;
@@ -275,41 +271,6 @@
             }
             .clear-filter:hover {
                 background:#c53030;
-            }
-            .active-filters {
-                display:flex;
-                flex-wrap:wrap;
-                gap:8px;
-                margin-bottom:20px;
-            }
-            .filter-tag {
-                background:#667eea;
-                color:white;
-                padding:4px 8px;
-                border-radius:12px;
-                font-size:12px;
-                display:flex;
-                align-items:center;
-                gap:5px;
-            }
-            .filter-tag .remove {
-                cursor:pointer;
-                font-weight:bold;
-            }
-            .controls-section {
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                margin-bottom:30px;
-                padding:15px;
-                background:#f8f9fa;
-                border-radius:10px;
-                flex-wrap:wrap;
-                gap:15px;
-            }
-            .results-info {
-                font-weight:500;
-                color:#2d3748;
             }
             .subjects-grid {
                 display:grid;
@@ -576,7 +537,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const urlParams = new URLSearchParams(window.location.search); // Lấy các tham số URL hiện tại
                 const categories = urlParams.getAll('cat'); // Lấy tất cả giá trị của tham số 'cat' (category) từ URL
-                const searchParam = urlParams.get('search'); // Lấy giá trị tham số 'search' từ URL
+        
 
                 // Đánh dấu (check) các checkbox tương ứng với các category đã chọn từ URL
                 categories.forEach(category => {
@@ -586,12 +547,7 @@
                     }
                 });
 
-                // Điền lại giá trị ô tìm kiếm nếu có giá trị trong tham số 'search' của URL
-                const searchInput = document.getElementById('searchInput');
-                if (searchParam) {
-                    searchInput.value = searchParam; // Đặt giá trị ô tìm kiếm bằng giá trị trong URL
-                }
             });
         </script>
     </body>
-</html>
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
