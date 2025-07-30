@@ -497,14 +497,14 @@
             <div class="content-wrapper">
                 <div class="header">
                     <div class="header-left">
-                        <button id="toggleSidebar">☰</button>
+                  
                         <h1>Subject Register</h1>
                     </div>
                 </div>
 
                 <c:choose>
                     <c:when test="${subject != null}">
-                        <div class="subject-card" style="cursor: default;">
+
                             <div class="subject-content" style="padding: 30px;">
                                 <h2 style="font-size: 24px; color: #2d3748;">${subject.title}</h2>
                                 <div class="price-section" style="margin-top: 10px;">
@@ -592,30 +592,8 @@
                             alert("${successMessage}");
                             window.location.href = "<c:url value='/subject-list' />";
                     </script>
-                </c:if>
-            </div>
+                </c:if>       
         </main>
-    <script>
-        document.getElementById('toggleSidebar').addEventListener('click', () =>
-            document.querySelector('.sidebar').classList.toggle('hidden')
-        );
-
-        const ft = document.getElementById('filterToggle'), sb = document.getElementById('filterSidebar');
-        ft.addEventListener('click', () => {
-            sb.style.display = sb.style.display === 'block' ? 'none' : 'block';
-            ft.querySelector('i').classList.toggle('fa-chevron-up');
-            ft.querySelector('i').classList.toggle('fa-chevron-down');
-        });
-
-        document.addEventListener('click', e => {
-            if (!sb.contains(e.target) && !ft.contains(e.target)) {
-                sb.style.display = 'none';
-                ft.querySelector('i').classList.add('fa-chevron-down');
-                ft.querySelector('i').classList.remove('fa-chevron-up');
-            }
-        });
-
-
-    </script>
+ 
 </body>
 </html>

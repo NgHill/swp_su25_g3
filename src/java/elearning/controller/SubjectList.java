@@ -73,6 +73,7 @@ public class SubjectList extends HttpServlet {
             // Tìm kiếm và/hoặc lọc theo category với phân trang
             int totalRecords = dao.countByKeywordAndCategory(search, category);
             int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+            
             List<SubjectPackage> list = dao.findByKeywordAndCategory(search, category, page, pageSize);
 
             // Lấy danh sách 3 subject nổi bật
