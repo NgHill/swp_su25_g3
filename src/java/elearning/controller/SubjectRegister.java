@@ -28,7 +28,7 @@ public class SubjectRegister extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Lấy subjectId từ query parameter (ví dụ: /subject-register?subjectId=3)
+        // Lấy subjectId từ query parameter 
         String subjectIdStr = request.getParameter("subjectId");
 
         try {
@@ -42,7 +42,7 @@ public class SubjectRegister extends HttpServlet {
             // Đưa dữ liệu môn học vào request để hiển thị lên JSP
             request.setAttribute("subject", subject);
 
-            // Nếu có session đang tồn tại (user đã đăng nhập), lấy thông tin user
+            // Nếu có session đang tồn tại (user đã đăng nhập), lấy thông tin user để hiển thị
             HttpSession session = request.getSession(false);
             if (session != null) {
                 request.setAttribute("userAuth", session.getAttribute("userAuth"));
@@ -96,7 +96,8 @@ public class SubjectRegister extends HttpServlet {
         }
 
         // Lấy thông tin người dùng nếu đã đăng nhập
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);// Chỉ lấy thông tin khi đã đăng nhập, nếu chưa thì không tạo session
+        //Tạo userObj chứa đối tượng userAuth
         Object userObj = (session != null) ? session.getAttribute("userAuth") : null;
 
         // Khởi tạo đối tượng đăng ký
@@ -111,14 +112,14 @@ public class SubjectRegister extends HttpServlet {
         registration.setCreatedAt(now);
         registration.setValidFrom(now);
 
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();//Tự động lấy ngày giờ của hệ thống
         cal.setTime(now);
         cal.add(Calendar.MONTH, packageMonths); // Cộng thêm số tháng đã chọn
         registration.setValidTo(cal.getTime());
 
         // Nếu user đã login → gán userId
         if (userObj != null) {
-            User user = (User) userObj;
+            User user = (User) userObj;//ép kiểu đối tượng userObj từ kiểu Object thành kiểu User
             registration.setUserId(user.getId());
         } else {
             // Nếu chưa login → lấy thông tin từ form nhập tay
