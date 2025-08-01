@@ -8,6 +8,7 @@ package elearning.controller;
 import elearning.BasicDAO.PracticeListDAO;
 import elearning.anotation.AccessRoles;
 import elearning.entities.PracticeList;
+import elearning.entities.Quiz;
 import elearning.entities.SubjectPackage;
 import elearning.entities.User;
 import java.io.IOException;
@@ -142,10 +143,19 @@ public class practiceList extends HttpServlet {
         if (offset < totalRecords) {
             pagedList = practiceLists.subList(offset, endIndex);
         }
-        
+         
         List<SubjectPackage> registeredSubjects = practiceListDAO.getRegisteredSubjectsByUserId(userId);
         request.setAttribute("registeredSubjects", registeredSubjects);
         
+        // Nếu có subjectId được gửi từ form (để load quizzes)
+        String subjectIdParam = request.getParameter("subjectId");
+        if (subjectIdParam != null) {
+            int subjectId = Integer.parseInt(subjectIdParam);
+            List<Quiz> quizzes = practiceListDAO.getQuizzesBySubjectId(subjectId);
+            request.setAttribute("quizzes", quizzes);
+            request.setAttribute("selectedSubjectId", subjectId);
+        }
+
         request.setAttribute("userId", userId);
         request.setAttribute("practiceLists", pagedList); // Thay đổi từ practiceLists thành pagedList
         request.setAttribute("scoreFilter", scoreFilter);

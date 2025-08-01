@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,28 +104,6 @@
         .text-input:focus {
             outline: none;
             border-color: #007bff;
-        }
-
-        .upload-button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-
-        .upload-button:hover {
-            background: #0056b3;
-        }
-
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 10px;
         }
 
         .quiz-footer {
@@ -297,25 +276,6 @@
                                    class="text-input"
                                    onchange="saveAnswer()">
 
-                            <!-- Image Upload for illustration -->
-                            <div class="image-section" style="border: 2px dashed #dee2e6; border-radius: 8px; padding: 20px; margin-top: 15px; background-color: #f8f9fa;">
-                                <p style="margin-bottom: 10px; color: #6c757d;">Upload an image to illustrate your answer (optional):</p>
-                                <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
-                                <button type="button" class="upload-button" onclick="document.getElementById('imageUpload').click()">
-                                    📷 Add Illustration
-                                </button>
-
-                                <div id="imagePreview" class="<c:if test='${empty userImages[currentQuestionIndex]}'>hidden</c:if>">
-                                    <img id="previewImg" class="image-preview" 
-                                         src="<c:if test='${not empty userImages[currentQuestionIndex]}'>quiz-images/${userImages[currentQuestionIndex]}</c:if>" 
-                                         alt="Preview" 
-                                         style="max-width: 300px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; margin: 10px auto; display: block;">
-                                    <button type="button" class="remove-image-btn" onclick="removeImage()" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Remove Image</button>
-                                </div>
-
-                                <!-- Hidden input để lưu tên file ảnh -->
-                                <input type="hidden" name="imagePath" id="imagePath" value="${userImages[currentQuestionIndex]}">
-                            </div>
                         </c:when>
                         <c:otherwise>
                             <!-- Multiple Choice Question -->
@@ -356,7 +316,6 @@
                         <input type="hidden" name="userId" value="${sessionScope.currentUserId}">
                         <input type="hidden" name="answer" value="">
                         <input type="hidden" name="textAnswer" value="">
-                        <input type="hidden" name="imagePath" value="">
                         <button type="submit" class="btn btn-secondary">Previous</button>
                     </form>
                 </c:if>
@@ -597,67 +556,7 @@
             if (textInput && textInput.value.trim()) {
                 form.querySelector('input[name="textAnswer"]').value = textInput.value.trim();
             }
-
-            // THÊM: Lưu imagePath hiện tại
-            const imagePathInput = document.getElementById('imagePath');
-            if (imagePathInput) {
-                let imagePathHidden = form.querySelector('input[name="imagePath"]');
-                if (!imagePathHidden) {
-                    imagePathHidden = document.createElement('input');
-                    imagePathHidden.type = 'hidden';
-                    imagePathHidden.name = 'imagePath';
-                    form.appendChild(imagePathHidden);
-                }
-                imagePathHidden.value = imagePathInput.value;
-            }
-
             return true;  // Cho phép form submit
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];  // Lấy file đầu tiên được chọn
-            if (!file) return;                   // Nếu không có file thì thoát
-
-            // Hiển thị preview ngay lập tức (không cần đợi upload)
-            const img = document.getElementById('previewImg');
-            img.src = URL.createObjectURL(file);  // Tạo URL tạm thời từ file để hiển thị
-            document.getElementById('imagePreview').classList.remove('hidden');  // Hiện preview
-
-            uploadImageToServer(file);
-        }
-
-        // Upload file to server
-        function uploadImageToServer(file) {
-            const formData = new FormData();
-            formData.append('imageFile', file);  // Thêm tệp ảnh vào FormData
-            formData.append('action', 'uploadImage');  // Thêm action vào FormData
-            formData.append('questionIndex', document.querySelector('input[name="questionIndex"]').value);  // Thêm chỉ số câu hỏi
-
-            // Gửi tệp ảnh lên server
-            fetch('quizhandle', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())  // Xử lý phản hồi JSON từ server
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('imagePath').value = data.filename;  // Lưu tên tệp vào input ẩn
-                    saveAnswer();
-                } else {
-                    alert('Failed to upload image: ' + data.error);  // Hiển thị lỗi nếu upload không thành công
-                }
-            })
-            .catch(error => {
-                console.error('Upload error:', error);  // Ghi lỗi nếu có lỗi
-                alert('Failed to upload image');
-            });
-        }
-
-        // Remove uploaded image
-        function removeImage() {
-            document.getElementById('imageUpload').value = '';  // Xóa giá trị tệp đã chọn
-            document.getElementById('imagePath').value = '';  // Xóa giá trị đường dẫn ảnh
-            document.getElementById('imagePreview').classList.add('hidden');  // Ẩn ảnh đã tải lên
         }
     </script>
 
