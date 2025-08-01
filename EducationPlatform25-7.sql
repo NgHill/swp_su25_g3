@@ -64,7 +64,7 @@ CREATE TABLE Posts (
     Image VARCHAR(1000),
     Content TEXT,
     Thumbnail VARCHAR(255),
-	Description TEXT,
+    Description TEXT,
     Category VARCHAR(1000),
     AuthorId INT,
     ViewCount INT DEFAULT 0,
@@ -154,12 +154,13 @@ CREATE TABLE QuizResults (
     FOREIGN KEY (QuizId) REFERENCES Quizzes(Id)
 );
 
--- Tạo bảng UserAnswer
+-- Tạo bảng UserAnswer (đã bao gồm QuizResultId)
 CREATE TABLE UserAnswer (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     UserId INT NOT NULL,
     QuizId INT NOT NULL,
     QuestionId INT NOT NULL,
+    QuizResultId INT NULL,
     AnswerId INT NULL, -- Cho multiple choice questions
     TextAnswer TEXT NULL, -- Cho text input questions
     IsCorrect BOOLEAN DEFAULT FALSE,
@@ -169,8 +170,10 @@ CREATE TABLE UserAnswer (
     FOREIGN KEY (QuizId) REFERENCES Quizzes(Id),
     FOREIGN KEY (QuestionId) REFERENCES Questions(Id),
     FOREIGN KEY (AnswerId) REFERENCES QuestionAnswers(Id),
+    FOREIGN KEY (QuizResultId) REFERENCES QuizResults(Id) ON DELETE CASCADE,
     INDEX idx_user_quiz (UserId, QuizId),
-    INDEX idx_quiz_question (QuizId, QuestionId)
+    INDEX idx_quiz_question (QuizId, QuestionId),
+    INDEX idx_quiz_result (QuizResultId)
 );
 
 -- Bảng Stimulations
@@ -337,7 +340,7 @@ INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`
 INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('7','https://edumentors.co.uk/blog/wp-content/uploads/2023/03/Quizlet-Website-Homepage-2048x883.jpg', ' Quizlet ADD 2','https://edumentors.co.uk/blog/wp-content/uploads/2023/03/Quizlet-Website-Homepage-2048x883.jpg', 'Show', '7');
 
 INSERT INTO `educationplatform`.`sliders` (`Id`, `Image`, `Title`, `Description`, `Type`, `OrderNumber`) VALUES('8','https://indiancybersecuritysolutions.com/checklist-for-penetration-testing-web-applications/assets/img/5651580e26897d2a8f348dc3978fb378.png', ' Checking test','https://indiancybersecuritysolutions.com/checklist-for-penetration-testing-web-applications/assets/img/5651580e26897d2a8f348dc3978fb378.png', 'Hide', '8');
->>>>>>> dat:EducationPlatform.sql
+
 
 
 
@@ -1499,7 +1502,5 @@ INSERT INTO QuizQuestions (QuizId, QuestionId) VALUES
   (SELECT Id FROM Questions WHERE Content = 'How should leaders handle goal adjustments?' LIMIT 1)
 );
 
-INSERT INTO QuizResults (UserId, QuizId, Score, SubmittedAt)
-VALUES
-(1, 1, 8, '2025-07-25 10:30:00');
+
 

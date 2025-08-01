@@ -15,6 +15,7 @@ public class Quiz {
     private String status;
     private LocalDateTime createdAt;
     private List<Question> questions;
+    private SubjectPackage subject; // Thêm field này
     
     // Constructors
     public Quiz() {}
@@ -50,4 +51,8 @@ public class Quiz {
     
     public List<Question> getQuestions() { return questions; }
     public void setQuestions(List<Question> questions) { this.questions = questions; }
+    
+    // Thêm getter và setter cho subject
+    public SubjectPackage getSubject() { return subject; }
+    public void setSubject(SubjectPackage subject) { this.subject = subject; }
 }
