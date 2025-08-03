@@ -497,25 +497,33 @@
             <div class="content-wrapper">
                 <div class="header">
                     <div class="header-left">
-                  
+
                         <h1>Subject Register</h1>
                     </div>
                 </div>
 
+                <!-- THÊM PHẦN HIỂN THỊ THÔNG BÁO LỖI -->
+                <c:if test="${not empty error}">
+                    <div class="alert alert-error" style="background-color: #fee; border: 1px solid #fcc; color: #c33; padding: 15px; margin: 20px 0; border-radius: 5px; font-weight: bold;">
+                        ⚠️ ${error}
+                    </div>
+                </c:if>
+
                 <c:choose>
                     <c:when test="${subject != null}">
 
-                            <div class="subject-content" style="padding: 30px;">
-                                <h2 style="font-size: 24px; color: #2d3748;">${subject.title}</h2>
-                                <div class="price-section" style="margin-top: 10px;">
-                                    <span class="sale-price" style="font-size: 20px; color: #e53e3e;">
-                                        <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
-                                    </span>
-                                </div>
+                        <div class="subject-content" style="padding: 30px;">
+                            <h2 style="font-size: 24px; color: #2d3748;">${subject.title}</h2>
+                            <div class="price-section" style="margin-top: 10px;">
+                                <span class="sale-price" style="font-size: 20px; color: #e53e3e;">
+                                    <fmt:formatNumber value="${subject.salePrice}" type="currency" currencyCode="VND"/>
+                                </span>
+                            </div>
 
-                                <hr style="margin: 20px 0;">
+                            <hr style="margin: 20px 0;">
 
-
+                            <!-- CHỈ HIỂN THỊ FORM NẾU KHÔNG CÓ LỖI -->
+                            <c:if test="${empty error}">
                                 <div class="form-group">
                                     <h3>Thông tin người dùng:</h3>
 
@@ -583,17 +591,29 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                            </div>
+                            </c:if>
+
+                            <!-- THÊM NUT QUAY LẠI KHI CÓ LỖI -->
+                            <c:if test="${not empty error}">
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <a href="${pageContext.request.contextPath}/subject-list" class="register-btn" style="text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px;">
+                                        ← Quay lại danh sách môn học
+                                    </a>
+                                </div>
+                            </c:if>
                         </div>
-                    </c:when>
-                </c:choose>
-                <c:if test="${not empty successMessage}">
-                    <script>
-                            alert("${successMessage}");
-                            window.location.href = "<c:url value='/subject-list' />";
-                    </script>
-                </c:if>       
+                    </div>
+                </c:when>
+            </c:choose>
+
+            <!-- THÔNG BÁO THÀNH CÔNG -->
+            <c:if test="${not empty successMessage}">
+                <script>
+                    alert("${successMessage}");
+                    window.location.href = "<c:url value='/subject-list' />";
+                </script>
+            </c:if>       
         </main>
- 
-</body>
+
+    </body>
 </html>

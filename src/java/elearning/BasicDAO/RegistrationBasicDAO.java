@@ -198,4 +198,36 @@ public class RegistrationBasicDAO {
 
         return categories;
     }
+
+    public boolean checkUserRegistration(int userId, int subjectId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM `Registrations` WHERE `UserId` = ? AND `SubjectId` = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, subjectId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Trả về true nếu có ít nhất 1 bản ghi
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkEmailRegistration(String email, int subjectId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Registrations WHERE registeredEmail = ? AND subjectId = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setInt(2, subjectId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Trả về true nếu có ít nhất 1 bản ghi
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -324,7 +324,7 @@
             <ul>
                 <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
                 <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>
-                <li><a href="<%= request.getContextPath() %>/myRegistration">My registration</a></li>
+                <li><a href="<%= request.getContextPath() %>/my-registration">My registration</a></li>
                 <li><a href="${pageContext.request.contextPath}/blog">Blog list</a></li>
                 <li><a href="<%= request.getContextPath() %>/settings">Setting</a></li>
             </ul>

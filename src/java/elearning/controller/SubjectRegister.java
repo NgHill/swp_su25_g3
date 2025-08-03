@@ -39,14 +39,28 @@ public class SubjectRegister extends HttpServlet {
             SubjectPackageBasicDAO subjectDAO = new SubjectPackageBasicDAO();
             SubjectPackage subject = subjectDAO.getById(subjectId);
 
-            // Đưa dữ liệu môn học vào request để hiển thị lên JSP
-            request.setAttribute("subject", subject);
-
-            // Nếu có session đang tồn tại (user đã đăng nhập), lấy thông tin user để hiển thị
+            // Kiểm tra xem user đã đăng ký môn này chưa
             HttpSession session = request.getSession(false);
             if (session != null) {
+                Object userObj = session.getAttribute("userAuth");
+                if (userObj != null) {
+                    User user = (User) userObj;
+                    
+                    // Kiểm tra đăng ký đã tồn tại
+                    RegistrationBasicDAO registrationDAO = new RegistrationBasicDAO();
+                    if (isUserAlreadyRegistered(user.getId(), subjectId, registrationDAO)) {
+                        request.setAttribute("error", "Tài khoản của bạn đã đăng ký môn học này trước đó. Không thể đăng ký lại!");
+                        request.setAttribute("subject", subject);
+                        request.setAttribute("userAuth", userObj);
+                        request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
+                        return;
+                    }
+                }
                 request.setAttribute("userAuth", session.getAttribute("userAuth"));
             }
+
+            // Đưa dữ liệu môn học vào request để hiển thị lên JSP
+            request.setAttribute("subject", subject);
 
             // Gửi request đến trang xác nhận đăng ký
             request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
@@ -99,6 +113,49 @@ public class SubjectRegister extends HttpServlet {
         HttpSession session = request.getSession(false);// Chỉ lấy thông tin khi đã đăng nhập, nếu chưa thì không tạo session
         //Tạo userObj chứa đối tượng userAuth
         Object userObj = (session != null) ? session.getAttribute("userAuth") : null;
+
+        // Tạo DAO để kiểm tra trùng lặp
+        RegistrationBasicDAO registrationDAO = new RegistrationBasicDAO();
+
+        // Kiểm tra trùng lặp cho user đã đăng nhập
+        if (userObj != null) {
+            User user = (User) userObj;
+            try {
+                if (isUserAlreadyRegistered(user.getId(), subjectId, registrationDAO)) {
+                    request.setAttribute("error", "Tài khoản của bạn đã đăng ký môn học này trước đó. Không thể đăng ký lại!");
+                    request.setAttribute("subject", subject);
+                    request.setAttribute("userAuth", userObj);
+                    request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
+                    return;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectRegister.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("error", "Lỗi hệ thống. Vui lòng thử lại.");
+                request.setAttribute("subject", subject);
+                request.setAttribute("userAuth", userObj);
+                request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
+                return;
+            }
+        } else {
+            // Kiểm tra trùng lặp cho guest user (dựa vào email)
+            String email = request.getParameter("email");
+            if (email != null && !email.trim().isEmpty()) {
+                try {
+                    if (isEmailAlreadyRegistered(email, subjectId, registrationDAO)) {
+                        request.setAttribute("error", "Email này đã được sử dụng để đăng ký môn học này trước đó. Không thể đăng ký lại!");
+                        request.setAttribute("subject", subject);
+                        request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
+                        return;
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(SubjectRegister.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("error", "Lỗi hệ thống. Vui lòng thử lại.");
+                    request.setAttribute("subject", subject);
+                    request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
+                    return;
+                }
+            }
+        }
 
         // Khởi tạo đối tượng đăng ký
         Registration registration = new Registration();
@@ -164,5 +221,23 @@ public class SubjectRegister extends HttpServlet {
                 request.getRequestDispatcher("subjectRegister.jsp").forward(request, response);
             }
         }
+    }
+
+    // =============================
+    // PHƯƠNG THỨC KIỂM TRA TRÙNG LẶP
+    // =============================
+    
+    /**
+     * Kiểm tra xem user đã đăng ký môn học này chưa
+     */
+    private boolean isUserAlreadyRegistered(int userId, int subjectId, RegistrationBasicDAO dao) throws SQLException {
+        return dao.checkUserRegistration(userId, subjectId);
+    }
+
+    /**
+     * Kiểm tra xem email này đã được dùng để đăng ký môn học này chưa
+     */
+    private boolean isEmailAlreadyRegistered(String email, int subjectId, RegistrationBasicDAO dao) throws SQLException {
+        return dao.checkEmailRegistration(email, subjectId);
     }
 }
