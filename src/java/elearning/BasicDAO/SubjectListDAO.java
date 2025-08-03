@@ -2,6 +2,7 @@ package elearning.BasicDAO;
 
 import elearning.entities.SubjectList;
 import elearning.constant.ServerConnectionInfo;
+import elearning.entities.SubjectPackage;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,21 +31,24 @@ public class SubjectListDAO {
      * <code>id</code> (auto‑increment) nor <code>created_at / updated_at</code>
      * if they don’t exist.
      */
-    public boolean addSubject(SubjectList s) {
-        final String sql = "INSERT INTO subject_list "
-                + "(name, category, number_of_lesson, owner, status, featured, thumbnail_url, description) "
-                + "VALUES (?,?,?,?,?,?,?,?)";
+    public boolean addSubject(SubjectPackage s) {
+        final String sql = "INSERT INTO SubjectPackages "
+                + "(Title, Category, OwnerId, Status, Thumbnail, Description, BriefInfo, Tagline, LowestPrice, OriginalPrice, SalePrice) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection c = ServerConnectionInfo.getConnection(); PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, s.getName());
+            ps.setString(1, s.getTitle()); // Title
             ps.setString(2, s.getCategory());
-            ps.setInt(3, s.getLessons());
-            ps.setString(4, s.getOwner());
-            ps.setString(5, s.getStatus() == null ? "Show" : s.getStatus());
-            ps.setBoolean(6, s.isFeatured());
-            ps.setString(7, s.getThumbnailUrl());
-            ps.setString(8, s.getDescription());
+            ps.setInt(3, s.getOwnerId());
+            ps.setString(4, s.getStatus() == null ? "published" : s.getStatus());
+            ps.setString(5, s.getThumbnail());
+            ps.setString(6, s.getDescription());
+            ps.setString(7, s.getBriefInfo());
+            ps.setString(8, s.getTagLine());
+            ps.setDouble(9, s.getLowestPrice());
+            ps.setDouble(10, s.getOriginalPrice());
+            ps.setDouble(11, s.getSalePrice());
 
             int affected = ps.executeUpdate();
             if (affected > 0) {
@@ -65,9 +69,9 @@ public class SubjectListDAO {
     /* ==============================================================
        SELECT – paginated & filtered
        ============================================================== */
-    public List<SubjectList> getFilteredSubjects(String category, String status, String search, int offset, int limit) {
-        List<SubjectList> list = new ArrayList<>();
-        String sql = "SELECT * FROM subject_list WHERE 1=1";
+    public List<SubjectPackage> getFilteredSubjects(String category, String status, String search, int offset, int limit) {
+        List<SubjectPackage> list = new ArrayList<>();
+        String sql = "SELECT * FROM educationplatform.subjectpackages WHERE 1=1";
 
         if (category != null && !category.isEmpty()) {
             sql += " AND category = ?";
@@ -76,13 +80,13 @@ public class SubjectListDAO {
             sql += " AND status = ?";
         }
         if (search != null && !search.isEmpty()) {
-            sql += " AND name LIKE ?";
+            sql += " AND title LIKE ?";
         }
 
         sql += " LIMIT ? OFFSET ?";// Giới hạn số dòng 
 
         try {
-            PreparedStatement ps =  ServerConnectionInfo.getConnection().prepareStatement(sql);
+            PreparedStatement ps = ServerConnectionInfo.getConnection().prepareStatement(sql);
             int idx = 1;
             if (category != null && !category.isEmpty()) {
                 ps.setString(idx++, category);
@@ -98,18 +102,17 @@ public class SubjectListDAO {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                SubjectList s = SubjectList.builder()
+                SubjectPackage s = SubjectPackage.builder()
                         .id(rs.getInt("id"))
-                        .name(rs.getString("name"))
+                        .title(rs.getString("title"))
                         .category(rs.getString("category"))
-                        .lessons(rs.getInt("number_of_lesson"))
-                        .owner(rs.getString("owner"))
+                        .briefInfo(rs.getString("briefinfo"))
+                        .ownerId(rs.getInt("ownerid"))
                         .status(rs.getString("status"))
-                        .featured(rs.getBoolean("featured"))
-                        .thumbnailUrl(rs.getString("thumbnail_url"))
+                        .thumbnail(rs.getString("thumbnail"))
                         .description(rs.getString("description"))
-                        .createdAt(rs.getTimestamp("created_at"))
-                        .updatedAt(rs.getTimestamp("updated_at"))
+                        .createdAt(rs.getTimestamp("createdat"))
+                        .originalPrice(rs.getDouble("originalPrice"))
                         .build();
                 list.add(s);
             }
@@ -119,6 +122,7 @@ public class SubjectListDAO {
 
         return list;
     }
+
     public static void main(String[] args) {
         System.out.println(new SubjectListDAO().getFilteredSubjects("", "", "", 1, 10));
     }
@@ -156,7 +160,7 @@ public class SubjectListDAO {
     }
 
     public List<String> getAllCategory() {
-        final String sql = "SELECT DISTINCT category FROM subject_list ORDER BY category";
+        final String sql = "SELECT DISTINCT category FROM subjectpackages ORDER BY category";
         List<String> cats = new ArrayList<>();
         try (Connection c = ServerConnectionInfo.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -195,7 +199,7 @@ public class SubjectListDAO {
     }
 
     public boolean deleteSubject(int id) {
-        try (Connection c = ServerConnectionInfo.getConnection(); PreparedStatement ps = c.prepareStatement("DELETE FROM subjects WHERE id=?")) {
+        try (Connection c = ServerConnectionInfo.getConnection(); PreparedStatement ps = c.prepareStatement("DELETE FROM subjectpackages WHERE id=?")) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -232,24 +236,27 @@ public class SubjectListDAO {
             return null;
         }
     }
-    public SubjectList getSubjectById(int id) {
-        String sql = "SELECT * FROM subject_list WHERE id = ?";
+
+    public SubjectPackage getSubjectById(int id) {
+        String sql = "SELECT * FROM subjectpackages WHERE id = ?";
         try (PreparedStatement ps = ServerConnectionInfo.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return SubjectList.builder()
+                return SubjectPackage.builder()
                         .id(rs.getInt("id"))
-                        .name(rs.getString("name"))
+                        .title(rs.getString("title"))
                         .category(rs.getString("category"))
-                        .lessons(rs.getInt("number_of_lesson"))
-                        .owner(rs.getString("owner"))
+                        .briefInfo(rs.getString("briefinfo"))
+                        .ownerId(rs.getInt("ownerid"))
                         .status(rs.getString("status"))
-                        .featured(rs.getBoolean("featured"))
-                        .thumbnailUrl(rs.getString("thumbnail_url"))
+                        .thumbnail(rs.getString("thumbnail"))
                         .description(rs.getString("description"))
-                        .createdAt(rs.getTimestamp("created_at"))
-                        .updatedAt(rs.getTimestamp("updated_at"))
+                        .createdAt(rs.getTimestamp("createdat"))
+                        .originalPrice(rs.getDouble("originalPrice"))
+                        .lowestPrice(rs.getDouble("lowestPrice"))
+                        .salePrice(rs.getDouble("salePrice"))
+                        .tagLine(rs.getString("tagline"))
                         .build();
             }
         } catch (SQLException e) {
@@ -258,20 +265,23 @@ public class SubjectListDAO {
         return null;
     }
 
-    public void updateSubject2(SubjectList subject) {
-        String sql = "UPDATE subject_list SET name = ?, category = ?, number_of_lesson = ?, owner = ?, status = ?, " +
-                "featured = ?, thumbnail_url = ?, description = ?, updated_at = ? WHERE id = ?";
+    public void updateSubject2(SubjectPackage subject) {
+        String sql = "UPDATE subjectpackages SET title = ?, category = ?, OwnerId = ?, Status = ?, Thumbnail = ?, "
+                + "Description = ?, BriefInfo = ?, Tagline = ?, LowestPrice = ?, OriginalPrice= ? ,SalePrice = ?  WHERE id = ?";
+
         try (PreparedStatement ps = ServerConnectionInfo.getConnection().prepareStatement(sql)) {
-            ps.setString(1, subject.getName());
+            ps.setString(1, subject.getTitle());
             ps.setString(2, subject.getCategory());
-            ps.setInt(3, subject.getLessons());
-            ps.setString(4, subject.getOwner());
-            ps.setString(5, subject.getStatus());
-            ps.setBoolean(6, subject.isFeatured());
-            ps.setString(7, subject.getThumbnailUrl());
-            ps.setString(8, subject.getDescription());
-            ps.setTimestamp(9, new Timestamp(System.currentTimeMillis()));
-            ps.setInt(10, subject.getId());
+            ps.setInt(3, subject.getOwnerId());
+            ps.setString(4, subject.getStatus());
+            ps.setString(5, subject.getThumbnail());
+            ps.setString(6, subject.getDescription());
+            ps.setString(7, subject.getBriefInfo());
+            ps.setString(8, subject.getTagLine());
+            ps.setDouble(9, subject.getLowestPrice());
+            ps.setDouble(10, subject.getOriginalPrice());
+            ps.setDouble(11, subject.getSalePrice());
+            ps.setInt(12, subject.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

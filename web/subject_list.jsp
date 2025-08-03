@@ -200,7 +200,7 @@
                     var nameCheckbox = document.querySelector('input.column-toggle[value="col-name"]');
 
                     if (!nameCheckbox.checked) {
-                        alert(" [Name] cannot be hidden. Please keep it.");
+                        alert(" [Title] cannot be hidden. Please keep it.");
                         nameCheckbox.checked = true;
                         toggleColumn("col-name", nameCheckbox);
                         return;
@@ -221,8 +221,8 @@
             <label>Status:</label>
             <select name="status">
                 <option value="" ${empty param.status ? 'selected' : ''}>All</option>
-                <option value="Show" ${param.status == 'Show' ? 'selected' : ''}>Show</option>
-                <option value="Hide" ${param.status == 'Hide' ? 'selected' : ''}>Hide</option>
+                <option value="Show" ${param.status == 'published' ? 'selected' : ''}>Published</option>
+                <option value="Hide" ${param.status == 'un-published' ? 'selected' : ''}>Unpublished</option>
             </select>
 
             <label>Category:</label>
@@ -245,37 +245,38 @@
         <div>
             <label>Filter by:</label>
             <label><input type="checkbox" class="column-toggle" value="col-id" checked/> ID</label>
-            <label><input type="checkbox" class="column-toggle" value="col-name" checked/> Name</label>
+            <label><input type="checkbox" class="column-toggle" value="col-name" checked/> Title</label>
             <label><input type="checkbox" class="column-toggle" value="col-category" checked/> Category</label>
-            <label><input type="checkbox" class="column-toggle" value="col-lessons" checked/> Number Of Lesson</label>
-            <label><input type="checkbox" class="column-toggle" value="col-owner" checked/> Owner</label>
+            <label><input type="checkbox" class="column-toggle" value="col-lessons" checked/> BriefInfo</label>
+            <label><input type="checkbox" class="column-toggle" value="col-owner" checked/> OriginalPrice</label>
             <label><input type="checkbox" class="column-toggle" value="col-status" checked/> Status</label>
         </div>
 
         <a href="add-subject" class="add-btn">+ Add new subject</a>
 
+        <!--ID,Title, Category, BriefInfo, OriginalPrice,Status,-->
         <table>
             <thead>
                 <tr>
                     <th class="col-id">ID</th>
-                    <th class="col-name">Name</th>
+                    <th class="col-name">Title</th>
                     <th class="col-category">Category</th>
-                    <th class="col-lessons">Number of Lesson</th>
-                    <th class="col-owner">Owner</th>
+                    <th class="col-lessons">Brief Info</th>
+                    <th class="col-owner">Original Price</th>
                     <th class="col-status">Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="subject" items="${subjectList}">
+                <c:forEach var="subject" items="${subjectPackage}">
                     <tr>
-                        <td class="col-id">${subject.id}</td>
-                        <td class="col-name">${subject.name}</td>
-                        <td class="col-category">${subject.category}</td>
-                        <td class="col-lessons">${subject.lessons}</td>
-                        <td class="col-owner">${subject.owner}</td>
-                        <td class="col-status">${subject.status}</td>
-                        <td><a href="edit-subject?id=${subject.id}">👁️</a></td>
+                        <td class="col-id">${subject.getId()}</td>
+                        <td class="col-name">${subject.getTitle()}</td>
+                        <td class="col-category">${subject.getCategory()}</td>
+                        <td class="col-lessons">${subject.getBriefInfo()}</td>
+                        <td class="col-owner">${subject.getOriginalPrice()}</td>
+                        <td class="col-status">${subject.getStatus()}</td>
+                        <td><a href="edit-subject?id=${subject.getId()}">👁️</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -288,5 +289,10 @@
             <a href="subject-list2?page=${currentPage+1}&status=${param.status}&category=${param.category}&lines=${param.lines}&search=${param.search}">>></a>
         </div>
     </form>
+    <script>
+        // Embed Java value into JavaScript
+            const username = '<%= request.getAttribute("subjectPackage") %>';
+        console.log("Username from Servlet:", username);
+    </script>
 </body>
 </html>
