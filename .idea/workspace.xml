@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="fix 25/7">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_07_2025_9_31_SA_[Changes]1/EducationPlatform.war" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_07_2025_9_31_SA_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_07_2025_9_31_SA__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/BasicDAO/SubjectListDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/constant/ServerConnectionInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Question.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuestionAnswer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/Quiz.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/QuizResult.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/elearning/entities/SubjectPackage.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/elearning/controller/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/elearning/controller/Login.java" afterDir="false" />
-    </list>
+    <list default="true" id="6d5eb93b-b3fc-4652-a53c-7eb06e1644dd" name="Changes" comment="fix 25/7" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,24 +41,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -130,6 +116,7 @@
     <MESSAGE value="Fix Blog" />
     <MESSAGE value="Phân role" />
     <MESSAGE value="fix 25/7" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix 25/7" />
+    <MESSAGE value="fix &amp; update" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix &amp; update" />
   </component>
 </project>
