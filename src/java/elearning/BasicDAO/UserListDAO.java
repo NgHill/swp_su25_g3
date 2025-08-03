@@ -38,6 +38,7 @@ public class UserListDAO {
                             rs.getInt("Gender"), 
                             rs.getString("Email"), 
                             rs.getString("Mobile"), 
+                            rs.getString("Password"),  // Thêm Password
                             rs.getString("Role"), 
                             rs.getString("Status")
                     );
@@ -122,6 +123,7 @@ public class UserListDAO {
                         rs.getInt("Gender"),
                         rs.getString("Email"),
                         rs.getString("Mobile"),
+                        rs.getString("Password"),  // Thêm Password
                         rs.getString("Role"),
                         rs.getString("Status")
                     );
@@ -136,7 +138,7 @@ public class UserListDAO {
     }
     
     public boolean addUser(UserList user) {
-        String sql = "INSERT INTO Users (FullName, Gender, Email, Mobile, Role, Status) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (FullName, Gender, Email, Mobile, Password, Role, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ServerConnectionInfo.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -145,8 +147,9 @@ public class UserListDAO {
             stmt.setInt(2, user.getGender());
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getMobile());
-            stmt.setString(5, user.getRole());
-            stmt.setString(6, user.getStatus());
+            stmt.setString(5, user.getPassword());
+            stmt.setString(6, user.getRole());
+            stmt.setString(7, user.getStatus());
 
             int result = stmt.executeUpdate();
             return result > 0;
@@ -174,6 +177,7 @@ public class UserListDAO {
                         rs.getInt("Gender"), 
                         rs.getString("Email"),
                         rs.getString("Mobile"),
+                        rs.getString("Password"),  // Thêm Password
                         rs.getString("Role"),
                         rs.getString("Status")
                     );
@@ -205,4 +209,3 @@ public class UserListDAO {
         }
     }
 }
-

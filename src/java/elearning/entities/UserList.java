@@ -14,18 +14,20 @@ public class UserList {
     private int gender;
     private String email;
     private String mobile;
+    private String password;
     private String role;
     private String status;
 
     public UserList() {
     }
 
-    public UserList(int id, String fullName, int gender, String email, String mobile, String role, String status) {
+    public UserList(int id, String fullName, int gender, String email, String mobile, String password, String role, String status) {
         this.id = id;
         this.fullName = fullName;
         this.gender = gender;
         this.email = email;
         this.mobile = mobile;
+        this.password = password;
         this.role = role;
         this.status = status;
     }
@@ -70,6 +72,14 @@ public class UserList {
         this.mobile = mobile;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getRole() {
         return role;
     }
@@ -85,6 +95,5 @@ public class UserList {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
+
 }

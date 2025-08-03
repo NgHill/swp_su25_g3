@@ -5,14 +5,17 @@
 
 package elearning.controller;
 
+import elearning.BasicDAO.ProfileDAO;
 import elearning.BasicDAO.UserListDAO;
 import elearning.anotation.AccessRoles;
+import elearning.entities.Profile;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -22,6 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserDetails extends HttpServlet {
 
     private final UserListDAO userlistDAO = new UserListDAO();
+    private final ProfileDAO profileDAO = new ProfileDAO();
     
     @Override
     @AccessRoles(roles = "admin")
@@ -50,8 +54,28 @@ public class UserDetails extends HttpServlet {
                 return;
             }
             
+            // Lấy thông tin profile để có avatar
+            List<Profile> profiles = profileDAO.getProfileById(userId);
+            if (!profiles.isEmpty()) {
+                request.setAttribute("profile", profiles.get(0));
+            }
+            
             // Gửi dữ liệu user về JSP
             request.setAttribute("user", user);
+            
+            // Kiểm tra và hiển thị thông báo từ session
+            String successMessage = (String) request.getSession().getAttribute("successMessage");
+            String errorMessage = (String) request.getSession().getAttribute("errorMessage");
+
+            if (successMessage != null) {
+                request.setAttribute("successMessage", successMessage);
+                request.getSession().removeAttribute("successMessage");
+            }
+
+            if (errorMessage != null) {
+                request.setAttribute("errorMessage", errorMessage);
+                request.getSession().removeAttribute("errorMessage");
+            }
             
             // Forward đến trang hiển thị chi tiết
             request.getRequestDispatcher("userDetails.jsp").forward(request, response);
@@ -66,8 +90,51 @@ public class UserDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        // Redirect POST requests to GET
-        doGet(request, response);
+
+        String action = request.getParameter("action");
+        String userIdStr = request.getParameter("userId");
+
+        if (userIdStr == null || userIdStr.trim().isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/userlist");
+            return;
+        }
+
+        try {
+            int userId = Integer.parseInt(userIdStr);
+            boolean success = false;
+
+            if ("updateRole".equals(action)) {
+                String newRole = request.getParameter("role");
+                if (newRole != null && !newRole.trim().isEmpty()) {
+                    // Lấy status hiện tại để không bị thay đổi
+                    elearning.entities.UserList currentUser = userlistDAO.getUserById(userId);
+                    if (currentUser != null) {
+                        success = userlistDAO.updateUserRoleStatus(userId, newRole, currentUser.getStatus());
+                    }
+                }
+            } else if ("updateStatus".equals(action)) {
+                String newStatus = request.getParameter("status");
+                if (newStatus != null && !newStatus.trim().isEmpty()) {
+                    // Lấy role hiện tại để không bị thay đổi
+                    elearning.entities.UserList currentUser = userlistDAO.getUserById(userId);
+                    if (currentUser != null) {
+                        success = userlistDAO.updateUserRoleStatus(userId, currentUser.getRole(), newStatus);
+                    }
+                }
+            }
+
+            if (success) {
+                request.getSession().setAttribute("successMessage", "Cập nhật thành công!");
+            } else {
+                request.getSession().setAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật!");
+            }
+
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+        }
+
+        // Redirect về trang user details
+        response.sendRedirect(request.getContextPath() + "/userdetails?id=" + userIdStr);
     }
 
     @Override

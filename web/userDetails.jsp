@@ -242,10 +242,13 @@
         .action-buttons {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 15px;
             margin-top: 30px;
             padding-top: 30px;
             border-top: 1px solid #ecf0f1;
+            width: 100%;
+            text-align: center;
         }
 
         /* Logout button styling */
@@ -286,6 +289,68 @@
                 transform: translateX(-100%);
             }
         }
+        
+        /* Inline edit form styles */
+        .inline-edit-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inline-edit-form select {
+            padding: 8px 12px;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            min-width: 120px;
+        }
+
+        .inline-edit-form .btn-save-inline {
+            background-color: #27ae60;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .inline-edit-form .btn-cancel-inline {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .edit-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .edit-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        .role-courseContent {
+            background-color: #e8f5e8;
+            color: #2d5016;
+            border: 1px solid #c3e6c3;
+        }
+
+        .role-mkt {
+            background-color: #fff0e6;
+            color: #8b4513;
+            border: 1px solid #ffd4b3;
+        }
     </style>
 </head>
 <body>
@@ -314,14 +379,31 @@
             </div>
         </header>
 
+        <!-- Thông báo thành công/lỗi -->
+        <c:if test="${not empty successMessage}">
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+                ${successMessage}
+            </div>
+        </c:if>
+
+        <c:if test="${not empty errorMessage}">
+            <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+                ${errorMessage}
+            </div>
+        </c:if>
+            
         <!-- User Details Card -->
         <div class="user-details-card">
             <!-- Card Header with Avatar -->
             <div class="card-header">
                 <div class="avatar-container">
                     <div class="avatar">
-                        <!-- Generate avatar from first letter of name -->
                         <c:choose>
+                            <c:when test="${not empty profile.avatar}">
+                                <img src="${pageContext.request.contextPath}/avatar/${profile.avatar}" 
+                                     alt="User Avatar" 
+                                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </c:when>
                             <c:when test="${not empty user.fullName}">
                                 ${user.fullName.substring(0,1).toUpperCase()}
                             </c:when>
@@ -391,17 +473,41 @@
                         <div class="info-label">Role</div>
                         <div class="info-value">
                             <c:choose>
-                                <c:when test="${user.role == 'admin'}">
-                                    <span class="role-badge role-admin">Admin</span>
-                                </c:when>
-                                <c:when test="${user.role == 'customer'}">
-                                    <span class="role-badge role-customer">Customer</span>
-                                </c:when>
-                                <c:when test="${user.role == 'teacher'}">
-                                    <span class="role-badge role-teacher">Teacher</span>
+                                <c:when test="${param.editRole == 'true'}">
+                                    <!-- Form edit role -->
+                                    <form method="post" action="${pageContext.request.contextPath}/userdetails" class="inline-edit-form">
+                                        <input type="hidden" name="action" value="updateRole">
+                                        <input type="hidden" name="userId" value="${user.id}">
+                                        <select name="role" required>
+                                            <option value="admin" ${user.role == 'admin' ? 'selected' : ''}>Admin</option>
+                                            <option value="customer" ${user.role == 'customer' ? 'selected' : ''}>Customer</option>
+                                            <option value="courseContent" ${user.role == 'courseContent' ? 'selected' : ''}>Course Content</option>
+                                            <option value="mkt" ${user.role == 'mkt' ? 'selected' : ''}>Marketing</option>
+                                        </select>
+                                        <button type="submit" class="btn-save-inline">Save</button>
+                                        <a href="${pageContext.request.contextPath}/userdetails?id=${user.id}" class="btn-cancel-inline">Cancel</a>
+                                    </form>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="role-badge">${user.role}</span>
+                                    <!-- Hiển thị role -->
+                                    <c:choose>
+                                       <c:when test="${user.role == 'admin'}">
+                                           <span class="role-badge role-admin">Admin</span>
+                                       </c:when>
+                                       <c:when test="${user.role == 'customer'}">
+                                           <span class="role-badge role-customer">Customer</span>
+                                       </c:when>
+                                       <c:when test="${user.role == 'courseContent'}">
+                                           <span class="role-badge role-courseContent">Course Content</span>
+                                       </c:when>
+                                       <c:when test="${user.role == 'mkt'}">
+                                           <span class="role-badge role-mkt">Marketing</span>
+                                       </c:when>
+                                       <c:otherwise>
+                                           <span class="role-badge">${user.role}</span>
+                                       </c:otherwise>
+                                   </c:choose>
+                                    <a href="${pageContext.request.contextPath}/userdetails?id=${user.id}&editRole=true" class="edit-link">✏️ Edit</a>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -409,20 +515,38 @@
 
                     <!-- Status -->
                     <div class="info-item">
-                        <div class="info-label">Account Status</div>
-                        <div class="info-value">
-                            <c:choose>
-                                <c:when test="${user.status == 'active'}">
-                                    <span class="status-badge status-active">Active</span>
-                                </c:when>
-                                <c:when test="${user.status == 'inactive'}">
-                                    <span class="status-badge status-inactive">Inactive</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span class="status-badge">${user.status}</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                    <div class="info-label">Account Status</div>
+                    <div class="info-value">
+                        <c:choose>
+                            <c:when test="${param.editStatus == 'true'}">
+                                <!-- Form edit status -->
+                                <form method="post" action="${pageContext.request.contextPath}/userdetails" class="inline-edit-form">
+                                    <input type="hidden" name="action" value="updateStatus">
+                                    <input type="hidden" name="userId" value="${user.id}">
+                                    <select name="status" required>
+                                        <option value="active" ${user.status == 'active' ? 'selected' : ''}>Active</option>
+                                        <option value="inactive" ${user.status == 'inactive' ? 'selected' : ''}>Inactive</option>
+                                    </select>
+                                    <button type="submit" class="btn-save-inline">Save</button>
+                                    <a href="${pageContext.request.contextPath}/userdetails?id=${user.id}" class="btn-cancel-inline">Cancel</a>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <!-- Hiển thị status -->
+                                <c:choose>
+                                    <c:when test="${user.status == 'active'}">
+                                        <span class="status-badge status-active">Active</span>
+                                    </c:when>
+                                    <c:when test="${user.status == 'inactive'}">
+                                        <span class="status-badge status-inactive">Inactive</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="status-badge">${user.status}</span>
+                                    </c:otherwise>
+                                </c:choose>
+                                <a href="${pageContext.request.contextPath}/userdetails?id=${user.id}&editStatus=true" class="edit-link">✏️ Edit</a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
 

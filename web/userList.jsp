@@ -377,12 +377,16 @@
 
         .modal-content {
             background-color: white;
-            margin: 5% auto;
+            margin: 2% auto;
             padding: 20px;
             border-radius: 8px;
             width: 500px;
             max-width: 90%;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            top: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-header {
@@ -553,9 +557,10 @@
                             <div>Role:</div>
                             <select name="roleFilter">
                                 <option value="A" <c:if test="${roleFilter == 'A' || roleFilter == null}">selected</c:if>>All</option>
-                                <option value="admin" <c:if test="${roleFilter == 'Admin'}">selected</c:if>>Admin</option>
-                                <option value="customer" <c:if test="${roleFilter == 'Customer'}">selected</c:if>>Customer</option>
-                                <option value="teacher" <c:if test="${roleFilter == 'teacher'}">selected</c:if>>Teacher</option>
+                                <option value="admin" <c:if test="${roleFilter == 'admin'}">selected</c:if>>Admin</option>
+                                <option value="customer" <c:if test="${roleFilter == 'customer'}">selected</c:if>>Customer</option>
+                                <option value="courseContent" <c:if test="${roleFilter == 'courseContent'}">selected</c:if>>Course Content</option>
+                                <option value="mkt" <c:if test="${roleFilter == 'mkt'}">selected</c:if>>Marketing</option>
                             </select>
                         </label>
                             <input type="hidden" name="sortBy" value="${sortBy}" />
@@ -692,8 +697,15 @@
                                     </c:choose>
                                 </td>
                                 <td class="col-email">${u.email}</td>
-                                <td class="col-phone">${u.mobile}</td>
-                                <td class="col-role">${u.role}</td>
+                                <td class="col-phone">${u.mobile}</td><td class="col-role">
+                                    <c:choose>
+                                        <c:when test="${u.role == 'admin'}">Admin</c:when>
+                                        <c:when test="${u.role == 'customer'}">Customer</c:when>
+                                        <c:when test="${u.role == 'courseContent'}">Course Content</c:when>
+                                        <c:when test="${u.role == 'mkt'}">Marketing</c:when>
+                                        <c:otherwise>${u.role}</c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td class="col-status">${u.status}</td>
                                 <td class="col-action">
                                      <a href="${pageContext.request.contextPath}/userdetails?id=${u.id}" class="view-btn">View</a>
@@ -744,13 +756,22 @@
                                         <div class="error-message">${mobileError}</div>
                                     </c:if>
                                 </div>
+                                    
+                                <div class="form-group">
+                                    <label for="password">Password:</label>
+                                    <input type="password" id="password" name="password" value="${inputPassword}" required>
+                                    <c:if test="${not empty passwordError}">
+                                        <div class="error-message">${passwordError}</div>
+                                    </c:if>
+                                </div>
 
                                 <div class="form-group">
                                     <label for="role">Role:</label>
                                     <select id="role" name="role" required>
                                         <option value="admin" ${inputRole == 'admin' ? 'selected' : ''}>Admin</option>
                                         <option value="customer" ${inputRole == 'customer' ? 'selected' : ''}>Customer</option>
-                                        <option value="teacher" ${inputRole == 'teacher' ? 'selected' : ''}>Teacher</option>
+                                        <option value="courseContent" ${inputRole == 'courseContent' ? 'selected' : ''}>Course Content</option>
+                                        <option value="mkt" ${inputRole == 'mkt' ? 'selected' : ''}>Marketing</option>
                                     </select>
                                 </div>
 
@@ -787,9 +808,10 @@
                                 <div class="form-group">
                                     <label for="editRole">Role:</label>
                                     <select id="editRole" name="role" required>
-                                        <option value="admin">admin</option>
-                                        <option value="customer">customer</option>
-                                        <option value="teacher">teacher</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="customer">Customer</option>
+                                        <option value="courseContent">Course Content</option>
+                                        <option value="mkt">Marketing</option>
                                     </select>
                                 </div>
 
