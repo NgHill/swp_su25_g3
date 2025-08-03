@@ -1,26 +1,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">    
-    <title>User List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details - Stimulation Exam</title>
     <style>
-        /* RESET & BODY LAYOUT */
-        * {
+        /* Định dạng tổng thể */
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #f4f4f4;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            min-height: 100vh;
+        html, body {
+            height: 100%;
         }
 
-        /* SIDEBAR */
+        /* Sidebar */
         .sidebar {
             width: 200px;
             background-color: #34495e;
@@ -32,13 +33,11 @@
             top: 0;
             transition: transform 0.3s ease-in-out;
         }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
+       
         .sidebar ul {
             list-style: none;
+            padding: 0;
+            margin-top: 100px;
         }
 
         .sidebar ul li {
@@ -57,560 +56,400 @@
             color: #bdc3c7;
         }
 
-        /* MAIN CONTENT */
+        /* Nội dung chính */
         main {
-            flex: 1;
-            margin-left: 200px;
-            transition: margin-left 0.3s ease-in-out;
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 240px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            background-color: #277AB0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Back button */
+        .back-btn {
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        /* User Details Card */
+        .user-details-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .avatar-container {
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 48px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .user-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .user-id {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 5px 0 0 0;
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .info-item {
             display: flex;
             flex-direction: column;
         }
 
-        .sidebar.hidden + main {
-            margin-left: 0;
-        }
-
-        /* HEADER */
-        header {
-            position: relative;
-            background-color: #277AB0;
-            color: white;
-            padding: 15px 20px;
-            height: 60px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #toggleSidebar {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #34495e;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        #toggleSidebar:hover {
-            background-color: #2c3e50;
-            transform: translateY(-50%) scale(1.05);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-title {
-            text-align: center;
-            font-size: 24px;
+        .info-label {
+            font-size: 14px;
             font-weight: bold;
-            line-height: 60px;
-        }
-
-        /* USER LIST CONTENT */
-        .userlist-content {
-            flex: 1;
-            background-color: #e8e8e8;
-            padding: 40px;
-            min-height: calc(100vh - 70px);
-        }
-
-        .userlist-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        /* SEARCH AND FILTER */
-        .search-filter-section {
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .search-filter-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .search-group {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .search-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .filter-group select {
-            padding: 10px;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 14px;
-            background-color: white;
-        }
-
-        .search-btn {
-            padding: 10px 20px;
-            background-color: #277AB0;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .search-btn:hover {
-            background-color: #1e5f87;
-        }
-
-        /* TABLE */
-        .user-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0;
-        }
-
-        .user-table thead {
-            background-color: #34495e;
-            color: white;
-        }
-
-        .user-table th,
-        .user-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .user-table th {
-            font-weight: bold;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .user-table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        /* AVATAR IN TABLE */
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #3498db;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-details h4 {
-            margin: 0 0 5px 0;
-            color: #2c3e50;
-            font-size: 16px;
-        }
-
-        .user-details p {
-            margin: 0;
             color: #7f8c8d;
-            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
         }
 
-        /* STATUS BADGES */
+        .info-value {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 500;
+            padding: 12px 16px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        /* Status badge */
         .status-badge {
-            padding: 5px 12px;
+            display: inline-block;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .status-active {
             background-color: #d4edda;
             color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
         .status-inactive {
             background-color: #f8d7da;
             color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        /* ROLE BADGES */
+        /* Role badge */
         .role-badge {
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .role-admin {
-            background-color: #dc3545;
-            color: white;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .role-customer {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
         }
 
         .role-teacher {
-            background-color: #28a745;
-            color: white;
+            background-color: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
         }
 
-        .role-student {
-            background-color: #007bff;
-            color: white;
-        }
-
-        /* GENDER ICONS */
-        .gender-icon {
-            font-size: 16px;
-            margin-right: 5px;
-        }
-
-        .gender-male {
-            color: #3498db;
-        }
-
-        .gender-female {
-            color: #e91e63;
-        }
-
-        .gender-other {
-            color: #95a5a6;
-        }
-
-        /* ACTION BUTTONS */
-        .action-buttons {
+        /* Gender display */
+        .gender-display {
             display: flex;
+            align-items: center;
             gap: 8px;
         }
 
-        .btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
+        .gender-icon {
+            font-size: 20px;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        /* Logout button styling */
+        .logout-container {
+            position: absolute;
+            bottom: 70px;
+            width: calc(100% - 40px);
+        }
+
+        .logout-btn {
+            color: white;
             text-decoration: none;
-            display: inline-block;
+            display: block;
+            padding: 10px;
+            background-color: #e74c3c;
+            border-radius: 5px;
             text-align: center;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
         }
 
-        .btn-view {
-            background-color: #17a2b8;
-            color: white;
+        .logout-btn:hover {
+            background-color: #c0392b;
         }
 
-        .btn-edit {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn:hover {
-            opacity: 0.8;
-            transform: translateY(-1px);
-        }
-
-        /* PAGINATION */
-        .pagination {
-            padding: 20px;
-            text-align: center;
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .pagination a,
-        .pagination span {
-            display: inline-block;
-            padding: 8px 12px;
-            margin: 0 4px;
-            text-decoration: none;
-            border: 1px solid #dee2e6;
-            color: #277AB0;
-            border-radius: 4px;
-        }
-
-        .pagination a:hover {
-            background-color: #e9ecef;
-        }
-
-        .pagination .current {
-            background-color: #277AB0;
-            color: white;
-            border-color: #277AB0;
-        }
-
-        /* MESSAGE NOTIFICATION */
-        .message {
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            border-radius: 4px;
-        }
-
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
-        }
-
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-left: 5px solid #dc3545;
-        }
-
-        /* RESPONSIVE */
+        /* Responsive design */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                transform: translateX(-100%);
+            .info-grid {
+                grid-template-columns: 1fr;
             }
-
+            
             main {
                 margin-left: 0;
+                padding: 10px;
             }
-
-            .search-filter-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .user-table {
-                font-size: 12px;
-            }
-
-            .user-table th,
-            .user-table td {
-                padding: 8px;
-            }
-
-            .user-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .user-avatar {
-                width: 40px;
-                height: 40px;
+            
+            .sidebar {
+                transform: translateX(-100%);
             }
         }
-
     </style>
 </head>
 <body>
+
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <ul>
-            <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
-            <li><a href="<%= request.getContextPath() %>/subject">Subject</a></li>
-            <li><a href="<%= request.getContextPath() %>/userlist">User List</a></li>
-            <li><a href="<%= request.getContextPath() %>/settings">Setting</a></li>
+            <li><a href="${pageContext.request.contextPath}/userlist">User List</a></li>
+            <li><a href="${pageContext.request.contextPath}/settinglist">Setting</a></li>
         </ul>
+
+        <!-- Logout button at the bottom -->
+        <div class="logout-container">
+            <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
+                🔓 Logout
+            </a>
+        </div>
     </nav>
 
     <main>
         <!-- Header -->
         <header>
-            <a href="#" id="toggleSidebar">☰ Toggle Sidebar</a>
-            <h1 class="header-title">User Management</h1>
+            <div class="logo">
+                <img src="${pageContext.request.contextPath}/IMAGE/WEB-logo.png" alt="Logo" style="height: 90px; vertical-align: middle; margin-right: 8px;">
+                User Details
+            </div>
         </header>
 
-        <!-- User List Content -->
-        <div class="userlist-content">
-            <div class="userlist-container">
-                
-                <!-- Search and Filter Section -->
-                <div class="search-filter-section">
-                    <form class="search-filter-row" method="get" action="<%= request.getContextPath() %>/userlist">
-                        <div class="search-group">
-                            <input type="text" name="search" placeholder="Search by name, email, or username..." value="${param.search}">
-                        </div>
-                        <div class="filter-group">
-                            <select name="role">
-                                <option value="">All Roles</option>
-                                <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
-                                <option value="teacher" ${param.role == 'teacher' ? 'selected' : ''}>Teacher</option>
-                                <option value="student" ${param.role == 'student' ? 'selected' : ''}>Student</option>
-                            </select>
-                            <select name="status">
-                                <option value="">All Status</option>
-                                <option value="active" ${param.status == 'active' ? 'selected' : ''}>Active</option>
-                                <option value="inactive" ${param.status == 'inactive' ? 'selected' : ''}>Inactive</option>
-                                <option value="pending" ${param.status == 'pending' ? 'selected' : ''}>Pending</option>
-                            </select>
-                            <button type="submit" class="search-btn">Search</button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Success/Error Messages -->
-                <c:if test="${not empty message}">
-                    <div class="message success">
-                        ${message}
-                    </div>
-                </c:if>
-                
-                <c:if test="${not empty error}">
-                    <div class="message error">
-                        ${error}
-                    </div>
-                </c:if>
-
-                <!-- User Table -->
-                <table class="user-table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Contact</th>
-                            <th>Gender</th>
-                            <th>Role</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="user" items="${userList}">
-                            <tr>
-                                <!-- User Info (Avatar + Name) -->
-                                <td>
-                                    <div class="user-info">
-                                        <img src="<%= request.getContextPath() %>/${not empty user.avatar ? user.avatar : 'images/default-avatar.png'}" 
-                                             alt="Avatar" class="user-avatar">
-                                        <div class="user-details">
-                                            <h4>${user.fullName}</h4>
-                                            <p>@${user.username}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                
-                                <!-- Contact Info -->
-                                <td>
-                                    <div>
-                                        <div>${user.email}</div>
-                                        <div style="margin-top: 5px; color: #7f8c8d; font-size: 13px;">
-                                            ${not empty user.mobile ? user.mobile : 'N/A'}
-                                        </div>
-                                    </div>
-                                </td>
-                                
-                                <!-- Gender -->
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${user.gender == '1'}">
-                                            <span class="gender-icon gender-male">♂</span>Male
-                                        </c:when>
-                                        <c:when test="${user.gender == '0'}">
-                                            <span class="gender-icon gender-female">♀</span>Female
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="gender-icon gender-other">⚧</span>Other
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                
-                                <!-- Role -->
-                                <td>
-                                    <span class="role-badge role-${user.role}">
-                                        ${user.role}
-                                    </span>
-                                </td>
-                                
-                                <!-- Address -->
-                                <td>
-                                    <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                        ${not empty user.address ? user.address : 'Not provided'}
-                                    </div>
-                                </td>
-                                
-                                <!-- Status -->
-                                <td>
-                                    <span class="status-badge status-${user.status}">
-                                        ${user.status}
-                                    </span>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        
-                        <!-- Empty state -->
-                        <c:if test="${empty userList}">
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 40px; color: #7f8c8d;">
-                                    <h3>No users found</h3>
-                                    <p>Try adjusting your search criteria</p>
-                                </td>
-                            </tr>
-                        </c:if>
-                    </tbody>
-                </table>
-
-                <!-- Pagination -->
-                <div class="pagination">
-                    <c:if test="${currentPage > 1}">
-                        <a href="?page=${currentPage - 1}&search=${param.search}&role=${param.role}&status=${param.status}">&laquo; Previous</a>
-                    </c:if>
-                    
-                    <c:forEach begin="1" end="${totalPages}" var="i">
+        <!-- User Details Card -->
+        <div class="user-details-card">
+            <!-- Card Header with Avatar -->
+            <div class="card-header">
+                <div class="avatar-container">
+                    <div class="avatar">
+                        <!-- Generate avatar from first letter of name -->
                         <c:choose>
-                            <c:when test="${i == currentPage}">
-                                <span class="current">${i}</span>
+                            <c:when test="${not empty user.fullName}">
+                                ${user.fullName.substring(0,1).toUpperCase()}
                             </c:when>
                             <c:otherwise>
-                                <a href="?page=${i}&search=${param.search}&role=${param.role}&status=${param.status}">${i}</a>
+                                ?
                             </c:otherwise>
                         </c:choose>
-                    </c:forEach>
-                    
-                    <c:if test="${currentPage < totalPages}">
-                        <a href="?page=${currentPage + 1}&search=${param.search}&role=${param.role}&status=${param.status}">Next &raquo;</a>
-                    </c:if>
+                    </div>
+                </div>
+                <h1 class="user-name">${user.fullName}</h1>
+                <p class="user-id">User ID: #${user.id}</p>
+            </div>
+
+            <div class="card-body">
+                <div class="info-grid">
+                    <!-- Full Name -->
+                    <div class="info-item">
+                        <div class="info-label">Full Name</div>
+                        <div class="info-value">${user.fullName}</div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="info-item">
+                        <div class="info-label">Gender</div>
+                        <div class="info-value">
+                            <div class="gender-display">
+                                <c:choose>
+                                    <c:when test="${user.gender == 0}">
+                                        <span class="gender-icon">♀</span>
+                                        <span>Female</span>
+                                    </c:when>
+                                    <c:when test="${user.gender == 1}">
+                                        <span class="gender-icon">♂</span>
+                                        <span>Male</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="gender-icon">?</span>
+                                        <span>Unknown</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="info-item">
+                        <div class="info-label">Email Address</div>
+                        <div class="info-value">
+                            <a href="mailto:${user.email}" style="color: #3498db; text-decoration: none;">
+                                ${user.email}
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile -->
+                    <div class="info-item">
+                        <div class="info-label">Mobile Phone</div>
+                        <div class="info-value">
+                            <a href="tel:${user.mobile}" style="color: #3498db; text-decoration: none;">
+                                ${user.mobile}
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Role -->
+                    <div class="info-item">
+                        <div class="info-label">Role</div>
+                        <div class="info-value">
+                            <c:choose>
+                                <c:when test="${user.role == 'admin'}">
+                                    <span class="role-badge role-admin">Admin</span>
+                                </c:when>
+                                <c:when test="${user.role == 'customer'}">
+                                    <span class="role-badge role-customer">Customer</span>
+                                </c:when>
+                                <c:when test="${user.role == 'teacher'}">
+                                    <span class="role-badge role-teacher">Teacher</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="role-badge">${user.role}</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="info-item">
+                        <div class="info-label">Account Status</div>
+                        <div class="info-value">
+                            <c:choose>
+                                <c:when test="${user.status == 'active'}">
+                                    <span class="status-badge status-active">Active</span>
+                                </c:when>
+                                <c:when test="${user.status == 'inactive'}">
+                                    <span class="status-badge status-inactive">Inactive</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="status-badge">${user.status}</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="${pageContext.request.contextPath}/userlist" class="back-btn">
+                        ← Back to List
+                    </a>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        document.getElementById("toggleSidebar").addEventListener("click", function (e) {
-            e.preventDefault();
-            document.querySelector(".sidebar").classList.toggle("hidden");
+        // Thêm hiệu ứng fade in cho card
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.querySelector('.user-details-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
         });
-
-        // Auto-hide success messages after 3 seconds
-        setTimeout(function() {
-            const successMessages = document.querySelectorAll('.message.success');
-            successMessages.forEach(function(msg) {
-                msg.style.display = 'none';
-            });
-        }, 3000);
     </script>
+
 </body>
 </html>

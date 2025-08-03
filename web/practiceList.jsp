@@ -316,7 +316,7 @@
             .new-practice {
                 background-color: white;
                 padding: 30px;
-                margin-top: 300px;
+                margin-top: 180px;
                 border-radius: 15px;
                 box-shadow: 0 8px 32px rgba(0,0,0,.1);
                 backdrop-filter: blur(10px);
