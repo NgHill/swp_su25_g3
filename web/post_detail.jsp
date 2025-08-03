@@ -12,36 +12,89 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
         <style>
-            /* Các quy tắc CSS để định dạng giao diện của form Post Detail */
             body {
-                padding: 25px;
-                font-family: Arial, sans-serif;
+                background-color: #f3e8ff; /* tím nhạt */
+                padding: 30px;
+                font-family: 'Segoe UI', sans-serif;
                 font-size: 16px;
+                color: #333;
             }
 
             h2 {
-                font-weight: bold;
-                font-size: 28px;
+                font-weight: 700;
+                font-size: 32px;
+                color: #5a189a; /* đậm hơn nền */
+                margin-bottom: 25px;
             }
 
             label {
                 font-weight: 600;
-                margin-bottom: 5px;
+                margin-bottom: 6px;
+                color: #4b0082;
+            }
+
+            .form-control,
+            .form-select {
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                padding: 10px;
+                box-shadow: none;
+                transition: border 0.3s ease;
+            }
+
+            .form-control:focus,
+            .form-select:focus {
+                border-color: #9d4edd;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.2);
             }
 
             .form-section {
-                margin-bottom: 20px;
+                background-color: #fff;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 25px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             }
 
             .thumbnail-box {
                 width: 140px;
                 height: 140px;
-                border: 1px solid #ccc;
+                border: 2px dashed #aaa;
+                border-radius: 8px;
+                background-color: #fafafa;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-size: 13px;
                 margin-bottom: 10px;
+                color: #777;
+            }
+
+            .btn {
+                border-radius: 8px;
+                padding: 8px 16px;
+                font-weight: 500;
+            }
+
+            .btn-outline-dark {
+                border-color: #6c757d;
+                color: #6c757d;
+            }
+
+            .btn-outline-dark:hover {
+                background-color: #6c757d;
+                color: white;
+            }
+
+            .btn-primary {
+                background-color: #7b2cbf;
+                border-color: #7b2cbf;
+            }
+
+            .btn-primary:hover {
+                background-color: #5a189a;
+                border-color: #5a189a;
             }
 
             .form-footer {
@@ -49,19 +102,72 @@
                 justify-content: space-between;
                 align-items: end;
                 flex-wrap: wrap;
-                gap: 15px;
+                gap: 20px;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             }
 
             .form-footer .right .btn {
-                width: 100px;
+                width: 110px;
             }
+
+            .form-check-input:checked {
+                background-color: #9d4edd;
+                border-color: #9d4edd;
+            }
+
+            .form-check-label {
+                color: #4b0082;
+            }
+
+            select option {
+                background: #fff;
+            }
+            /* Nút Back */
+            .btn-back {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                border: 2px solid #9d4edd;
+                background-color: #f3e8ff;
+                color: #6a1b9a;
+                font-weight: 500;
+                font-size: 15px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .btn-back:hover {
+                background-color: #9d4edd;
+                color: #fff;
+                border-color: #7b2cbf;
+                text-decoration: none;
+            }
+
+            .btn-back svg {
+                width: 18px;
+                height: 18px;
+                stroke-width: 2;
+            }
+
         </style>
+
     </head>
 
     <body>
 
         <!-- Nút quay lại trang trước -->
-        <button class="btn btn-outline-dark mb-3" onclick="history.back()">← Back</button>
+        <button class="btn-back mb-3" onclick="history.back()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+        </button>
+
 
         <!-- Tiêu đề form -->
         <h2 class="mb-4">Post Detail</h2>
@@ -111,11 +217,7 @@
                             <input type="date" name="date" class="form-control" required>
                         </div>
 
-                        <!-- Link bài viết -->
-                        <div class="col-md-6">
-                            <label>Link</label>
-                            <input type="url" name="link" class="form-control">
-                        </div>
+
                     </div>
                 </div>
             </div>

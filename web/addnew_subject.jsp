@@ -13,25 +13,75 @@
         <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
         <style>
-            /* ==== Layout tổng thể ==== */
             body {
-                font-family: Arial, sans-serif;
-                padding: 30px;
-                background-color: #f8f9fa;
+                font-family: 'Segoe UI', sans-serif;
+                padding: 40px;
+                background-color: #f3e8ff; /* tím nhạt */
+                color: #333;
             }
 
             h1 {
-                margin-bottom: 20px;
+                font-size: 28px;
+                margin-bottom: 25px;
+                color: #5a189a;
             }
 
+            form {
+                background: #fff;
+                padding: 30px;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(90, 24, 154, 0.1);
+            }
+
+            /* ==== Cột trái/phải ==== */
+            .row {
+                display: flex;
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+
+            .left-col {
+                flex: 1;
+                min-width: 260px;
+            }
+
+            .right-col {
+                flex: 2;
+                min-width: 300px;
+            }
+
+            /* ==== Upload ảnh ==== */
+            .image-box {
+                border: 2px dashed #ccc;
+                border-radius: 10px;
+                text-align: center;
+                padding: 20px;
+                background-color: #faf5ff;
+            }
+
+            .image-box img {
+                max-width: 120px;
+                height: auto;
+                margin-bottom: 12px;
+                border-radius: 8px;
+            }
+
+            .note {
+                color: #c62828;
+                font-size: 13px;
+                margin-top: 6px;
+            }
+
+            /* ==== Trường nhập liệu ==== */
             .form-group {
                 margin-bottom: 20px;
             }
 
             label {
-                font-weight: bold;
+                font-weight: 600;
                 display: block;
-                margin-bottom: 5px;
+                margin-bottom: 6px;
+                color: #4b0082;
             }
 
             input[type="text"],
@@ -39,43 +89,23 @@
             select,
             textarea {
                 width: 100%;
-                padding: 8px;
-                box-sizing: border-box;
+                padding: 10px 14px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                font-size: 14px;
+                outline: none;
             }
 
-            /* ==== Chia 2 cột trái/phải ==== */
-            .row {
-                display: flex;
-                gap: 20px;
+            input[type="file"] {
+                font-size: 13px;
+                margin-top: 6px;
             }
 
-            .left-col {
-                width: 30%;
+            select {
+                background-color: #fff;
             }
 
-            .right-col {
-                width: 70%;
-            }
-
-            /* ==== Hộp upload ảnh ==== */
-            .image-box {
-                border: 1px dashed #aaa;
-                text-align: center;
-                padding: 20px;
-            }
-
-            .image-box img {
-                max-width: 100%;
-                height: auto;
-            }
-
-            .note {
-                color: red;
-                font-size: 12px;
-                margin-top: 5px;
-            }
-
-            /* ==== Công tắc bật tắt Featured ==== */
+            /* ==== Toggle switch ==== */
             .switch {
                 position: relative;
                 display: inline-block;
@@ -97,7 +127,7 @@
                 right: 0;
                 bottom: 0;
                 background-color: #ccc;
-                transition: .4s;
+                transition: 0.4s;
                 border-radius: 25px;
             }
 
@@ -109,19 +139,19 @@
                 left: 3px;
                 bottom: 3px;
                 background-color: white;
-                transition: .4s;
+                transition: 0.4s;
                 border-radius: 50%;
             }
 
             input:checked + .slider {
-                background-color: #007bff;
+                background-color: #7b2cbf;
             }
 
             input:checked + .slider:before {
                 transform: translateX(24px);
             }
 
-            /* ==== Nút điều khiển cuối form ==== */
+            /* ==== Nút điều khiển ==== */
             .buttons {
                 text-align: right;
                 margin-top: 30px;
@@ -130,16 +160,56 @@
             .buttons button {
                 padding: 10px 20px;
                 margin-left: 10px;
-                border: 1px solid #ccc;
-                background-color: white;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 14px;
                 cursor: pointer;
+                transition: all 0.3s ease;
             }
 
             .buttons button[type="submit"] {
-                background-color: #007bff;
+                background-color: #7b2cbf;
                 color: white;
             }
+
+            .buttons button[type="submit"]:hover {
+                background-color: #5a189a;
+            }
+
+            .buttons button[type="button"] {
+                background-color: #e0d4f7;
+                color: #4b0082;
+            }
+
+            .buttons button[type="button"]:hover {
+                background-color: #d1b3ff;
+            }
+
+            /* Cancel button a inside */
+            .buttons a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            /* Back button */
+            button[type="button"]:first-child {
+                margin-bottom: 25px;
+                padding: 10px 16px;
+                background-color: #e0d4f7;
+                border: none;
+                border-radius: 8px;
+                color: #4b0082;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            button[type="button"]:first-child:hover {
+                background-color: #d1b3ff;
+            }
         </style>
+
     </head>
     <body>
 
@@ -150,7 +220,7 @@
             <button type="button" onclick="window.location.href = 'subject-list2'">Back</button>
 
             <h1>Add New Subject</h1>
-k
+            k
             <div class="row">
                 <!-- Cột trái: Upload thumbnail -->
                 <div class="left-col">

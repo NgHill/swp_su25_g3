@@ -127,6 +127,16 @@
                 font-weight: bold;
                 cursor: default;
             }
+            .sidebar a:last-child {
+                margin-top: auto;
+                font-weight: bold;
+                background-color: #1d3557;
+            }
+
+            .sidebar a:last-child:hover {
+                background-color: #457b9d;
+            }
+
         </style>
     </head>
     <body>
@@ -136,6 +146,8 @@
             <a href="post-detail">➕ Add New Post</a>
             <a href="slider-list">📋 View All Slider List</a>
             <a href="#">🖼️ Add New Slider</a>
+            <a href="home">🏠 Back to Homepage</a>
+
         </div>
 
         <div class="content">

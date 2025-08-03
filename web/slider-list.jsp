@@ -8,79 +8,126 @@
         <title>Sliders List</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
-                background: #fff;
+                font-family: 'Segoe UI', sans-serif;
+                background: #f3e8ff; /* tím nhạt */
                 margin: 0;
-                padding: 20px;
+                padding: 30px;
+                color: #333;
             }
 
             .container {
-                max-width: 1080px;
+                max-width: 1100px;
                 margin: auto;
+                background-color: #ffffff;
+                border-radius: 12px;
+                padding: 30px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             }
 
+            /* Nút Back */
             .btn-back {
-                padding: 6px 12px;
-                margin-bottom: 20px;
-                border: 1px solid #888;
-                border-radius: 4px;
-                background: #f8f8f8;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 18px;
+                border: 2px solid #9d4edd;
+                background-color: #f3e8ff;
+                color: #6a1b9a;
+                font-weight: 500;
+                font-size: 15px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                margin-bottom: 25px;
                 cursor: pointer;
+            }
+
+            .btn-back:hover {
+                background-color: #9d4edd;
+                color: white;
+                border-color: #7b2cbf;
             }
 
             h1 {
-                font-size: 42px;
+                font-size: 32px;
                 font-weight: bold;
                 margin-bottom: 30px;
+                color: #5a189a;
             }
 
+            /* FILTER SECTION */
             .filter-section {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 12px;
                 margin-bottom: 30px;
+                flex-wrap: wrap;
             }
 
             .filter-section label {
-                font-weight: bold;
-                font-size: 18px;
+                font-weight: 600;
+                font-size: 16px;
+                color: #4b0082;
             }
 
             select, input[type="text"] {
-                padding: 8px;
+                padding: 10px;
                 font-size: 14px;
                 border: 1px solid #ccc;
-                border-radius: 2px;
+                border-radius: 6px;
+                min-width: 160px;
+                outline: none;
             }
 
             .filter-section button {
-                padding: 8px 18px;
-                font-size: 14px;
-                background-color: #2a5ca6;
+                padding: 10px 24px;
+                font-size: 15px;
+                font-weight: 600;
+                background-color: #7b2cbf;
                 color: white;
                 border: none;
-                border-radius: 2px;
+                border-radius: 8px;
                 cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 10px rgba(123, 44, 191, 0.2);
             }
 
+            .filter-section button:hover {
+                background-color: #5a189a;
+                box-shadow: 0 6px 12px rgba(90, 24, 154, 0.3);
+            }
+
+
+            /* TABLE */
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 10px;
+                background-color: #fff;
+                border-radius: 8px;
+                overflow: hidden;
             }
 
             th, td {
-                padding: 12px 10px;
-                border: 1px solid #ccc;
+                padding: 14px 12px;
+                border-bottom: 1px solid #ddd;
                 text-align: left;
+                font-size: 14px;
             }
 
             th {
-                background-color: #e0e0e0;
+                background-color: #e7d5f7;
+                color: #4b0082;
+                font-weight: 600;
+            }
+
+            tbody tr:hover {
+                background-color: #f5f0ff;
             }
 
             td img.slider-img {
                 width: 48px;
+                border-radius: 4px;
                 display: block;
                 margin: auto;
             }
@@ -91,34 +138,57 @@
                 margin: auto;
             }
 
+            td a {
+                color: #5e35b1;
+                text-decoration: none;
+            }
+
+            td a:hover {
+                text-decoration: underline;
+            }
+
+            /* PAGINATION */
             .pagination {
                 text-align: center;
-                margin-top: 20px;
+                margin-top: 30px;
             }
 
             .pagination a,
             .pagination span {
                 display: inline-block;
-                padding: 4px 8px;
-                margin: 0 2px;
+                padding: 6px 12px;
+                margin: 0 3px;
                 border: 1px solid #ccc;
-                font-size: 13px;
-                border-radius: 2px;
-                min-width: 24px;
+                font-size: 14px;
+                border-radius: 6px;
+                min-width: 28px;
                 text-decoration: none;
-                color: #000;
+                color: #4b0082;
+                transition: all 0.2s ease;
+            }
+
+            .pagination a:hover {
+                background-color: #e0bbff;
             }
 
             .pagination .current {
-                background-color: #333;
+                background-color: #5a189a;
                 color: white;
+                border-color: #5a189a;
             }
-
         </style>
+
     </head>
     <body>
         <div class="container">
-            <button onclick="history.back()">Back</button>
+            <button class="btn-back" onclick="history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+            </button>
+
+
             <h1>Sliders List</h1>
 
             <!-- FILTER FORM -->
