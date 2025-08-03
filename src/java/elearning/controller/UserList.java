@@ -180,6 +180,7 @@ public class UserList extends HttpServlet {
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String mobile = request.getParameter("mobile");
+        String password = request.getParameter("password");
         String gender = request.getParameter("gender");
         String role = request.getParameter("role");
         String status = request.getParameter("status");
@@ -213,6 +214,18 @@ public class UserList extends HttpServlet {
             request.setAttribute("mobileError", "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0");
             hasError = true;
         }
+        
+                // Validate Password
+        if (password == null || password.trim().isEmpty()) {
+            request.setAttribute("passwordError", "Password không được để trống");
+            hasError = true;
+        } else if (password.trim().length() < 6) {
+            request.setAttribute("passwordError", "Password phải có ít nhất 6 ký tự");
+            hasError = true;
+        } else if (!isValidPassword(password.trim())) {
+            request.setAttribute("passwordError", "Password phải chứa ít nhất 1 chữ cái và 1 số");
+            hasError = true;
+        }
 
         // Nếu có lỗi, quay lại trang với thông báo lỗi
         if (hasError) {
@@ -220,6 +233,7 @@ public class UserList extends HttpServlet {
             request.setAttribute("inputFullName", fullName);
             request.setAttribute("inputEmail", email);
             request.setAttribute("inputMobile", mobile);
+            request.setAttribute("inputPassword", password);
             request.setAttribute("inputGender", gender);
             request.setAttribute("inputRole", role);
             request.setAttribute("inputStatus", status);
@@ -238,6 +252,7 @@ public class UserList extends HttpServlet {
             newUser.setFullName(fullName.trim());
             newUser.setEmail(email.trim());
             newUser.setMobile(mobile.trim());
+            newUser.setPassword(password.trim());
             newUser.setGender(Integer.parseInt(gender));
             newUser.setRole(role);
             newUser.setStatus(status);
@@ -357,6 +372,29 @@ public class UserList extends HttpServlet {
         return true;
     }
 
+        // Phương thức kiểm tra password
+    private boolean isValidPassword(String password) {
+        // Kiểm tra có ít nhất 1 chữ cái và 1 số
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+            }
+            if (Character.isDigit(c)) {
+                hasDigit = true;
+            }
+
+            // Nếu đã có cả chữ và số thì return true
+            if (hasLetter && hasDigit) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
