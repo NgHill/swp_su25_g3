@@ -56,6 +56,16 @@ public class Login extends HttpServlet {
 
 
         if (userAuth != null) {
+            // Nếu tài khoản bị khóa
+            if ("inactive".equalsIgnoreCase(userAuth.getStatus())) {
+                request.setAttribute("error", "Your account has been INACTIVE by the Admin!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
+            // Tài khoản hợp lệ và đang hoạt động
+            request.getSession().setAttribute("userAuth", userAuth);
+
             switch (userAuth.getRole()) {
                 case "mtk" ->
                     response.sendRedirect("mtk-dashboard");
@@ -67,6 +77,11 @@ public class Login extends HttpServlet {
                     response.sendRedirect("home");
             }
             return;
+
+        } else {
+            // Không tìm thấy tài khoản
+            request.setAttribute("error", "Thông tin đăng nhập sai.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 
         // Nếu chưa đăng nhập, thì hiển thị form đăng nhập

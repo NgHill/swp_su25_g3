@@ -1,9 +1,0 @@
-<changelist name="Uncommitted_changes_before_Checkout_at_22_07_2025_9_31_SA_[Changes]1" date="1753151562095" recycled="true" deleted="true">
-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_07_2025_9_31_SA_[Changes]1/shelved.patch" />
-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 22/07/2025 9:31 SA [Changes]" />
-  <binary>
-    <option name="BEFORE_PATH" value="dist/EducationPlatform.war" />
-    <option name="AFTER_PATH" value="dist/EducationPlatform.war" />
-    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_07_2025_9_31_SA_[Changes]1/EducationPlatform.war" />
-  </binary>
-</changelist>
