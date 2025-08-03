@@ -5,7 +5,8 @@
 package elearning.controller;
 
 import elearning.BasicDAO.SubjectListDAO;
-import elearning.entities.SubjectList;
+import elearning.entities.SubjectPackage;
+import elearning.entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,9 +14,11 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  *
@@ -25,6 +28,7 @@ import java.nio.file.Paths;
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)
 public class AddNewSubject extends HttpServlet {
+     private final SubjectListDAO dao = new SubjectListDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -64,6 +68,8 @@ public class AddNewSubject extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<String> categoryList = dao.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
         request.getRequestDispatcher("addnew_subject.jsp").forward(request, response);
     }
 
@@ -91,14 +97,29 @@ public class AddNewSubject extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        // Lấy các tham số từ form gửi lên
-        String name = request.getParameter("name");
+         // Lấy các giá trị từ form
+        String title = request.getParameter("title");
         String category = request.getParameter("category");
-        int numberOfLesson = Integer.parseInt(request.getParameter("numberOfLesson"));
-        boolean featured = request.getParameter("featured") != null;
-        String owner = request.getParameter("owner");
+        String briefInfo = request.getParameter("briefInfo");
+        String tagline = request.getParameter("tagline");
         String description = request.getParameter("description");
+        String status = request.getParameter("status");
 
+        String lowestPriceStr = request.getParameter("lowestPrice");
+        String originalPriceStr = request.getParameter("originalPrice");
+        String salePriceStr = request.getParameter("salePrice");
+
+        // Lấy Owner từ session
+        HttpSession session = request.getSession();
+        User owner = (User) session.getAttribute("userAuth");
+        
+         // Đọc các giá trị số, chuyển về double
+        double lowestPrice = lowestPriceStr != null && !lowestPriceStr.isEmpty() ? formatDouble(lowestPriceStr) : 0;
+        double originalPrice = formatDouble(originalPriceStr);
+        double salePrice = salePriceStr != null && !salePriceStr.isEmpty() ? formatDouble(salePriceStr) : 0;
+
+        
+        
         // Xử lý file upload
         Part filePart = request.getPart("thumbnail");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -109,7 +130,18 @@ public class AddNewSubject extends HttpServlet {
             filePart.write(uploadPath + File.separator + System.currentTimeMillis() + "_" + fileName);
         }
         // Tạo đối tượng Subject từ dữ liệu form
-        SubjectList subject = new SubjectList(name, category, numberOfLesson, featured, owner, description, filePath);
+        SubjectPackage subject = new SubjectPackage();
+        subject.setTitle(title);
+        subject.setBriefInfo(briefInfo);
+        subject.setDescription(description);
+        subject.setTagLine(tagline);
+        subject.setThumbnail(fileName);
+        subject.setLowestPrice(lowestPrice);
+        subject.setOriginalPrice(originalPrice);
+        subject.setSalePrice(salePrice);
+        subject.setStatus(status);
+        subject.setCategory(category);
+        subject.setOwnerId(owner.getId());
         
         // Gọi DAO để thêm dữ liệu vào database
         SubjectListDAO dao = new SubjectListDAO();
@@ -131,5 +163,9 @@ public class AddNewSubject extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    private Double formatDouble (String num) {
+        return Double.valueOf(num.replace(".", ""));
+    }
 
 }

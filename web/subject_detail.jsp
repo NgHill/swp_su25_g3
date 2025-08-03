@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="elearning.entities.SubjectList" %>
+<%@ page import="elearning.entities.SubjectPackage" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
-    SubjectList subject = (SubjectList) request.getAttribute("subject");
+    SubjectPackage subject = (SubjectPackage) request.getAttribute("subject");
+    DecimalFormat df = new DecimalFormat("#,###");
 %>
 <!DOCTYPE html>
 <html>
@@ -9,231 +12,327 @@
         <title>Edit Subject</title>
         <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
         <style>
-            /* copy CSS từ form bạn đưa ở trên */
             body {
-                font-family: Arial, sans-serif;
-                padding: 30px;
-                background-color: #fff;
+                font-family: 'Segoe UI', sans-serif;
+                padding: 40px;
+                background-color: #f3e8ff;
+                color: #333;
             }
+
             h1 {
-                font-size: 36px;
-                margin-bottom: 30px;
+                font-size: 28px;
+                margin-bottom: 25px;
+                color: #5a189a;
             }
-            .form-section {
+
+            form {
+                background: #fff;
+                padding: 30px;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(90, 24, 154, 0.1);
+            }
+
+            .row {
                 display: flex;
-                gap: 40px;
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+
+            .left-col {
+                flex: 1;
+                min-width: 260px;
+            }
+
+            .right-col {
+                flex: 2;
+                min-width: 300px;
+            }
+
+            .image-box {
+                border: 2px dashed #ccc;
+                border-radius: 10px;
+                text-align: center;
+                padding: 20px;
+                background-color: #faf5ff;
+            }
+
+            .image-box img {
+                max-width: 120px;
+                height: auto;
+                margin-bottom: 12px;
+                border-radius: 8px;
+            }
+
+            .note {
+                color: #c62828;
+                font-size: 13px;
+                margin-top: 6px;
+            }
+
+            .form-group {
                 margin-bottom: 20px;
             }
-            .thumbnail-box {
-                width: 120px;
-            }
-            .thumbnail-preview {
-                width: 100px;
-                height: 100px;
-                border: 2px dashed #aaa;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 12px;
-                margin-bottom: 10px;
-                overflow: hidden;
-            }
-            .upload-note {
-                color: red;
-                font-size: 12px;
-            }
-            .form-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-                margin-bottom: 10px;
-            }
-            .form-group {
-                display: flex;
-                flex-direction: column;
-            }
+
             label {
-                font-weight: bold;
-                margin-bottom: 5px;
+                font-weight: 600;
+                display: block;
+                margin-bottom: 6px;
+                color: #4b0082;
             }
-            input[type="text"], input[type="number"], select {
-                padding: 6px;
-                font-size: 14px;
-                border: 1px solid #ccc;
+
+            input[type="text"],
+            input[type="number"],
+            select,
+            textarea {
                 width: 100%;
+                padding: 10px 14px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                font-size: 14px;
+                outline: none;
             }
-            select {
-                appearance: none;
-                background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-                background-repeat: no-repeat;
-                background-position: right 10px center;
-                background-size: 14px;
+
+            input[type="file"] {
+                font-size: 13px;
+                margin-top: 6px;
             }
-            .switch-wrapper {
-                display: flex;
-                align-items: center;
-                gap: 10px;
+
+            .price-error {
+                color: red;
+                font-size: 13px;
+                margin-top: 5px;
             }
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 46px;
-                height: 24px;
+
+            .buttons {
+                text-align: right;
+                margin-top: 30px;
             }
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: 0.4s;
-                border-radius: 24px;
-            }
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 18px;
-                width: 18px;
-                left: 3px;
-                bottom: 3px;
-                background-color: white;
-                transition: 0.4s;
-                border-radius: 50%;
-            }
-            .switch input:checked + .slider {
-                background-color: #007bff;
-            }
-            .switch input:checked + .slider:before {
-                transform: translateX(22px);
-            }
-            .description-label {
-                font-weight: bold;
-                margin: 20px 0 5px;
-            }
-            .form-footer {
-                display: flex;
-                justify-content: flex-end;
-                gap: 10px;
-                margin-top: 20px;
-            }
-            .form-footer button {
+
+            .buttons button {
                 padding: 10px 20px;
-                font-weight: bold;
-                border: 1px solid #888;
-                background-color: #eee;
+                margin-left: 10px;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 14px;
                 cursor: pointer;
+                transition: all 0.3s ease;
             }
-            .form-footer .save-btn {
-                background-color: #ccc;
+
+            .buttons button[type="submit"] {
+                background-color: #7b2cbf;
+                color: white;
+            }
+
+            .buttons button[type="submit"]:hover {
+                background-color: #5a189a;
+            }
+
+            .buttons button[type="button"] {
+                background-color: #e0d4f7;
+                color: #4b0082;
+            }
+
+            .buttons button[type="button"]:hover {
+                background-color: #d1b3ff;
+            }
+
+            .back-btn {
+                display: inline-block;
+                margin-bottom: 24px;
+                padding: 10px 18px;
+                background-color: #e0d4f7;
+                color: #4b0082;
+                font-weight: 600;
+                text-decoration: none;
+                border-radius: 8px;
+                transition: background-color 0.3s ease;
+                font-size: 14px;
+            }
+
+            .back-btn:hover {
+                background-color: #d1b3ff;
             }
         </style>
     </head>
     <body>
-        <form method="post" action="edit-subject" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<%= subject.getId() %>">
-            <input type="hidden" name="existingThumbnail" value="<%= subject.getThumbnailUrl() %>">
 
-            <button type="button" onclick="window.location.href = 'subject-list2'">Back</button>
+        <form method="post" action="edit-subject" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<%= subject.getId() %>" />
+
+            <a href="subject-list2" class="back-btn">← Back to Subject List</a>
+
             <h1>Edit Subject</h1>
 
-            <div class="form-section">
-                <!-- Thumbnail -->
-                <div class="thumbnail-box">
+            <div class="row">
+                <div class="left-col">
                     <label>Thumbnail</label>
-                    <div class="thumbnail-preview" id="thumbnailPreview">
-                        <% if (subject.getThumbnailUrl() != null && !subject.getThumbnailUrl().isEmpty()) { %>
-                        <img src="${subject.getThumbnailUrl()}" style="width: 100px; height: 100px; object-fit: cover;" />
-                        <% } else { %>
-                        Upload Image
-                        <% } %>
+                    <div class="image-box">
+                        <img id="preview" src="<%= subject.getThumbnail() != null ? "uploads/" + subject.getThumbnail() : "https://via.placeholder.com/120x120?text=Upload+Image" %>" alt="Preview" />
+                        <br><br>
+                        <input type="file" name="thumbnail" accept=".jpg,.jpeg,.png,.svg" onchange="previewImage(event)">
                     </div>
-                    <input id ="thumbnail" type="file" name="thumbnail" accept=".jpg,.jpeg,.png,.svg" onchange="previewImage(event)">
-                    <div class="upload-note">Images must be in JPEG (JPG), PNG, or SVG format.</div>
+                    <div class="note">Image must be in JPEG (JPG), PNG, or SVG format.</div>
                 </div>
 
-                <!-- Form inputs -->
-                <div style="flex: 1;">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" name="name" value="<%= subject.getName() %>" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select name="category" required>
-                                <option value="">--Select--</option>
-                                <option value="IT" <%= "IT".equals(subject.getCategory()) ? "selected" : "" %>>IT</option>
-                                <option value="Business" <%= "Business".equals(subject.getCategory()) ? "selected" : "" %>>Business</option>
-                                <option value="Design" <%= "Design".equals(subject.getCategory()) ? "selected" : "" %>>Design</option>
-                                <option value="Language" <%= "Language".equals(subject.getCategory()) ? "selected" : "" %>>Language</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Number Of Lesson</label>
-                            <input type="number" name="numberOfLesson" min="1" value="<%= subject.getLessons() %>" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Owner</label>
-                            <input type="text" name="owner" value="<%= subject.getOwner() %>" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Display</label>
-                            <select name="display">
-                                <option value="Show" <%= "Show".equals(subject.getStatus()) ? "selected" : "" %>>Show</option>
-                                <option value="Hide" <%= "Hide".equals(subject.getStatus()) ? "selected" : "" %>>Hide</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Featured Articles</label>
-                            <div class="switch-wrapper">
-                                <label class="switch">
-                                    <input type="checkbox" name="featured" <%= subject.isFeatured() ? "checked" : "" %>>
-                                    <span class="slider"></span>
-                                </label>
-                                <span style="font-weight: bold;">ON</span>
-                            </div>
-                        </div>
+                <div class="right-col">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" required value="<%= subject.getTitle() %>" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category">
+                            <option value="" disabled>Select Category</option>
+                            <c:forEach var="cat" items="${categoryList}">
+                                <option value="${cat}" <c:if test="${subject.category == cat}">selected</c:if>>${cat}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Brief Info</label>
+                        <input type="text" name="briefInfo" value="<%= subject.getBriefInfo() %>" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Owner</label>
+                        <input type="text" name="owner" value="${sessionScope.userAuth.fullName}" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tagline</label>
+                        <input type="text" name="tagline" value="<%= subject.getTagLine() %>" />
                     </div>
                 </div>
             </div>
 
-            <!-- Description -->
-            <div>
-                <label class="description-label">Description</label>
-                <textarea name="description" id="description"><%= subject.getDescription() %></textarea>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" id="description" rows="8"><%= subject.getDescription() %></textarea>
                 <script>CKEDITOR.replace('description');</script>
             </div>
 
-            <!-- Footer -->
-            <div class="form-footer">
-                <button type="button" ><a href="subject-list2">Cancel</a></button>
-                <button type="submit" class="save-btn">Save</button>
+            <div class="row">
+                <div class="form-group" style="flex:1;">
+                    <label>Lowest Price</label>
+                    <input type="text" name="lowestPrice" class="price-input" value="<%= df.format(subject.getLowestPrice()) %>" oninput="handlePriceInput(this, false)" />
+                    <div class="price-error"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Original Price <span style="color:red">*</span></label>
+                    <input type="text" name="originalPrice" class="price-input" value="<%= df.format(subject.getOriginalPrice()) %>" oninput="handlePriceInput(this, true)" />
+                    <div class="price-error"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Sale Price</label>
+                    <input type="text" name="salePrice" class="price-input" value="<%= df.format(subject.getSalePrice()) %>" oninput="handlePriceInput(this, false)" />
+                    <div class="price-error"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="published" <%= "published".equals(subject.getStatus()) ? "selected" : "" %>>Published</option>
+                        <option value="un-published" <%= "un-published".equals(subject.getStatus()) ? "selected" : "" %>>Unpublished</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="button" onclick="confirmDelete()">Delete</button>
+                <button type="submit">Update</button>
             </div>
         </form>
 
+        <!-- Modal xác nhận xóa -->
+        <div id="deleteModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+             background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+            <div style="background:white; padding:30px; border-radius:12px; max-width:400px; text-align:center;">
+                <p style="font-size:16px; margin-bottom:24px;">Bạn có chắc muốn xóa subject này?</p>
+                <button onclick="deleteConfirmed()" style="background:#c62828; color:white; padding:10px 20px; border:none; border-radius:8px; font-weight:600; margin-right:12px;">Yes</button>
+                <button onclick="closeModal()" style="background:#ccc; padding:10px 20px; border:none; border-radius:8px; font-weight:600;">No</button>
+            </div>
+        </div>
+
         <script>
             function previewImage(event) {
-                const file = event.target.files[0]; // ✅ phải là files[0] chứ không phải file
-                
-                if (!file)
-                    return; // kiểm tra có file không
-
                 const reader = new FileReader();
-
                 reader.onload = function () {
-                    document.getElementById('thumbnailPreview').innerHTML =
-                            `<img src="${reader.result}" style="width: 100px; height: 100px; object-fit: cover;" />`;
+                    const output = document.getElementById('preview');
+                    output.src = reader.result;
                 };
-
-                reader.readAsDataURL(file); // ✅ gọi ở cuối để bắt đầu đọc file
+                reader.readAsDataURL(event.target.files[0]);
             }
+
+            function confirmDelete() {
+                document.getElementById('deleteModal').style.display = 'flex';
+            }
+
+            function closeModal() {
+                document.getElementById('deleteModal').style.display = 'none';
+            }
+
+            function deleteConfirmed() {
+                const id = '<%= subject.getId() %>';
+                window.location.href = 'delete-subject?id=' + id;
+            }
+
+            function handlePriceInput(input, required) {
+                const errorDiv = input.nextElementSibling;
+                const raw = input.value.replace(/\./g, '').trim();
+
+                if (required && raw === '') {
+                    errorDiv.textContent = 'Không được để trống.';
+                    return;
+                }
+
+                if (raw === '') {
+                    errorDiv.textContent = '';
+                    return;
+                }
+
+                if (!/^\d+$/.test(raw)) {
+                    errorDiv.textContent = 'Chỉ được nhập số nguyên dương.';
+                    return;
+                }
+
+                input.value = parseInt(raw, 10).toLocaleString('vi-VN');
+                errorDiv.textContent = '';
+            }
+
+            function validateAndFormatPrices(event) {
+                let valid = true;
+                const inputs = document.querySelectorAll('.price-input');
+
+                inputs.forEach(input => {
+                    const required = input.name === "originalPrice";
+                    const errorDiv = input.nextElementSibling;
+                    const raw = input.value.replace(/\./g, '').trim();
+
+                    if (required && raw === '') {
+                        errorDiv.textContent = 'Không được để trống.';
+                        input.focus();
+                        valid = false;
+                    } else if (raw !== '' && (!/^\d+$/.test(raw) || parseInt(raw) <= 0)) {
+                        errorDiv.textContent = 'Giá không hợp lệ.';
+                        input.focus();
+                        valid = false;
+                    } else {
+                        errorDiv.textContent = '';
+                        if (raw !== '') {
+                            input.value = parseInt(raw, 10).toLocaleString('vi-VN');
+                        }
+                    }
+                });
+
+                if (!valid) {
+                    event.preventDefault();
+                }
+            }
+
+            document.querySelector("form").addEventListener("submit", validateAndFormatPrices);
         </script>
+
     </body>
 </html>

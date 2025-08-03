@@ -2,6 +2,7 @@ package elearning.controller;
 
 import elearning.BasicDAO.SubjectListDAO;
 import elearning.entities.SubjectList;
+import elearning.entities.SubjectPackage;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -46,9 +47,9 @@ public class SubjectListController extends HttpServlet {
 
         // Lấy danh sách chủ đề dựa trên các tham số lọc và phân trang
         //  Bắt SQLException ở đây
-        List<SubjectList> subjectList = dao.getFilteredSubjects(category, status, search, offset, linesPerPage);
+        List<SubjectPackage> subjectPackage = dao.getFilteredSubjects(category, status, search, offset, linesPerPage);
         List<String> categoryList = dao.getAllCategory();
-        request.setAttribute("subjectList", subjectList);
+        request.setAttribute("subjectPackage", subjectPackage);
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("filterBy", request.getParameterValues("filterBy"));
 

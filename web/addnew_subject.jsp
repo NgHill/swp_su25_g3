@@ -1,22 +1,15 @@
-<%-- 
-    Document   : addnew_subject
-    Created on : Jun 29, 2025, 10:08:18 PM
-    Author     : admin
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Add New Subject</title>
-
-        <!-- Tích hợp Rich Text Editor -->
         <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
         <style>
             body {
                 font-family: 'Segoe UI', sans-serif;
                 padding: 40px;
-                background-color: #f3e8ff; /* tím nhạt */
+                background-color: #f3e8ff;
                 color: #333;
             }
 
@@ -33,7 +26,6 @@
                 box-shadow: 0 4px 20px rgba(90, 24, 154, 0.1);
             }
 
-            /* ==== Cột trái/phải ==== */
             .row {
                 display: flex;
                 gap: 24px;
@@ -50,7 +42,6 @@
                 min-width: 300px;
             }
 
-            /* ==== Upload ảnh ==== */
             .image-box {
                 border: 2px dashed #ccc;
                 border-radius: 10px;
@@ -72,7 +63,6 @@
                 margin-top: 6px;
             }
 
-            /* ==== Trường nhập liệu ==== */
             .form-group {
                 margin-bottom: 20px;
             }
@@ -101,57 +91,12 @@
                 margin-top: 6px;
             }
 
-            select {
-                background-color: #fff;
+            .price-error {
+                color: red;
+                font-size: 13px;
+                margin-top: 5px;
             }
 
-            /* ==== Toggle switch ==== */
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 50px;
-                height: 25px;
-            }
-
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: 0.4s;
-                border-radius: 25px;
-            }
-
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 19px;
-                width: 19px;
-                left: 3px;
-                bottom: 3px;
-                background-color: white;
-                transition: 0.4s;
-                border-radius: 50%;
-            }
-
-            input:checked + .slider {
-                background-color: #7b2cbf;
-            }
-
-            input:checked + .slider:before {
-                transform: translateX(24px);
-            }
-
-            /* ==== Nút điều khiển ==== */
             .buttons {
                 text-align: right;
                 margin-top: 30px;
@@ -186,13 +131,11 @@
                 background-color: #d1b3ff;
             }
 
-            /* Cancel button a inside */
             .buttons a {
                 color: inherit;
                 text-decoration: none;
             }
 
-            /* Back button */
             button[type="button"]:first-child {
                 margin-bottom: 25px;
                 padding: 10px 16px;
@@ -209,18 +152,16 @@
                 background-color: #d1b3ff;
             }
         </style>
-
     </head>
     <body>
 
-        <!-- Form gửi dữ liệu bằng POST, hỗ trợ upload ảnh -->
         <form method="post" action="add-subject" enctype="multipart/form-data">
 
             <!-- Nút quay lại danh sách -->
             <button type="button" onclick="window.location.href = 'subject-list2'">Back</button>
 
             <h1>Add New Subject</h1>
-            k
+
             <div class="row">
                 <!-- Cột trái: Upload thumbnail -->
                 <div class="left-col">
@@ -235,63 +176,78 @@
 
                 <!-- Cột phải: Các trường input -->
                 <div class="right-col">
-                    <!-- Nhập tên subject -->
                     <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="name" required />
+                        <label>Title</label>
+                        <input type="text" name="title" required />
                     </div>
 
-                    <!-- Nhập category và số bài học -->
-                    <div class="row">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Category</label>
-                            <select name="category" required>
-                                <option value="">--Select--</option>
-                                <option value="IT">IT</option>
-                                <option value="Business">Business</option>
-                                <option value="Design">Design</option>
-                                <option value="Language">Language</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Number Of Lesson</label>
-                            <input type="number" name="numberOfLesson" min="1" required />
-                        </div>
-                    </div>
-
-                    <!-- Công tắc bật/tắt Featured -->
                     <div class="form-group">
-                        <label>Featured Articles</label>
-                        <label class="switch">
-                            <input type="checkbox" name="featured" checked>
-                            <span class="slider"></span>
-                        </label>
+                        <label>Category</label>
+                        <select name="category">
+                            <option value="" selected></option>
+                            <c:forEach var="cat" items="${categoryList}">
+                                <option value="${cat}">${cat}</option>
+                            </c:forEach>
+                        </select>
                     </div>
 
-                    <!-- Nhập owner -->
+                    <div class="form-group">
+                        <label>Brief Info</label>
+                        <input type="text" name="briefInfo" />
+                    </div>
+
                     <div class="form-group">
                         <label>Owner</label>
-                        <input type="text" name="owner" required />
+                        <input type="text" name="owner" value="${sessionScope.userAuth.fullName}" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tagline</label>
+                        <input type="text" name="tagline" />
                     </div>
                 </div>
             </div>
 
-            <!-- Mô tả chi tiết subject -->
+            <!-- Description -->
             <div class="form-group">
                 <label>Description</label>
                 <textarea name="description" id="description" rows="8"></textarea>
                 <script>CKEDITOR.replace('description');</script>
             </div>
 
-            <!-- Nút Cancel / Add -->
+            <!-- Giá và Status -->
+            <div class="row">
+                <div class="form-group" style="flex:1;">
+                    <label>Lowest Price</label>
+                    <input type="text" name="lowestPrice" class="price-input" oninput="handlePriceInput(this, false)" />
+                    <div class="price-error"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Original Price <span style="color:red">*</span></label>
+                    <input type="text" name="originalPrice" class="price-input" oninput="handlePriceInput(this, true)" />
+                    <div class="price-error"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Sale Price</label>
+                    <input type="text" name="salePrice" class="price-input" oninput="handlePriceInput(this, false)" />
+                    <div class="price-error"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="published">Published</option>
+                        <option value="un-published">Unpublished</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Nút điều khiển -->
             <div class="buttons">
                 <button type="button"><a href="subject-list2">Cancel</a></button>
                 <button type="submit">Add</button>
             </div>
-
         </form>
 
-        <!-- Xử lý hiển thị ảnh preview -->
         <script>
             function previewImage(event) {
                 const reader = new FileReader();
@@ -301,7 +257,72 @@
                 };
                 reader.readAsDataURL(event.target.files[0]);
             }
+
+            function handlePriceInput(input, required) {
+                const errorDiv = input.nextElementSibling;
+                const raw = input.value.replace(/\./g, '').trim();
+
+                if (required && raw === '') {
+                    errorDiv.textContent = 'Không được để trống.';
+                    return;
+                }
+
+                if (raw === '') {
+                    errorDiv.textContent = '';
+                    return;
+                }
+
+                if (!/^\d+$/.test(raw)) {
+                    errorDiv.textContent = 'Chỉ được nhập số nguyên dương, không chứa chữ cái hoặc ký tự.';
+                    return;
+                }
+
+                if (parseInt(raw) <= 0) {
+                    errorDiv.textContent = 'Giá phải lớn hơn 0.';
+                    return;
+                }
+
+                input.value = parseInt(raw, 10).toLocaleString('vi-VN');
+                errorDiv.textContent = '';
+            }
+
+            function validateAndFormatPrices(event) {
+                let valid = true;
+                const inputs = document.querySelectorAll('.price-input');
+
+                inputs.forEach(input => {
+                    const required = input.name === "originalPrice";
+                    const errorDiv = input.nextElementSibling;
+                    const raw = input.value.replace(/\./g, '').trim();
+
+                    if (required && raw === '') {
+                        errorDiv.textContent = 'Không được để trống.';
+                        input.focus();
+                        valid = false;
+                    } else if (raw !== '' && (!/^\d+$/.test(raw) || parseInt(raw) <= 0)) {
+                        errorDiv.textContent = 'Giá không hợp lệ.';
+                        input.focus();
+                        valid = false;
+                    } else {
+                        errorDiv.textContent = '';
+                        if (raw !== '') {
+                            input.value = parseInt(raw, 10).toLocaleString('vi-VN');
+                        }
+                    }
+                });
+
+                if (!valid) {
+                    event.preventDefault();
+                }
+            }
+
+            document.querySelector("form").addEventListener("submit", validateAndFormatPrices);
         </script>
+         <script>
+        // Embed Java value into JavaScript
+            const username = '<%= request.getAttribute("categoryList") %>';
+        console.log("Username from Servlet:", username);
+    </script>
 
     </body>
 </html>
